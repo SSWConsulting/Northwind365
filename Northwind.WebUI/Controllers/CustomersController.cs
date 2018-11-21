@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Northwind.Application.Customers.Queries.GetCustomersList;
@@ -5,6 +6,8 @@ using Northwind.Application.Customers.Queries.GetCustomerDetail;
 using Northwind.Application.Customers.Commands.UpdateCustomer;
 using Northwind.Application.Customers.Commands.CreateCustomer;
 using Northwind.Application.Customers.Commands.DeleteCustomer;
+using Northwind.Application.Customers.Queries.GetCustomersMostPurchasedProducts;
+using Northwind.Persistence.QueryTypes;
 
 namespace Northwind.WebUI.Controllers
 {
@@ -51,5 +54,15 @@ namespace Northwind.WebUI.Controllers
 
             return NoContent();
         }
+
+
+        [HttpGet()]
+        public async Task<ActionResult<IEnumerable<CustomersMostPurchasedProducts>>> MostPurchased(int pageIndex, int pageSize)
+        {
+            var result = await Mediator.Send(new GetCustomersMostPurchasedProductsQuery{ PageSize = pageSize, PageIndex = pageIndex });
+            return Ok(result);
+        }
+
+
     }
 }
