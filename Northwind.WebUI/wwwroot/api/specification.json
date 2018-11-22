@@ -260,6 +260,46 @@
         }
       }
     },
+    "/api/Customers/MostPurchased": {
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "operationId": "Customers_MostPurchased",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "pageIndex",
+            "in": "query",
+            "format": "int32",
+            "nullable": false
+          },
+          {
+            "type": "integer",
+            "name": "pageSize",
+            "in": "query",
+            "format": "int32",
+            "nullable": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "x-nullable": true,
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CustomersMostPurchasedProducts"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Products/GetAll": {
       "get": {
         "tags": [
@@ -604,6 +644,33 @@
           },
           "region": {
             "type": "string"
+          }
+        }
+      },
+      "CustomersMostPurchasedProducts": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "productID",
+          "quantityPurchased"
+        ],
+        "properties": {
+          "customerID": {
+            "type": "string"
+          },
+          "companyName": {
+            "type": "string"
+          },
+          "productID": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productName": {
+            "type": "string"
+          },
+          "quantityPurchased": {
+            "type": "integer",
+            "format": "int32"
           }
         }
       },
