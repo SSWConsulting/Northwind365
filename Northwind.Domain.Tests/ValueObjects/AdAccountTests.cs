@@ -1,5 +1,6 @@
 using Northwind.Domain.Exceptions;
 using Northwind.Domain.ValueObjects;
+using Shouldly;
 using Xunit;
 
 namespace Northwind.Domain.Tests.ValueObjects
@@ -11,7 +12,7 @@ namespace Northwind.Domain.Tests.ValueObjects
         {
             var account = new AdAccount("SSW\\Jason");
 
-            Assert.Equal("SSW", account.Domain);
+            account.Domain.ShouldBe("SSW");
         }
 
         [Fact]
@@ -19,7 +20,7 @@ namespace Northwind.Domain.Tests.ValueObjects
         {
             var account = new AdAccount("SSW\\Jason");
 
-            Assert.Equal("Jason", account.Name);
+            account.Name.ShouldBe("Jason");
         }
 
         [Fact]
@@ -29,7 +30,7 @@ namespace Northwind.Domain.Tests.ValueObjects
 
             var account = new AdAccount(value);
 
-            Assert.Equal(value, account.ToString());
+            account.ShouldBeSameAs(value);
         }
 
         [Fact]
@@ -41,7 +42,7 @@ namespace Northwind.Domain.Tests.ValueObjects
 
             string result = account;
 
-            Assert.Equal(value, result);
+            result.ShouldBe(value);
         }
 
         [Fact]
@@ -49,14 +50,14 @@ namespace Northwind.Domain.Tests.ValueObjects
         {
             var account = (AdAccount) "SSW\\Jason";
 
-            Assert.Equal("SSW", account.Domain);
-            Assert.Equal("Jason", account.Name);
+            account.Domain.ShouldBe("SSW");
+            account.Name.ShouldBe("SSW");
         }
 
         [Fact]
         public void ShouldThrowAdAccountInvalidExceptionForInvalidAdAccount()
         {
-            Assert.Throws<AdAccountInvalidException>(() => (AdAccount) "SSWJason");
+            Should.Throw<AdAccountInvalidException>(() => (AdAccount)"SSWJason");
         }
     }
 }
