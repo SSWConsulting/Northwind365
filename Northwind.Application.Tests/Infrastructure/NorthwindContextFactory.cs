@@ -23,6 +23,11 @@ namespace Northwind.Application.Tests.Infrastructure
                 new Customer { CustomerId = "BREND", ContactName = "Brendan Richards" },
             });
 
+            context.Products.AddRange(new[]
+            {
+                new Product { ProductId = 999, CategoryId = 1999, SupplierId = 2999, ProductName = "Toast", UnitPrice = 1 }
+            });
+
             context.SaveChanges();
 
             return context;
