@@ -24,16 +24,6 @@ namespace Northwind.Domain.Tests.ValueObjects
         }
 
         [Fact]
-        public void ToStringReturnsDomainAndName()
-        {
-            const string value = "SSW\\Jason";
-
-            var account = new AdAccount(value);
-
-            account.ShouldBeSameAs(value);
-        }
-
-        [Fact]
         public void ImplicitConversionToStringReturnsDomainAndName()
         {
             const string value = "SSW\\Jason";
@@ -51,7 +41,7 @@ namespace Northwind.Domain.Tests.ValueObjects
             var account = (AdAccount) "SSW\\Jason";
 
             account.Domain.ShouldBe("SSW");
-            account.Name.ShouldBe("SSW");
+            account.Name.ShouldBe("Jason");
         }
 
         [Fact]

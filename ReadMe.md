@@ -2,7 +2,7 @@
 
 Northwind Traders is a sample application built using ASP.NET Core and Entity Framework Core. The architecture and design of the project is explained in the video:
 
-* [Clean Architecture with ASP.NET Core 2.1](https://youtu.be/_lwCVE_XgqI) ([slide deck](https://github.com/JasonGT/NorthwindTraders/raw/master/Slides.pdf))
+* [Clean Architecture with ASP.NET Core 2.1](https://youtu.be/_lwCVE_XgqI) ([slide deck](https://github.com/SSWConsulting/NorthwindTraders/raw/master/.NET%20Core%202.2%20Superpowers%20Tour.pdf))
 
 The initial construction of this project is explained in the following blog posts:
 
@@ -16,8 +16,8 @@ Use these instuctions to get the project up and running.
 ### Prerequisites
 You will need the following tools:
 
-* [Visual Studio Code or 2017](https://www.visualstudio.com/downloads/)
-* [.NET Core SDK 2.2 Preview 2](https://www.microsoft.com/net/download/dotnet-core/2.2)
+* [Visual Studio Code or 2017 (Preview)](https://www.visualstudio.com/downloads/)
+* [.NET Core SDK 2.2 Preview 3](https://www.microsoft.com/net/download/dotnet-core/2.2)
 
 ### Setup
 Follow these steps to get your development environment set up:

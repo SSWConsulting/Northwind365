@@ -212,6 +212,7 @@ export interface ICustomersClient {
     create(command: CreateCustomerCommand): Observable<FileResponse | null>;
     update(id: string | null, command: UpdateCustomerCommand): Observable<FileResponse | null>;
     delete(id: string | null): Observable<FileResponse | null>;
+    mostPurchased(pageIndex: number | undefined, pageSize: number | undefined): Observable<CustomersMostPurchasedProducts[] | null>;
 }
 
 @Injectable()
@@ -475,6 +476,67 @@ export class CustomersClient implements ICustomersClient {
             }));
         }
         return _observableOf<FileResponse | null>(<any>null);
+    }
+
+    mostPurchased(pageIndex: number | undefined, pageSize: number | undefined): Observable<CustomersMostPurchasedProducts[] | null> {
+        let url_ = this.baseUrl + "/api/Customers/MostPurchased?";
+        if (pageIndex === null)
+            throw new Error("The parameter 'pageIndex' cannot be null.");
+        else if (pageIndex !== undefined)
+            url_ += "pageIndex=" + encodeURIComponent("" + pageIndex) + "&"; 
+        if (pageSize === null)
+            throw new Error("The parameter 'pageSize' cannot be null.");
+        else if (pageSize !== undefined)
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMostPurchased(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMostPurchased(<any>response_);
+                } catch (e) {
+                    return <Observable<CustomersMostPurchasedProducts[] | null>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CustomersMostPurchasedProducts[] | null>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processMostPurchased(response: HttpResponseBase): Observable<CustomersMostPurchasedProducts[] | null> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [];
+                for (let item of resultData200)
+                    result200.push(CustomersMostPurchasedProducts.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CustomersMostPurchasedProducts[] | null>(<any>null);
     }
 }
 
@@ -1192,6 +1254,58 @@ export interface IUpdateCustomerCommand {
     phone?: string | undefined;
     postalCode?: string | undefined;
     region?: string | undefined;
+}
+
+export class CustomersMostPurchasedProducts implements ICustomersMostPurchasedProducts {
+    customerID?: string | undefined;
+    companyName?: string | undefined;
+    productID!: number;
+    productName?: string | undefined;
+    quantityPurchased!: number;
+
+    constructor(data?: ICustomersMostPurchasedProducts) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.customerID = data["customerID"];
+            this.companyName = data["companyName"];
+            this.productID = data["productID"];
+            this.productName = data["productName"];
+            this.quantityPurchased = data["quantityPurchased"];
+        }
+    }
+
+    static fromJS(data: any): CustomersMostPurchasedProducts {
+        data = typeof data === 'object' ? data : {};
+        let result = new CustomersMostPurchasedProducts();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["customerID"] = this.customerID;
+        data["companyName"] = this.companyName;
+        data["productID"] = this.productID;
+        data["productName"] = this.productName;
+        data["quantityPurchased"] = this.quantityPurchased;
+        return data; 
+    }
+}
+
+export interface ICustomersMostPurchasedProducts {
+    customerID?: string | undefined;
+    companyName?: string | undefined;
+    productID: number;
+    productName?: string | undefined;
+    quantityPurchased: number;
 }
 
 export class ProductsListViewModel implements IProductsListViewModel {
