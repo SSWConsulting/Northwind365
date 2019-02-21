@@ -2,7 +2,7 @@
 
 Northwind Traders is a sample application built using ASP.NET Core and Entity Framework Core. The architecture and design of the project is explained in the video:
 
-* [Clean Architecture with ASP.NET Core 2.1](https://youtu.be/_lwCVE_XgqI) ([slide deck](https://github.com/SSWConsulting/NorthwindTraders/raw/master/.NET%20Core%202.2%20Superpowers%20Tour.pdf))
+* [Clean Architecture with ASP.NET Core 2.1](https://tv.ssw.com/7551/clean-architecture-with-asp-net-core-2-1-jason-taylor-ddd-sydney-2018) ([slide deck](https://github.com/SSWConsulting/NorthwindTraders/raw/master/.NET%20Core%202.2%20Superpowers%20Tour.pdf))
 
 The initial construction of this project is explained in the following blog posts:
 
