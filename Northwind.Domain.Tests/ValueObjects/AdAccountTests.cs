@@ -18,7 +18,7 @@ namespace Northwind.Domain.Tests.ValueObjects
         [Fact]
         public void ShouldHaveCorrectName()
         {
-            var account = new AdAccount("SSW\\Jason");
+            var account = AdAccount.For("SSW\\Jason");
 
             account.Name.ShouldBe("Jason");
         }

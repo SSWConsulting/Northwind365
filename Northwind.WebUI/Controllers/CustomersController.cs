@@ -5,6 +5,9 @@ using Northwind.Application.Customers.Commands.DeleteCustomer;
 using Northwind.Application.Customers.Commands.UpdateCustomer;
 using Northwind.Application.Customers.Queries.GetCustomerDetail;
 using Northwind.Application.Customers.Queries.GetCustomersList;
+using Northwind.Application.Customers.Queries.GetCustomersMostPurchasedProducts;
+using Northwind.Persistence.QueryTypes;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Northwind.WebUI.Controllers

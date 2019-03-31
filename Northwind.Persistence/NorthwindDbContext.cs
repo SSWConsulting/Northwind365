@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Northwind.Domain.Entities;
 using Northwind.Persistence.Configurations;
+using Northwind.Persistence.QueryTypes;
 
 namespace Northwind.Persistence
 {
@@ -38,9 +39,8 @@ namespace Northwind.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyAllConfigurations();
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(NorthwindDbContext).Assembly);
 
-          
             modelBuilder.Query<CustomersMostPurchasedProducts>()
                 .ToQuery(() => this.Query<CustomersMostPurchasedProducts>().FromSql(@"
             select 
