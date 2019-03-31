@@ -58,11 +58,11 @@ namespace Northwind.WebUI.Controllers
 
             return NoContent();
         }
-
-
+        
         [HttpGet()]
         public async Task<ActionResult<IEnumerable<CustomersMostPurchasedProducts>>> MostPurchased(int pageIndex, int pageSize)
         {
+            // TODO: Brendan - Fix, should not expose Infrastructure type to Presentation. Create new VM type within Application layer.
             var result = await Mediator.Send(new GetCustomersMostPurchasedProductsQuery{ PageSize = pageSize, PageIndex = pageIndex });
             return Ok(result);
         }
