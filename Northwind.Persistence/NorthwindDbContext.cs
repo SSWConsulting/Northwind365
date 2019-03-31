@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Northwind.Domain.Entities;
-using Northwind.Persistence.Extensions;
-using Northwind.Persistence.QueryTypes;
+using Northwind.Persistence.Configurations;
 
 namespace Northwind.Persistence
 {

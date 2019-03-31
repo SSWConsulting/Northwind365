@@ -1,14 +1,17 @@
+using AutoMapper;
 using FluentValidation.AspNetCore;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Northwind.Application.Customers.Commands.CreateCustomer;
 using Northwind.Application.Infrastructure;
+using Northwind.Application.Infrastructure.AutoMapper;
 using Northwind.Application.Interfaces;
 using Northwind.Application.Products.Queries.GetProduct;
 using Northwind.Common;
@@ -32,6 +35,9 @@ namespace Northwind.WebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add AutoMapper
+            services.AddAutoMapper(new Assembly[] { typeof(AutoMapperProfile).GetTypeInfo().Assembly });
+
             // Add framework services.
             services.AddTransient<INotificationService, NotificationService>();
             services.AddTransient<IDateTime, MachineDateTime>();
@@ -48,7 +54,7 @@ namespace Northwind.WebUI
 
             services
                 .AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateCustomerCommandValidator>());
 
             // Customise default API behavour
@@ -84,8 +90,8 @@ namespace Northwind.WebUI
 
             app.UseSwaggerUi3(settings =>
             {
-                settings.SwaggerUiRoute = "/api";
-                settings.SwaggerRoute = "/api/specification.json";
+                settings.Path = "/api";
+                settings.DocumentPath = "/api/specification.json";
             });
 
             app.UseMvc(routes =>

@@ -8,9 +8,9 @@ namespace Northwind.Domain.Tests.ValueObjects
     public class AdAccountTests
     {
         [Fact]
-        public void ShouldHaveCorrectDomain()
+        public void ShouldHaveCorrectDomainAndName()
         {
-            var account = new AdAccount("SSW\\Jason");
+            var account = AdAccount.For("SSW\\Jason");
 
             account.Domain.ShouldBe("SSW");
         }
@@ -28,7 +28,7 @@ namespace Northwind.Domain.Tests.ValueObjects
         {
             const string value = "SSW\\Jason";
 
-            var account = new AdAccount(value);
+            var account = AdAccount.For(value);
 
             string result = account;
 
