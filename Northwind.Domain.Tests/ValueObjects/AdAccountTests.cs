@@ -8,7 +8,7 @@ namespace Northwind.Domain.Tests.ValueObjects
     public class AdAccountTests
     {
         [Fact]
-        public void ShouldHaveCorrectDomainAndName()
+        public void ShouldHaveCorrectDomain()
         {
             var account = AdAccount.For("SSW\\Jason");
 
