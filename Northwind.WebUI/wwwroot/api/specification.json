@@ -6,70 +6,6 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/api/Admin/EmployeeManagerReport": {
-      "get": {
-        "tags": [
-          "Admin"
-        ],
-        "operationId": "Admin_EmployeeManagerReport",
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "nullable": true,
-                  "items": {
-                    "$ref": "#/components/schemas/EmployeeManagerModel"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Admin/ChangeEmployeeManager": {
-      "post": {
-        "tags": [
-          "Admin"
-        ],
-        "operationId": "Admin_ChangeEmployeeManager",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChangeEmployeesManagerCommand"
-              }
-            }
-          },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "204": {
-            "description": ""
-          },
-          "default": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "nullable": true,
-                  "oneOf": [
-                    {
-                      "$ref": "#/components/schemas/ProblemDetails"
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Categories/GetCategoryPreview": {
       "get": {
         "tags": [
@@ -235,10 +171,9 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "nullable": true
+              "type": "string"
             },
-            "x-position": 1
+            "x-position": 2
           }
         ],
         "requestBody": {
@@ -251,7 +186,7 @@
             }
           },
           "required": true,
-          "x-position": 2
+          "x-position": 1
         },
         "responses": {
           "204": {
@@ -323,28 +258,34 @@
         "operationId": "Customers_MostPurchased",
         "parameters": [
           {
-            "type": "integer",
             "name": "pageIndex",
             "in": "query",
-            "format": "int32",
-            "nullable": false
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 1
           },
           {
-            "type": "integer",
             "name": "pageSize",
             "in": "query",
-            "format": "int32",
-            "nullable": false
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "x-position": 2
           }
         ],
         "responses": {
           "200": {
-            "x-nullable": true,
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
+                  "nullable": true,
                   "items": {
                     "$ref": "#/components/schemas/CustomersMostPurchasedProducts"
                   }
@@ -450,24 +391,12 @@
         }
       }
     },
-    "/api/Products/Update/{id}": {
+    "/api/Products/Update": {
       "put": {
         "tags": [
           "Products"
         ],
         "operationId": "Products_Update",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            },
-            "x-position": 1
-          }
-        ],
         "requestBody": {
           "x-name": "command",
           "content": {
@@ -478,7 +407,7 @@
             }
           },
           "required": true,
-          "x-position": 2
+          "x-position": 1
         },
         "responses": {
           "200": {
@@ -542,87 +471,6 @@
   },
   "components": {
     "schemas": {
-      "EmployeeManagerModel": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "employeeId": {
-            "type": "string",
-            "nullable": true
-          },
-          "employeeFirstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "employeeLastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "managerId": {
-            "type": "string",
-            "nullable": true
-          },
-          "employeeTitle": {
-            "type": "string",
-            "nullable": true
-          },
-          "managerFirstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "managerLastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "managerTitle": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "ProblemDetails": {
-        "type": "object",
-        "additionalProperties": {
-          "nullable": true
-        },
-        "properties": {
-          "type": {
-            "type": "string",
-            "nullable": true
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "detail": {
-            "type": "string",
-            "nullable": true
-          },
-          "instance": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "ChangeEmployeesManagerCommand": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "employeeId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "managerId": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
       "CategoryPreviewDto": {
         "type": "object",
         "additionalProperties": false,
@@ -744,6 +592,35 @@
           }
         }
       },
+      "ProblemDetails": {
+        "type": "object",
+        "additionalProperties": {
+          "nullable": true
+        },
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "CreateCustomerCommand": {
         "type": "object",
         "additionalProperties": false,
@@ -847,23 +724,22 @@
       "CustomersMostPurchasedProducts": {
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "productID",
-          "quantityPurchased"
-        ],
         "properties": {
           "customerID": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "companyName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "productID": {
             "type": "integer",
             "format": "int32"
           },
           "productName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "quantityPurchased": {
             "type": "integer",

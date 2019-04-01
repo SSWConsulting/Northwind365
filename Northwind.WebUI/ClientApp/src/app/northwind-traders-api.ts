@@ -14,125 +14,6 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpResponseBase } from '@angula
 
 export const API_BASE_URL = new InjectionToken<string>('API_BASE_URL');
 
-export interface IAdminClient {
-    employeeManagerReport(): Observable<EmployeeManagerModel[] | null>;
-    changeEmployeeManager(command: ChangeEmployeesManagerCommand): Observable<void>;
-}
-
-@Injectable()
-export class AdminClient implements IAdminClient {
-    private http: HttpClient;
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
-
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
-        this.http = http;
-        this.baseUrl = baseUrl ? baseUrl : "";
-    }
-
-    employeeManagerReport(): Observable<EmployeeManagerModel[] | null> {
-        let url_ = this.baseUrl + "/api/Admin/EmployeeManagerReport";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_ : any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processEmployeeManagerReport(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processEmployeeManagerReport(<any>response_);
-                } catch (e) {
-                    return <Observable<EmployeeManagerModel[] | null>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<EmployeeManagerModel[] | null>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processEmployeeManagerReport(response: HttpResponseBase): Observable<EmployeeManagerModel[] | null> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let result200: any = null;
-            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (resultData200 && resultData200.constructor === Array) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(EmployeeManagerModel.fromJS(item));
-            }
-            return _observableOf(result200);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<EmployeeManagerModel[] | null>(<any>null);
-    }
-
-    changeEmployeeManager(command: ChangeEmployeesManagerCommand): Observable<void> {
-        let url_ = this.baseUrl + "/api/Admin/ChangeEmployeeManager";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(command);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json", 
-            })
-        };
-
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processChangeEmployeeManager(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processChangeEmployeeManager(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processChangeEmployeeManager(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob = 
-            response instanceof HttpResponse ? response.body : 
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
-        if (status === 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            let resultdefault: any = null;
-            let resultDatadefault = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            resultdefault = resultDatadefault ? ProblemDetails.fromJS(resultDatadefault) : <any>null;
-            return throwException("A server error occurred.", status, _responseText, _headers, resultdefault);
-            }));
-        }
-    }
-}
-
 export interface ICategoriesClient {
     getCategoryPreview(categoryId: number): Observable<CategoryPreviewDto[] | null>;
 }
@@ -209,8 +90,9 @@ export interface ICustomersClient {
     getAll(): Observable<CustomersListViewModel | null>;
     get(id: string | null): Observable<CustomerDetailModel | null>;
     create(command: CreateCustomerCommand): Observable<void>;
-    update(id: string | null, command: UpdateCustomerCommand): Observable<void>;
+    update(id: string, command: UpdateCustomerCommand): Observable<void>;
     delete(id: string | null): Observable<void>;
+    mostPurchased(pageIndex: number, pageSize: number): Observable<CustomersMostPurchasedProducts[] | null>;
 }
 
 @Injectable()
@@ -380,7 +262,7 @@ export class CustomersClient implements ICustomersClient {
         }
     }
 
-    update(id: string | null, command: UpdateCustomerCommand): Observable<void> {
+    update(id: string, command: UpdateCustomerCommand): Observable<void> {
         let url_ = this.baseUrl + "/api/Customers/Update/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -491,13 +373,73 @@ export class CustomersClient implements ICustomersClient {
         }
         return _observableOf<void>(<any>null);
     }
+
+    mostPurchased(pageIndex: number, pageSize: number): Observable<CustomersMostPurchasedProducts[] | null> {
+        let url_ = this.baseUrl + "/api/Customers/MostPurchased?";
+        if (pageIndex === undefined || pageIndex === null)
+            throw new Error("The parameter 'pageIndex' must be defined and cannot be null.");
+        else
+            url_ += "pageIndex=" + encodeURIComponent("" + pageIndex) + "&"; 
+        if (pageSize === undefined || pageSize === null)
+            throw new Error("The parameter 'pageSize' must be defined and cannot be null.");
+        else
+            url_ += "pageSize=" + encodeURIComponent("" + pageSize) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processMostPurchased(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processMostPurchased(<any>response_);
+                } catch (e) {
+                    return <Observable<CustomersMostPurchasedProducts[] | null>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CustomersMostPurchasedProducts[] | null>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processMostPurchased(response: HttpResponseBase): Observable<CustomersMostPurchasedProducts[] | null> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200 && resultData200.constructor === Array) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(CustomersMostPurchasedProducts.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CustomersMostPurchasedProducts[] | null>(<any>null);
+    }
 }
 
 export interface IProductsClient {
     getAll(): Observable<ProductsListViewModel | null>;
     get(id: number): Observable<ProductViewModel | null>;
     create(command: CreateProductCommand): Observable<number>;
-    update(id: number, command: UpdateProductCommand): Observable<ProductDto | null>;
+    update(command: UpdateProductCommand): Observable<ProductDto | null>;
     delete(id: number): Observable<void>;
 }
 
@@ -663,11 +605,8 @@ export class ProductsClient implements IProductsClient {
         return _observableOf<number>(<any>null);
     }
 
-    update(id: number, command: UpdateProductCommand): Observable<ProductDto | null> {
-        let url_ = this.baseUrl + "/api/Products/Update/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id)); 
+    update(command: UpdateProductCommand): Observable<ProductDto | null> {
+        let url_ = this.baseUrl + "/api/Products/Update";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(command);
@@ -766,162 +705,6 @@ export class ProductsClient implements IProductsClient {
             }));
         }
     }
-}
-
-export class EmployeeManagerModel implements IEmployeeManagerModel {
-    employeeId?: string | undefined;
-    employeeFirstName?: string | undefined;
-    employeeLastName?: string | undefined;
-    managerId?: string | undefined;
-    employeeTitle?: string | undefined;
-    managerFirstName?: string | undefined;
-    managerLastName?: string | undefined;
-    managerTitle?: string | undefined;
-
-    constructor(data?: IEmployeeManagerModel) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.employeeId = data["employeeId"];
-            this.employeeFirstName = data["employeeFirstName"];
-            this.employeeLastName = data["employeeLastName"];
-            this.managerId = data["managerId"];
-            this.employeeTitle = data["employeeTitle"];
-            this.managerFirstName = data["managerFirstName"];
-            this.managerLastName = data["managerLastName"];
-            this.managerTitle = data["managerTitle"];
-        }
-    }
-
-    static fromJS(data: any): EmployeeManagerModel {
-        data = typeof data === 'object' ? data : {};
-        let result = new EmployeeManagerModel();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["employeeId"] = this.employeeId;
-        data["employeeFirstName"] = this.employeeFirstName;
-        data["employeeLastName"] = this.employeeLastName;
-        data["managerId"] = this.managerId;
-        data["employeeTitle"] = this.employeeTitle;
-        data["managerFirstName"] = this.managerFirstName;
-        data["managerLastName"] = this.managerLastName;
-        data["managerTitle"] = this.managerTitle;
-        return data; 
-    }
-}
-
-export interface IEmployeeManagerModel {
-    employeeId?: string | undefined;
-    employeeFirstName?: string | undefined;
-    employeeLastName?: string | undefined;
-    managerId?: string | undefined;
-    employeeTitle?: string | undefined;
-    managerFirstName?: string | undefined;
-    managerLastName?: string | undefined;
-    managerTitle?: string | undefined;
-}
-
-export class ProblemDetails implements IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
-
-    constructor(data?: IProblemDetails) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.type = data["type"];
-            this.title = data["title"];
-            this.status = data["status"];
-            this.detail = data["detail"];
-            this.instance = data["instance"];
-        }
-    }
-
-    static fromJS(data: any): ProblemDetails {
-        data = typeof data === 'object' ? data : {};
-        let result = new ProblemDetails();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["type"] = this.type;
-        data["title"] = this.title;
-        data["status"] = this.status;
-        data["detail"] = this.detail;
-        data["instance"] = this.instance;
-        return data; 
-    }
-}
-
-export interface IProblemDetails {
-    type?: string | undefined;
-    title?: string | undefined;
-    status?: number | undefined;
-    detail?: string | undefined;
-    instance?: string | undefined;
-}
-
-export class ChangeEmployeesManagerCommand implements IChangeEmployeesManagerCommand {
-    employeeId?: number;
-    managerId?: number;
-
-    constructor(data?: IChangeEmployeesManagerCommand) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.employeeId = data["employeeId"];
-            this.managerId = data["managerId"];
-        }
-    }
-
-    static fromJS(data: any): ChangeEmployeesManagerCommand {
-        data = typeof data === 'object' ? data : {};
-        let result = new ChangeEmployeesManagerCommand();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["employeeId"] = this.employeeId;
-        data["managerId"] = this.managerId;
-        return data; 
-    }
-}
-
-export interface IChangeEmployeesManagerCommand {
-    employeeId?: number;
-    managerId?: number;
 }
 
 export class CategoryPreviewDto implements ICategoryPreviewDto {
@@ -1184,6 +967,58 @@ export interface ICustomerDetailModel {
     region?: string | undefined;
 }
 
+export class ProblemDetails implements IProblemDetails {
+    type?: string | undefined;
+    title?: string | undefined;
+    status?: number | undefined;
+    detail?: string | undefined;
+    instance?: string | undefined;
+
+    constructor(data?: IProblemDetails) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.type = data["type"];
+            this.title = data["title"];
+            this.status = data["status"];
+            this.detail = data["detail"];
+            this.instance = data["instance"];
+        }
+    }
+
+    static fromJS(data: any): ProblemDetails {
+        data = typeof data === 'object' ? data : {};
+        let result = new ProblemDetails();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["type"] = this.type;
+        data["title"] = this.title;
+        data["status"] = this.status;
+        data["detail"] = this.detail;
+        data["instance"] = this.instance;
+        return data; 
+    }
+}
+
+export interface IProblemDetails {
+    type?: string | undefined;
+    title?: string | undefined;
+    status?: number | undefined;
+    detail?: string | undefined;
+    instance?: string | undefined;
+}
+
 export class CreateCustomerCommand implements ICreateCustomerCommand {
     id?: string | undefined;
     address?: string | undefined;
@@ -1334,6 +1169,58 @@ export interface IUpdateCustomerCommand {
     phone?: string | undefined;
     postalCode?: string | undefined;
     region?: string | undefined;
+}
+
+export class CustomersMostPurchasedProducts implements ICustomersMostPurchasedProducts {
+    customerID?: string | undefined;
+    companyName?: string | undefined;
+    productID?: number;
+    productName?: string | undefined;
+    quantityPurchased?: number;
+
+    constructor(data?: ICustomersMostPurchasedProducts) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.customerID = data["customerID"];
+            this.companyName = data["companyName"];
+            this.productID = data["productID"];
+            this.productName = data["productName"];
+            this.quantityPurchased = data["quantityPurchased"];
+        }
+    }
+
+    static fromJS(data: any): CustomersMostPurchasedProducts {
+        data = typeof data === 'object' ? data : {};
+        let result = new CustomersMostPurchasedProducts();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["customerID"] = this.customerID;
+        data["companyName"] = this.companyName;
+        data["productID"] = this.productID;
+        data["productName"] = this.productName;
+        data["quantityPurchased"] = this.quantityPurchased;
+        return data; 
+    }
+}
+
+export interface ICustomersMostPurchasedProducts {
+    customerID?: string | undefined;
+    companyName?: string | undefined;
+    productID?: number;
+    productName?: string | undefined;
+    quantityPurchased?: number;
 }
 
 export class ProductsListViewModel implements IProductsListViewModel {
