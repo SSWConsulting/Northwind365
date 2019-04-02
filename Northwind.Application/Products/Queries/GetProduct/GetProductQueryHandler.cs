@@ -12,19 +12,18 @@ namespace Northwind.Application.Products.Queries.GetProduct
     public class GetProductQueryHandler : MediatR.IRequestHandler<GetProductQuery, ProductViewModel>
     {
         private readonly NorthwindDbContext _context;
-        private readonly IMapper _mapper;
 
-        public GetProductQueryHandler(NorthwindDbContext context, IMapper mapper)
+        public GetProductQueryHandler(NorthwindDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         public async Task<ProductViewModel> Handle(GetProductQuery request, CancellationToken cancellationToken)
         {
-            var product = _mapper.Map<ProductViewModel>(await _context
-                .Products.Where(p => p.ProductId == request.Id)
-                .SingleOrDefaultAsync(cancellationToken));
+            var product = await _context.Products
+                .Where(p => p.ProductId == request.Id)
+                .Select(ProductViewModel.Projection)
+                .SingleOrDefaultAsync(cancellationToken);
 
             if (product == null)
             {

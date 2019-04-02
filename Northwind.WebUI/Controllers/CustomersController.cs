@@ -66,7 +66,5 @@ namespace Northwind.WebUI.Controllers
             var result = await Mediator.Send(new GetCustomersMostPurchasedProductsQuery{ PageSize = pageSize, PageIndex = pageIndex });
             return Ok(result);
         }
-
-
     }
 }

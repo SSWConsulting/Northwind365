@@ -19,10 +19,7 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />  
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="2.2.0" />
     <PackageReference Include="NSwag.AspNetCore" Version="12.0.17" />
-    <PackageReference Include="NSwag.MSBuild" Version="12.0.17">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
+    <PackageReference Include="NSwag.MSBuild" Version="12.0.17" />
     <PackageReference Include="Seq.Extensions.Logging" Version="4.0.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.1.3" />
   </ItemGroup>
