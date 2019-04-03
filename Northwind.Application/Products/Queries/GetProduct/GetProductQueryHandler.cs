@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Northwind.Application.Exceptions;
 using Northwind.Domain.Entities;
 using Northwind.Persistence;

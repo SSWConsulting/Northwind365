@@ -15,7 +15,7 @@ namespace Northwind.Application.Tests.Products.Queries
     public class GetProductQueryTests
     {
         [Fact]
-        public async Task Handle_GivenValidId_ReturnsCorrectProduct()
+        public void Handle_GivenValidId_ReturnsCorrectProduct()
         {
         }
     }

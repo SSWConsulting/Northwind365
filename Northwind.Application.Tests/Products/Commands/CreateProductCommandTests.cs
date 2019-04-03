@@ -14,8 +14,8 @@ namespace Northwind.Application.Tests.Products.Commands
     public class CreateProductCommandTests
     {
         [Fact]
-        public async Task Handle_GivenValidCommand_InsertsNewProduct()
+        public void Handle_GivenValidCommand_InsertsNewProduct()
         {
         }
-    }
+    } 
 }
