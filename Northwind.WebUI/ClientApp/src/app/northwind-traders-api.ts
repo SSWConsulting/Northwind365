@@ -92,7 +92,7 @@ export interface ICustomersClient {
     create(command: CreateCustomerCommand): Observable<void>;
     update(id: string, command: UpdateCustomerCommand): Observable<void>;
     delete(id: string | null): Observable<void>;
-    mostPurchased(pageIndex: number, pageSize: number): Observable<CustomersMostPurchasedProducts[] | null>;
+    mostPurchased(pageIndex: number, pageSize: number): Observable<CustomersMostPurchasedViewModel[] | null>;
 }
 
 @Injectable()
@@ -374,7 +374,7 @@ export class CustomersClient implements ICustomersClient {
         return _observableOf<void>(<any>null);
     }
 
-    mostPurchased(pageIndex: number, pageSize: number): Observable<CustomersMostPurchasedProducts[] | null> {
+    mostPurchased(pageIndex: number, pageSize: number): Observable<CustomersMostPurchasedViewModel[] | null> {
         let url_ = this.baseUrl + "/api/Customers/MostPurchased?";
         if (pageIndex === undefined || pageIndex === null)
             throw new Error("The parameter 'pageIndex' must be defined and cannot be null.");
@@ -401,14 +401,14 @@ export class CustomersClient implements ICustomersClient {
                 try {
                     return this.processMostPurchased(<any>response_);
                 } catch (e) {
-                    return <Observable<CustomersMostPurchasedProducts[] | null>><any>_observableThrow(e);
+                    return <Observable<CustomersMostPurchasedViewModel[] | null>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<CustomersMostPurchasedProducts[] | null>><any>_observableThrow(response_);
+                return <Observable<CustomersMostPurchasedViewModel[] | null>><any>_observableThrow(response_);
         }));
     }
 
-    protected processMostPurchased(response: HttpResponseBase): Observable<CustomersMostPurchasedProducts[] | null> {
+    protected processMostPurchased(response: HttpResponseBase): Observable<CustomersMostPurchasedViewModel[] | null> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -422,7 +422,7 @@ export class CustomersClient implements ICustomersClient {
             if (resultData200 && resultData200.constructor === Array) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(CustomersMostPurchasedProducts.fromJS(item));
+                    result200!.push(CustomersMostPurchasedViewModel.fromJS(item));
             }
             return _observableOf(result200);
             }));
@@ -431,7 +431,7 @@ export class CustomersClient implements ICustomersClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<CustomersMostPurchasedProducts[] | null>(<any>null);
+        return _observableOf<CustomersMostPurchasedViewModel[] | null>(<any>null);
     }
 }
 
@@ -1171,14 +1171,14 @@ export interface IUpdateCustomerCommand {
     region?: string | undefined;
 }
 
-export class CustomersMostPurchasedProducts implements ICustomersMostPurchasedProducts {
-    customerID?: string | undefined;
+export class CustomersMostPurchasedViewModel implements ICustomersMostPurchasedViewModel {
+    customerId?: string | undefined;
     companyName?: string | undefined;
-    productID?: number;
+    productId?: number;
     productName?: string | undefined;
     quantityPurchased?: number;
 
-    constructor(data?: ICustomersMostPurchasedProducts) {
+    constructor(data?: ICustomersMostPurchasedViewModel) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -1189,36 +1189,36 @@ export class CustomersMostPurchasedProducts implements ICustomersMostPurchasedPr
 
     init(data?: any) {
         if (data) {
-            this.customerID = data["customerID"];
+            this.customerId = data["customerId"];
             this.companyName = data["companyName"];
-            this.productID = data["productID"];
+            this.productId = data["productId"];
             this.productName = data["productName"];
             this.quantityPurchased = data["quantityPurchased"];
         }
     }
 
-    static fromJS(data: any): CustomersMostPurchasedProducts {
+    static fromJS(data: any): CustomersMostPurchasedViewModel {
         data = typeof data === 'object' ? data : {};
-        let result = new CustomersMostPurchasedProducts();
+        let result = new CustomersMostPurchasedViewModel();
         result.init(data);
         return result;
     }
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["customerID"] = this.customerID;
+        data["customerId"] = this.customerId;
         data["companyName"] = this.companyName;
-        data["productID"] = this.productID;
+        data["productId"] = this.productId;
         data["productName"] = this.productName;
         data["quantityPurchased"] = this.quantityPurchased;
         return data; 
     }
 }
 
-export interface ICustomersMostPurchasedProducts {
-    customerID?: string | undefined;
+export interface ICustomersMostPurchasedViewModel {
+    customerId?: string | undefined;
     companyName?: string | undefined;
-    productID?: number;
+    productId?: number;
     productName?: string | undefined;
     quantityPurchased?: number;
 }

@@ -1,18 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Northwind.Application.Exceptions;
 using Northwind.Domain.Entities;
-using Northwind.Persistence;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Northwind.Application.Interfaces;
 
 namespace Northwind.Application.Products.Queries.GetProduct
 {
     public class GetProductQueryHandler : MediatR.IRequestHandler<GetProductQuery, ProductViewModel>
     {
-        private readonly NorthwindDbContext _context;
+        private readonly INorthwindDbContext _context;
 
-        public GetProductQueryHandler(NorthwindDbContext context)
+        public GetProductQueryHandler(INorthwindDbContext context)
         {
             _context = context;
         }

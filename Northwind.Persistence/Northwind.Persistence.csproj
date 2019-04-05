@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Northwind.Application\Northwind.Application.csproj" />
     <ProjectReference Include="..\Northwind.Domain\Northwind.Domain.csproj" />
   </ItemGroup>
 

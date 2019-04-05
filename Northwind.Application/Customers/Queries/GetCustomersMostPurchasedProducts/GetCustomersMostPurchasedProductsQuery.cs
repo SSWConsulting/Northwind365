@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Northwind.Persistence;
-using Northwind.Persistence.QueryTypes;
+using Northwind.Application.Interfaces;
+using Northwind.Domain.Models;
 
 namespace Northwind.Application.Customers.Queries.GetCustomersMostPurchasedProducts
 {
@@ -20,9 +18,9 @@ namespace Northwind.Application.Customers.Queries.GetCustomersMostPurchasedProdu
 
     public class GetCustomersMostPurchasedProductQueryHandler : IRequestHandler<GetCustomersMostPurchasedProductsQuery, IEnumerable<CustomersMostPurchasedViewModel>>
     {
-        private readonly NorthwindDbContext _context;
+        private readonly INorthwindDbContext _context;
 
-        public GetCustomersMostPurchasedProductQueryHandler(NorthwindDbContext context)
+        public GetCustomersMostPurchasedProductQueryHandler(INorthwindDbContext context)
         {
             _context = context;
         }
@@ -33,7 +31,7 @@ namespace Northwind.Application.Customers.Queries.GetCustomersMostPurchasedProdu
                 .OrderByDescending(c => c.QuantityPurchased)
                 .Skip(request.PageIndex * request.PageSize)
                 .Take(request.PageSize)
-                .Select(r => new CustomersMostPurchasedViewModel()
+                .Select(r => new CustomersMostPurchasedViewModel
                 {
                     CompanyName = r.CompanyName,
                     CustomerId = r.CustomerID,

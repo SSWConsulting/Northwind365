@@ -18,7 +18,6 @@ using Northwind.Common;
 using Northwind.Infrastructure;
 using Northwind.Persistence;
 using Northwind.WebUI.Filters;
-using NSwag.AspNetCore;
 using System.Reflection;
 
 namespace Northwind.WebUI
@@ -43,15 +42,14 @@ namespace Northwind.WebUI
             services.AddTransient<IDateTime, MachineDateTime>();
 
             // Add MediatR
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddMediatR(typeof(GetProductQueryHandler).GetTypeInfo().Assembly);
 
             // Add DbContext using SQL Server Provider
-            services.AddDbContext<NorthwindDbContext>(options =>
+            services.AddDbContext<INorthwindDbContext, NorthwindDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("NorthwindDatabase")));
-
+            
             services
                 .AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)

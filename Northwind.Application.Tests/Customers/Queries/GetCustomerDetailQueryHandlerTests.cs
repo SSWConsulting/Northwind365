@@ -1,9 +1,9 @@
 ﻿using Northwind.Application.Customers.Queries.GetCustomerDetail;
 using Northwind.Application.Tests.Infrastructure;
-using Northwind.Persistence;
 using Shouldly;
 using System.Threading;
 using System.Threading.Tasks;
+using Northwind.Application.Interfaces;
 using Xunit;
 
 namespace Northwind.Application.Tests.Customers.Queries
@@ -11,7 +11,7 @@ namespace Northwind.Application.Tests.Customers.Queries
     [Collection("QueryCollection")]
     public class GetCustomerDetailQueryHandlerTests
     { 
-        private readonly NorthwindDbContext _context;
+        private readonly INorthwindDbContext _context;
 
         public GetCustomerDetailQueryHandlerTests(QueryTestFixture fixture)
         {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Northwind.Application.Customers.Queries.GetCustomersMostPurchasedProducts
+﻿namespace Northwind.Application.Customers.Queries.GetCustomersMostPurchasedProducts
 {
     public class CustomersMostPurchasedViewModel
     {

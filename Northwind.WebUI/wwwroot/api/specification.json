@@ -287,7 +287,7 @@
                   "type": "array",
                   "nullable": true,
                   "items": {
-                    "$ref": "#/components/schemas/CustomersMostPurchasedProducts"
+                    "$ref": "#/components/schemas/CustomersMostPurchasedViewModel"
                   }
                 }
               }
@@ -721,11 +721,11 @@
           }
         }
       },
-      "CustomersMostPurchasedProducts": {
+      "CustomersMostPurchasedViewModel": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "customerID": {
+          "customerId": {
             "type": "string",
             "nullable": true
           },
@@ -733,7 +733,7 @@
             "type": "string",
             "nullable": true
           },
-          "productID": {
+          "productId": {
             "type": "integer",
             "format": "int32"
           },

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Northwind.Application.Customers.Commands.CreateCustomer;
@@ -5,10 +6,8 @@ using Northwind.Application.Customers.Commands.DeleteCustomer;
 using Northwind.Application.Customers.Commands.UpdateCustomer;
 using Northwind.Application.Customers.Queries.GetCustomerDetail;
 using Northwind.Application.Customers.Queries.GetCustomersList;
-using Northwind.Application.Customers.Queries.GetCustomersMostPurchasedProducts;
-using Northwind.Persistence.QueryTypes;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using Northwind.Application.Customers.Queries.GetCustomersMostPurchasedProducts;
 
 namespace Northwind.WebUI.Controllers
 {
@@ -58,12 +57,12 @@ namespace Northwind.WebUI.Controllers
 
             return NoContent();
         }
-        
-        [HttpGet()]
-        public async Task<ActionResult<IEnumerable<CustomersMostPurchasedProducts>>> MostPurchased(int pageIndex, int pageSize)
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CustomersMostPurchasedViewModel>>> MostPurchased(int pageIndex, int pageSize)
         {
-            // TODO: Brendan - Fix, should not expose Infrastructure type to Presentation. Create new VM type within Application layer.
-            var result = await Mediator.Send(new GetCustomersMostPurchasedProductsQuery{ PageSize = pageSize, PageIndex = pageIndex });
+            var result = await Mediator.Send(new GetCustomersMostPurchasedProductsQuery { PageSize = pageSize, PageIndex = pageIndex });
+
             return Ok(result);
         }
     }
