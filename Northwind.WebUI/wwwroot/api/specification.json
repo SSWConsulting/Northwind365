@@ -296,6 +296,31 @@
         }
       }
     },
+    "/api/Employees/GetAll": {
+      "get": {
+        "tags": [
+          "Employees"
+        ],
+        "operationId": "Employees_GetAll",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true,
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/EmployeeListVm"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Products/GetAll": {
       "get": {
         "tags": [
@@ -744,6 +769,41 @@
           "quantityPurchased": {
             "type": "integer",
             "format": "int32"
+          }
+        }
+      },
+      "EmployeeListVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "employees": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EmployeeListItem"
+            }
+          }
+        }
+      },
+      "EmployeeListItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "position": {
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
+            "type": "string",
+            "nullable": true
           }
         }
       },

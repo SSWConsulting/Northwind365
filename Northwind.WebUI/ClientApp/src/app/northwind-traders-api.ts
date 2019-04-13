@@ -435,6 +435,70 @@ export class CustomersClient implements ICustomersClient {
     }
 }
 
+export interface IEmployeesClient {
+    getAll(): Observable<EmployeeListVm | null>;
+}
+
+@Injectable()
+export class EmployeesClient implements IEmployeesClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    getAll(): Observable<EmployeeListVm | null> {
+        let url_ = this.baseUrl + "/api/Employees/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAll(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAll(<any>response_);
+                } catch (e) {
+                    return <Observable<EmployeeListVm | null>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<EmployeeListVm | null>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAll(response: HttpResponseBase): Observable<EmployeeListVm | null> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = resultData200 ? EmployeeListVm.fromJS(resultData200) : <any>null;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<EmployeeListVm | null>(<any>null);
+    }
+}
+
 export interface IProductsClient {
     getAll(): Observable<ProductsListViewModel | null>;
     get(id: number): Observable<ProductViewModel | null>;
@@ -1221,6 +1285,98 @@ export interface ICustomersMostPurchasedViewModel {
     productId?: number;
     productName?: string | undefined;
     quantityPurchased?: number;
+}
+
+export class EmployeeListVm implements IEmployeeListVm {
+    employees?: EmployeeListItem[] | undefined;
+
+    constructor(data?: IEmployeeListVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (data["employees"] && data["employees"].constructor === Array) {
+                this.employees = [] as any;
+                for (let item of data["employees"])
+                    this.employees!.push(EmployeeListItem.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): EmployeeListVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeListVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.employees && this.employees.constructor === Array) {
+            data["employees"] = [];
+            for (let item of this.employees)
+                data["employees"].push(item.toJSON());
+        }
+        return data; 
+    }
+}
+
+export interface IEmployeeListVm {
+    employees?: EmployeeListItem[] | undefined;
+}
+
+export class EmployeeListItem implements IEmployeeListItem {
+    id?: number;
+    name?: string | undefined;
+    position?: string | undefined;
+    location?: string | undefined;
+
+    constructor(data?: IEmployeeListItem) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.id = data["id"];
+            this.name = data["name"];
+            this.position = data["position"];
+            this.location = data["location"];
+        }
+    }
+
+    static fromJS(data: any): EmployeeListItem {
+        data = typeof data === 'object' ? data : {};
+        let result = new EmployeeListItem();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["position"] = this.position;
+        data["location"] = this.location;
+        return data; 
+    }
+}
+
+export interface IEmployeeListItem {
+    id?: number;
+    name?: string | undefined;
+    position?: string | undefined;
+    location?: string | undefined;
 }
 
 export class ProductsListViewModel implements IProductsListViewModel {
