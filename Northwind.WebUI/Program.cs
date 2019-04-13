@@ -6,6 +6,7 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Northwind.Persistence;
+using Northwind.Application.Interfaces;
 
 namespace Northwind.WebUI
 {
@@ -19,10 +20,13 @@ namespace Northwind.WebUI
             {
                 try
                 {
-                    var context = scope.ServiceProvider.GetService<NorthwindDbContext>();
-                    context.Database.Migrate();
+                    var context = scope.ServiceProvider.GetService<INorthwindDbContext>();
+                    
+                    var concreteContext = (NorthwindDbContext)context;
 
-                    NorthwindInitializer.Initialize(context);
+                    concreteContext.Database.Migrate();
+
+                    NorthwindInitializer.Initialize(concreteContext);
                 }
                 catch (Exception ex)
                 {
