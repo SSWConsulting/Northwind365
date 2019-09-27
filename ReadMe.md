@@ -1,8 +1,10 @@
+[![Build Status](https://codingflow.visualstudio.com/NorthwindTraders/_apis/build/status/NorthwindTraders%20-%20CI?branchName=master)](https://codingflow.visualstudio.com/NorthwindTraders/_build/latest?definitionId=22&branchName=master)
+
 # NorthwindTraders
 
 Northwind Traders is a sample application built using ASP.NET Core and Entity Framework Core. The architecture and design of the project is explained in the video:
 
-* [Clean Architecture with ASP.NET Core 2.1](https://tv.ssw.com/7551/clean-architecture-with-asp-net-core-2-1-jason-taylor-ddd-sydney-2018) ([slide deck](https://github.com/SSWConsulting/NorthwindTraders/raw/master/Slides.pdf))
+* [Clean Architecture with ASP.NET Core 2.1](https://youtu.be/_lwCVE_XgqI) ([slide deck](https://github.com/JasonGT/NorthwindTraders/raw/master/Slides.pdf))
 
 The initial construction of this project is explained in the following blog posts:
 
@@ -10,43 +12,47 @@ The initial construction of this project is explained in the following blog post
 * [Create Northwind Traders Code First with Entity Framework Core – Part 1](http://www.codingflow.net/create-northwind-traders-code-first-with-entity-framework-core-part-1/)
 * [Create Northwind Traders Code First with Entity Framework Core – Part 2](http://www.codingflow.net/create-northwind-traders-code-first-with-entity-framework-core-part-2/)
 
+For information on upcoming features and fixes, take a look at the [product roadmap](https://github.com/JasonGT/NorthwindTraders/wiki/Roadmap).
+
 ## Getting Started
 Use these instructions to get the project up and running.
 
 ### Prerequisites
 You will need the following tools:
 
-* [Visual Studio Code or 2017](https://www.visualstudio.com/downloads/)
-* [.NET Core SDK 2.2](https://www.microsoft.com/net/download/dotnet-core/2.2)
+* [Visual Studio Code or Visual Studio 2019](https://visualstudio.microsoft.com/vs/) (version 16.3 or later)
+* [.NET Core SDK 3](https://dotnet.microsoft.com/download/dotnet-core/3.0)
+ * [Node.js](https://nodejs.org/en/) (version 10 or later) with npm (version 6.11.3 or later)
 
 ### Setup
 Follow these steps to get your development environment set up:
 
   1. Clone the repository
   2. At the root directory, restore required packages by running:
-     ```
+      ```
      dotnet restore
      ```
   3. Next, build the solution by running:
      ```
      dotnet build
      ```
-  4. Next, within the `Northwind.WebUI\ClientApp` directory, launch the front end by running:
-     ```
+  4. Next, within the `\Src\WebUI\ClientApp` directory, launch the front end by running:
+      ```
      npm start
      ```
-  5. Once the front end has started, within the `Northwind.WebUI` directory, launch the back end by running:
+  5. Once the front end has started, within the `\Src\WebUI` directory, launch the back end by running:
      ```
 	 dotnet run
 	 ```
-  5. Launch [http://localhost:52468/](http://localhost:52468/) in your browser to view the Web UI
+  5. Launch [https://localhost:44376/](http://localhost:44376/) in your browser to view the Web UI
   
-  6. Launch [http://localhost:52468/api](http://localhost:52468/api) in your browser to view the API
+  6. Launch [https://localhost:44376/api](http://localhost:44376/api) in your browser to view the API
 
 ## Technologies
-* .NET Core 2.2
-* ASP.NET Core 2.2
-* Entity Framework Core 2.2
+* .NET Core 3
+* ASP.NET Core 3
+* Entity Framework Core 3
+* Angular 8
 
 ## License
 
