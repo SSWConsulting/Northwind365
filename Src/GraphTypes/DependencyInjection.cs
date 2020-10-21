@@ -12,6 +12,8 @@ namespace GraphTypes
         {
             services.AddTransient<CustomerType>();
             services.AddTransient<CustomerQuery>();
+            services.AddTransient<OrderType>();
+            services.AddTransient<OrderQuery>();
             services.AddTransient<RootQuery>();
 
             services.AddTransient<ISchema, RootSchema>();
