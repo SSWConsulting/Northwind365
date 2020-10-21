@@ -13,6 +13,10 @@ using Northwind.Application;
 using Northwind.Application.Common.Interfaces;
 using Northwind.WebUI.Common;
 using Northwind.WebUI.Services;
+using GraphTypes;
+using GraphQL.Server;
+using GraphQL.Types;
+using GraphiQl;
 
 namespace Northwind.WebUI
 {
@@ -35,6 +39,7 @@ namespace Northwind.WebUI
             services.AddInfrastructure(Configuration, Environment);
             services.AddPersistence(Configuration);
             services.AddApplication();
+            services.AddGraphTypes();
 
             services.AddHealthChecks()
                 .AddDbContextCheck<NorthwindDbContext>();
@@ -66,6 +71,11 @@ namespace Northwind.WebUI
             {
                 configure.Title = "Northwind Traders API";
             });
+
+            services.AddGraphQL(options =>
+            {
+                options.EnableMetrics = false;
+            }).AddSystemTextJson();
 
             _services = services;
         }
@@ -99,6 +109,9 @@ namespace Northwind.WebUI
                 settings.Path = "/api";
                 //    settings.DocumentPath = "/api/specification.json";   Enable when NSwag.MSBuild is upgraded to .NET Core 3.0
             });
+
+            app.UseGraphiQl("/graphql");
+            app.UseGraphQL<ISchema>();
 
             app.UseRouting();
 
