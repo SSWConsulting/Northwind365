@@ -52,6 +52,9 @@ Follow these steps to get your development environment set up:
 * Entity Framework Core 3
 * Angular 8
 
+## Marketing
+Marketing site can be found at [northwind365.com](https://northwind365.com/) which is deployed from [Northwind365.Website](https://github.com/SSWConsulting/Northwind365.Website).
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/JasonGT/NorthwindTraders/blob/master/LICENSE.md) file for details.
