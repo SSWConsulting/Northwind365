@@ -21,13 +21,11 @@ namespace Northwind.Application.System.Commands.SeedSampleData
             _userManager = userManager;
         }
 
-        public async Task<Unit> Handle(SeedSampleDataCommand request, CancellationToken cancellationToken)
+        public async Task Handle(SeedSampleDataCommand request, CancellationToken cancellationToken)
         {
             var seeder = new SampleDataSeeder(_context, _userManager);
 
             await seeder.SeedAllAsync(cancellationToken);
-
-            return Unit.Value;
         }
     }
 }

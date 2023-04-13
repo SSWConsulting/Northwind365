@@ -31,7 +31,7 @@ namespace Northwind.Application.Customers.Commands.UpdateCustomer
                 _context = context;
             }
 
-            public async Task<Unit> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
+            public async Task Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
             {
                 var entity = await _context.Customers
                     .SingleOrDefaultAsync(c => c.CustomerId == request.Id, cancellationToken);
@@ -52,8 +52,6 @@ namespace Northwind.Application.Customers.Commands.UpdateCustomer
                 entity.PostalCode = request.PostalCode;
 
                 await _context.SaveChangesAsync(cancellationToken);
-
-                return Unit.Value;
             }
         }
     }

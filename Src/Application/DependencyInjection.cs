@@ -10,10 +10,17 @@ namespace Northwind.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+            var thisAssembly = typeof(DependencyInjection).Assembly;
+            services.AddAutoMapper(thisAssembly);
+            services.AddMediatR(config =>
+            {
+                config.RegisterServicesFromAssembly(thisAssembly);
+                config.AddOpenBehavior(typeof(UnhandledExceptionBehavior<,>));
+                config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+                config.AddOpenBehavior(typeof(PerformanceBehavior<,>));
+            });
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
             return services;
         }

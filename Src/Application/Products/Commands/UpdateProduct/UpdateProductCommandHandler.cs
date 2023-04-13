@@ -16,7 +16,7 @@ namespace Northwind.Application.Products.Commands.UpdateProduct
             _context = context;
         }
 
-        public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
             var entity = await _context.Products.FindAsync(request.ProductId);
 
@@ -33,8 +33,6 @@ namespace Northwind.Application.Products.Commands.UpdateProduct
             entity.Discontinued = request.Discontinued;
 
             await _context.SaveChangesAsync(cancellationToken);
-
-            return Unit.Value;
         }
     }
 }
