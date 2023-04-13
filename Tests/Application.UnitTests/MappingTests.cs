@@ -9,89 +9,88 @@ using Northwind.Domain.Entities;
 using Shouldly;
 using Xunit;
 
-namespace Northwind.Application.UnitTests
+namespace Northwind.Application.UnitTests;
+
+public class MappingTests : IClassFixture<MappingTestsFixture>
 {
-    public class MappingTests : IClassFixture<MappingTestsFixture>
+    private readonly IConfigurationProvider _configuration;
+    private readonly IMapper _mapper;
+
+    public MappingTests(MappingTestsFixture fixture)
     {
-        private readonly IConfigurationProvider _configuration;
-        private readonly IMapper _mapper;
+        _configuration = fixture.ConfigurationProvider;
+        _mapper = fixture.Mapper;
+    }
 
-        public MappingTests(MappingTestsFixture fixture)
-        {
-            _configuration = fixture.ConfigurationProvider;
-            _mapper = fixture.Mapper;
-        }
+    [Fact]
+    public void ShouldHaveValidConfiguration()
+    {
+        _configuration.AssertConfigurationIsValid();
+    }
 
-        [Fact]
-        public void ShouldHaveValidConfiguration()
-        {
-            _configuration.AssertConfigurationIsValid();
-        }
+    [Fact]
+    public void ShouldMapCategoryToCategoryLookupDto()
+    {
+        var entity = new Category();
 
-        [Fact]
-        public void ShouldMapCategoryToCategoryLookupDto()
-        {
-            var entity = new Category();
+        var result = _mapper.Map<CategoryLookupDto>(entity);
 
-            var result = _mapper.Map<CategoryLookupDto>(entity);
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<CategoryLookupDto>();
+    }
 
-            result.ShouldNotBeNull();
-            result.ShouldBeOfType<CategoryLookupDto>();
-        }
+    [Fact]
+    public void ShouldMapCustomerToCustomerLookupDto()
+    {
+        var entity = new Customer();
 
-        [Fact]
-        public void ShouldMapCustomerToCustomerLookupDto()
-        {
-            var entity = new Customer();
+        var result = _mapper.Map<CustomerLookupDto>(entity);
 
-            var result = _mapper.Map<CustomerLookupDto>(entity);
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<CustomerLookupDto>();
+    }
 
-            result.ShouldNotBeNull();
-            result.ShouldBeOfType<CustomerLookupDto>();
-        }
+    [Fact]
+    public void ShouldMapProductToProductDetailVm()
+    {
+        var entity = new Product();
 
-        [Fact]
-        public void ShouldMapProductToProductDetailVm()
-        {
-            var entity = new Product();
+        var result = _mapper.Map<ProductDetailVm>(entity);
 
-            var result = _mapper.Map<ProductDetailVm>(entity);
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<ProductDetailVm>();
+    }
 
-            result.ShouldNotBeNull();
-            result.ShouldBeOfType<ProductDetailVm>();
-        }
+    [Fact]
+    public void ShouldMapProductToProductDto()
+    {
+        var entity = new Product();
 
-        [Fact]
-        public void ShouldMapProductToProductDto()
-        {
-            var entity = new Product();
+        var result = _mapper.Map<ProductDto>(entity);
 
-            var result = _mapper.Map<ProductDto>(entity);
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<ProductDto>();
+    }
 
-            result.ShouldNotBeNull();
-            result.ShouldBeOfType<ProductDto>();
-        }
+    [Fact]
+    public void ShouldMapProductToProductRecordDto()
+    {
+        var entity = new Product();
 
-        [Fact]
-        public void ShouldMapProductToProductRecordDto()
-        {
-            var entity = new Product();
+        var result = _mapper.Map<ProductRecordDto>(entity);
 
-            var result = _mapper.Map<ProductRecordDto>(entity);
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<ProductRecordDto>();
+    }
 
-            result.ShouldNotBeNull();
-            result.ShouldBeOfType<ProductRecordDto>();
-        }
+    [Fact]
+    public void ShouldMapCustomerToCustomerDetailVm()
+    {
+        var entity = new Customer();
 
-        [Fact]
-        public void ShouldMapCustomerToCustomerDetailVm()
-        {
-            var entity = new Customer();
+        var result = _mapper.Map<CustomerDetailVm>(entity);
 
-            var result = _mapper.Map<CustomerDetailVm>(entity);
-
-            result.ShouldNotBeNull();
-            result.ShouldBeOfType<CustomerDetailVm>();
-        }
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<CustomerDetailVm>();
     }
 }

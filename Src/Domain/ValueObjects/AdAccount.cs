@@ -3,55 +3,54 @@ using System.Collections.Generic;
 using Northwind.Domain.Exceptions;
 using Northwind.Domain.Common;
 
-namespace Northwind.Domain.ValueObjects
+namespace Northwind.Domain.ValueObjects;
+
+public class AdAccount : ValueObject
 {
-    public class AdAccount : ValueObject
+    private AdAccount()
     {
-        private AdAccount()
+    }
+
+    public static AdAccount For(string accountString)
+    {
+        var account = new AdAccount();
+
+        try
         {
+            var index = accountString.IndexOf("\\", StringComparison.Ordinal);
+            account.Domain = accountString.Substring(0, index);
+            account.Name = accountString.Substring(index + 1);
+        }
+        catch (Exception ex)
+        {
+            throw new AdAccountInvalidException(accountString, ex);
         }
 
-        public static AdAccount For(string accountString)
-        {
-            var account = new AdAccount();
+        return account;
+    }
 
-            try
-            {
-                var index = accountString.IndexOf("\\", StringComparison.Ordinal);
-                account.Domain = accountString.Substring(0, index);
-                account.Name = accountString.Substring(index + 1);
-            }
-            catch (Exception ex)
-            {
-                throw new AdAccountInvalidException(accountString, ex);
-            }
+    public string Domain { get; private set; }
 
-            return account;
-        }
+    public string Name { get; private set; }
 
-        public string Domain { get; private set; }
+    public static implicit operator string(AdAccount account)
+    {
+        return account.ToString();
+    }
 
-        public string Name { get; private set; }
+    public static explicit operator AdAccount(string accountString)
+    {
+        return For(accountString);
+    }
 
-        public static implicit operator string(AdAccount account)
-        {
-            return account.ToString();
-        }
+    public override string ToString()
+    {
+        return $"{Domain}\\{Name}";
+    }
 
-        public static explicit operator AdAccount(string accountString)
-        {
-            return For(accountString);
-        }
-
-        public override string ToString()
-        {
-            return $"{Domain}\\{Name}";
-        }
-
-        protected override IEnumerable<object> GetAtomicValues()
-        {
-            yield return Domain;
-            yield return Name;
-        }
+    protected override IEnumerable<object> GetAtomicValues()
+    {
+        yield return Domain;
+        yield return Name;
     }
 }

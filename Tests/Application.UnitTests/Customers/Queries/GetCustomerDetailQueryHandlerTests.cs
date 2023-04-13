@@ -7,29 +7,28 @@ using Northwind.Application.UnitTests.Common;
 using Xunit;
 using AutoMapper;
 
-namespace Northwind.Application.UnitTests.Customers.Queries
-{
-    [Collection("QueryCollection")]
-    public class GetCustomerDetailQueryHandlerTests
-    { 
-        private readonly NorthwindDbContext _context;
-        private readonly IMapper _mapper;
+namespace Northwind.Application.UnitTests.Customers.Queries;
 
-        public GetCustomerDetailQueryHandlerTests(QueryTestFixture fixture)
-        {
-            _context = fixture.Context;
-            _mapper = fixture.Mapper;
-        }    
+[Collection("QueryCollection")]
+public class GetCustomerDetailQueryHandlerTests
+{ 
+    private readonly NorthwindDbContext _context;
+    private readonly IMapper _mapper;
 
-        [Fact]
-        public async Task GetCustomerDetail()
-        {
-            var sut = new GetCustomerDetailQueryHandler(_context, _mapper);
+    public GetCustomerDetailQueryHandlerTests(QueryTestFixture fixture)
+    {
+        _context = fixture.Context;
+        _mapper = fixture.Mapper;
+    }    
 
-            var result = await sut.Handle(new GetCustomerDetailQuery { Id = "JASON" }, CancellationToken.None);
+    [Fact]
+    public async Task GetCustomerDetail()
+    {
+        var sut = new GetCustomerDetailQueryHandler(_context, _mapper);
 
-            result.ShouldBeOfType<CustomerDetailVm>();
-            result.Id.ShouldBe("JASON");
-        }
+        var result = await sut.Handle(new GetCustomerDetailQuery { Id = "JASON" }, CancellationToken.None);
+
+        result.ShouldBeOfType<CustomerDetailVm>();
+        result.Id.ShouldBe("JASON");
     }
 }

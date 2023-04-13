@@ -2,14 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Northwind.WebUI.Controllers
-{
-    [ApiController]
-    [Route("api/[controller]/[action]")]
-    public abstract class BaseController : ControllerBase
-    {
-        private IMediator _mediator;
+namespace Northwind.WebUI.Controllers;
 
-        protected IMediator Mediator => _mediator ?? (_mediator = HttpContext.RequestServices.GetService<IMediator>());
-    }
+[ApiController]
+[Route("api/[controller]/[action]")]
+public abstract class BaseController : ControllerBase
+{
+    private IMediator _mediator;
+
+    protected IMediator Mediator => _mediator ?? (_mediator = HttpContext.RequestServices.GetService<IMediator>());
 }

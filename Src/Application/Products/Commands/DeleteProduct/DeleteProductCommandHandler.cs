@@ -6,36 +6,35 @@ using Northwind.Application.Common.Exceptions;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Domain.Entities;
 
-namespace Northwind.Application.Products.Commands.DeleteProduct
+namespace Northwind.Application.Products.Commands.DeleteProduct;
+
+public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
 {
-    public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
+    private readonly INorthwindDbContext _context;
+
+    public DeleteProductCommandHandler(INorthwindDbContext context)
     {
-        private readonly INorthwindDbContext _context;
+        _context = context;
+    }
 
-        public DeleteProductCommandHandler(INorthwindDbContext context)
+    public async Task Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+    {
+        var entity = await _context.Products.FindAsync(request.Id);
+
+        if (entity == null)
         {
-            _context = context;
+            throw new NotFoundException(nameof(Product), request.Id);
         }
 
-        public async Task Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+        var hasOrders = _context.OrderDetails.Any(od => od.ProductId == entity.ProductId);
+        if (hasOrders)
         {
-            var entity = await _context.Products.FindAsync(request.Id);
-
-            if (entity == null)
-            {
-                throw new NotFoundException(nameof(Product), request.Id);
-            }
-
-            var hasOrders = _context.OrderDetails.Any(od => od.ProductId == entity.ProductId);
-            if (hasOrders)
-            {
-                // TODO: Add functional test for this behaviour.
-                throw new DeleteFailureException(nameof(Product), request.Id, "There are existing orders associated with this product.");
-            }
-
-            _context.Products.Remove(entity);
-
-            await _context.SaveChangesAsync(cancellationToken);
+            // TODO: Add functional test for this behaviour.
+            throw new DeleteFailureException(nameof(Product), request.Id, "There are existing orders associated with this product.");
         }
+
+        _context.Products.Remove(entity);
+
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

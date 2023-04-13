@@ -1,22 +1,21 @@
 ﻿using AutoMapper;
 using Northwind.Application.Common.Mappings;
 
-namespace Northwind.Application.UnitTests
+namespace Northwind.Application.UnitTests;
+
+public class MappingTestsFixture
 {
-    public class MappingTestsFixture
+    public MappingTestsFixture()
     {
-        public MappingTestsFixture()
+        ConfigurationProvider = new MapperConfiguration(cfg =>
         {
-            ConfigurationProvider = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<MappingProfile>();
-            });
+            cfg.AddProfile<MappingProfile>();
+        });
 
-            Mapper = ConfigurationProvider.CreateMapper();
-        }
-
-        public IConfigurationProvider ConfigurationProvider { get; }
-
-        public IMapper Mapper { get; }
+        Mapper = ConfigurationProvider.CreateMapper();
     }
+
+    public IConfigurationProvider ConfigurationProvider { get; }
+
+    public IMapper Mapper { get; }
 }

@@ -3,36 +3,35 @@ using Microsoft.EntityFrameworkCore;
 using Northwind.Domain.Entities;
 using Northwind.Persistence;
 
-namespace Northwind.Application.UnitTests.Common
+namespace Northwind.Application.UnitTests.Common;
+
+public class NorthwindContextFactory
 {
-    public class NorthwindContextFactory
+    public static NorthwindDbContext Create()
     {
-        public static NorthwindDbContext Create()
-        {
-            var options = new DbContextOptionsBuilder<NorthwindDbContext>()
-                .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                .Options;
+        var options = new DbContextOptionsBuilder<NorthwindDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString())
+            .Options;
 
-            var context = new NorthwindDbContext(options);
+        var context = new NorthwindDbContext(options);
 
-            context.Database.EnsureCreated();
+        context.Database.EnsureCreated();
 
-            context.Customers.AddRange(new[] {
-                new Customer { CustomerId = "ADAM", ContactName = "Adam Cogan" },
-                new Customer { CustomerId = "JASON", ContactName = "Jason Taylor" },
-                new Customer { CustomerId = "BREND", ContactName = "Brendan Richards" },
-            });
+        context.Customers.AddRange(new[] {
+            new Customer { CustomerId = "ADAM", ContactName = "Adam Cogan" },
+            new Customer { CustomerId = "JASON", ContactName = "Jason Taylor" },
+            new Customer { CustomerId = "BREND", ContactName = "Brendan Richards" },
+        });
 
-            context.SaveChanges();
+        context.SaveChanges();
 
-            return context;
-        }
+        return context;
+    }
 
-        public static void Destroy(NorthwindDbContext context)
-        {
-            context.Database.EnsureDeleted();
+    public static void Destroy(NorthwindDbContext context)
+    {
+        context.Database.EnsureDeleted();
 
-            context.Dispose();
-        }
+        context.Dispose();
     }
 }

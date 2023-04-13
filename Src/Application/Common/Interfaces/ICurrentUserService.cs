@@ -1,7 +1,6 @@
-﻿namespace Northwind.Application.Common.Interfaces
+﻿namespace Northwind.Application.Common.Interfaces;
+
+public interface ICurrentUserService
 {
-    public interface ICurrentUserService
-    {
-        string GetUserId();
-    }
+    string GetUserId();
 }

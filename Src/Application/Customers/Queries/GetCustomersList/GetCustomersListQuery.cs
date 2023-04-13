@@ -1,8 +1,7 @@
 ﻿using MediatR;
 
-namespace Northwind.Application.Customers.Queries.GetCustomersList
+namespace Northwind.Application.Customers.Queries.GetCustomersList;
+
+public class GetCustomersListQuery : IRequest<CustomersListVm>
 {
-    public class GetCustomersListQuery : IRequest<CustomersListVm>
-    {
-    }
 }

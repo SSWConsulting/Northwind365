@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using Northwind.Application.Products.Queries.GetProductsFile;
 
-namespace Northwind.Application.Common.Interfaces
+namespace Northwind.Application.Common.Interfaces;
+
+public interface ICsvFileBuilder
 {
-    public interface ICsvFileBuilder
-    {
-        byte[] BuildProductsFile(IEnumerable<ProductRecordDto> records);
-    }
+    byte[] BuildProductsFile(IEnumerable<ProductRecordDto> records);
 }

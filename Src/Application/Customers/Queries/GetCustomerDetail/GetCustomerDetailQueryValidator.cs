@@ -1,12 +1,11 @@
 ﻿using FluentValidation;
 
-namespace Northwind.Application.Customers.Queries.GetCustomerDetail
+namespace Northwind.Application.Customers.Queries.GetCustomerDetail;
+
+public class GetCustomerDetailQueryValidator : AbstractValidator<GetCustomerDetailQuery>
 {
-    public class GetCustomerDetailQueryValidator : AbstractValidator<GetCustomerDetailQuery>
+    public GetCustomerDetailQueryValidator()
     {
-        public GetCustomerDetailQueryValidator()
-        {
-            RuleFor(v => v.Id).NotEmpty().Length(5);
-        }
+        RuleFor(v => v.Id).NotEmpty().Length(5);
     }
 }

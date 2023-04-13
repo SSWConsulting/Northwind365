@@ -1,9 +1,8 @@
 ﻿using MediatR;
 
-namespace Northwind.Application.Products.Commands.DeleteProduct
+namespace Northwind.Application.Products.Commands.DeleteProduct;
+
+public class DeleteProductCommand : IRequest
 {
-    public class DeleteProductCommand : IRequest
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

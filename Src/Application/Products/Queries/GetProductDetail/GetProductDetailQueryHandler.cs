@@ -7,31 +7,30 @@ using Northwind.Domain.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Northwind.Application.Products.Queries.GetProductDetail
+namespace Northwind.Application.Products.Queries.GetProductDetail;
+
+public class GetProductDetailQueryHandler : MediatR.IRequestHandler<GetProductDetailQuery, ProductDetailVm>
 {
-    public class GetProductDetailQueryHandler : MediatR.IRequestHandler<GetProductDetailQuery, ProductDetailVm>
+    private readonly INorthwindDbContext _context;
+    private readonly IMapper _mapper;
+
+    public GetProductDetailQueryHandler(INorthwindDbContext context, IMapper mapper)
     {
-        private readonly INorthwindDbContext _context;
-        private readonly IMapper _mapper;
+        _context = context;
+        _mapper = mapper;
+    }
 
-        public GetProductDetailQueryHandler(INorthwindDbContext context, IMapper mapper)
+    public async Task<ProductDetailVm> Handle(GetProductDetailQuery request, CancellationToken cancellationToken)
+    {
+        var vm = await _context.Products
+            .ProjectTo<ProductDetailVm>(_mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(p => p.ProductId == request.Id, cancellationToken);
+
+        if (vm == null)
         {
-            _context = context;
-            _mapper = mapper;
+            throw new NotFoundException(nameof(Product), request.Id);
         }
 
-        public async Task<ProductDetailVm> Handle(GetProductDetailQuery request, CancellationToken cancellationToken)
-        {
-            var vm = await _context.Products
-                .ProjectTo<ProductDetailVm>(_mapper.ConfigurationProvider)
-                .FirstOrDefaultAsync(p => p.ProductId == request.Id, cancellationToken);
-
-            if (vm == null)
-            {
-                throw new NotFoundException(nameof(Product), request.Id);
-            }
-
-            return vm;
-        }
+        return vm;
     }
 }
