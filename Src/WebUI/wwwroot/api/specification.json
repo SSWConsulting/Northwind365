@@ -506,7 +506,6 @@
           },
           "extensions": {
             "type": "object",
-            "nullable": true,
             "additionalProperties": {}
           }
         }

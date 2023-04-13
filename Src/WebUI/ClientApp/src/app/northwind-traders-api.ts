@@ -904,7 +904,7 @@ export class ProblemDetails implements IProblemDetails {
     status?: number | undefined;
     detail?: string | undefined;
     instance?: string | undefined;
-    extensions?: { [key: string]: any; } | undefined;
+    extensions?: { [key: string]: any; };
 
     [key: string]: any;
 
@@ -973,7 +973,7 @@ export interface IProblemDetails {
     status?: number | undefined;
     detail?: string | undefined;
     instance?: string | undefined;
-    extensions?: { [key: string]: any; } | undefined;
+    extensions?: { [key: string]: any; };
 
     [key: string]: any;
 }
