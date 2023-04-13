@@ -6,12 +6,12 @@ using Northwind.Application.Common.Interfaces;
 
 namespace Northwind.Application.Common.Behaviours
 {
-    public class RequestLogger<TRequest> : IRequestPreProcessor<TRequest>
+    public class LoggingBehavior<TRequest> : IRequestPreProcessor<TRequest> where TRequest : notnull
     {
         private readonly ILogger _logger;
         private readonly ICurrentUserService _currentUserService;
 
-        public RequestLogger(ILogger<TRequest> logger, ICurrentUserService currentUserService)
+        public LoggingBehavior(ILogger<TRequest> logger, ICurrentUserService currentUserService)
         {
             _logger = logger;
             _currentUserService = currentUserService;

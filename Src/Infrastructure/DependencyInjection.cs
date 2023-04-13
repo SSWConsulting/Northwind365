@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
+
+using Duende.IdentityServer.Models;
+using Duende.IdentityServer.Test;
+
 using IdentityModel;
-using IdentityServer4.Models;
-using IdentityServer4.Test;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
