@@ -41,7 +41,7 @@ namespace Northwind.Application.Customers.Commands.CreateCustomer
                 _mediator = mediator;
             }
 
-            public async Task<Unit> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+            public async Task Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
             {
                 var entity = new Customer
                 {
@@ -62,8 +62,6 @@ namespace Northwind.Application.Customers.Commands.CreateCustomer
                 await _context.SaveChangesAsync(cancellationToken);
 
                 await _mediator.Publish(new CustomerCreated { CustomerId = entity.CustomerId }, cancellationToken);
-
-                return Unit.Value;
             }
         }
     }
