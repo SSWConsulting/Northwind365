@@ -1,12 +1,10 @@
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Northwind.Application.Customers.Commands.CreateCustomer;
 using Northwind.Application.Customers.Commands.DeleteCustomer;
 using Northwind.Application.Customers.Commands.UpdateCustomer;
 using Northwind.Application.Customers.Queries.GetCustomerDetail;
 using Northwind.Application.Customers.Queries.GetCustomersList;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Northwind.WebUI.Controllers;
 
@@ -31,7 +29,7 @@ public class CustomersController : BaseController
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]
-    public async Task<IActionResult> Create([FromBody]CreateCustomerCommand command)
+    public async Task<IActionResult> Create([FromBody] CreateCustomerCommand command)
     {
         await Mediator.Send(command);
 
@@ -41,7 +39,7 @@ public class CustomersController : BaseController
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update([FromBody]UpdateCustomerCommand command)
+    public async Task<IActionResult> Update([FromBody] UpdateCustomerCommand command)
     {
         await Mediator.Send(command);
 

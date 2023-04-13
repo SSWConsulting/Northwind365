@@ -1,18 +1,12 @@
-using System.Text;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Http;
-using Northwind.Infrastructure;
-using Northwind.Persistence;
+using Microsoft.AspNetCore.Mvc;
 using Northwind.Application;
 using Northwind.Application.Common.Interfaces;
+using Northwind.Infrastructure;
+using Northwind.Persistence;
 using Northwind.WebUI.Common;
 using Northwind.WebUI.Services;
+using System.Text;
 
 namespace Northwind.WebUI;
 

@@ -1,13 +1,11 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Northwind.Application.Products.Commands.CreateProduct;
 using Northwind.Application.Products.Commands.DeleteProduct;
 using Northwind.Application.Products.Commands.UpdateProduct;
-using Northwind.Application.Products.Queries.GetProductsList;
 using Northwind.Application.Products.Queries.GetProductDetail;
-using Microsoft.AspNetCore.Http;
 using Northwind.Application.Products.Queries.GetProductsFile;
+using Northwind.Application.Products.Queries.GetProductsList;
 
 namespace Northwind.WebUI.Controllers;
 
