@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net70</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <RootNamespace>Northwind.Domain.UnitTests</RootNamespace>
         <AssemblyName>Northwind.Domain.UnitTests</AssemblyName>
         <IsPackable>false</IsPackable>
+        <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
     <ItemGroup>

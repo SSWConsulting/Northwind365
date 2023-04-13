@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net70</TargetFramework>
-    <RootNamespace>Northwind.Domain</RootNamespace>
-    <AssemblyName>Northwind.Domain</AssemblyName>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <RootNamespace>Northwind.Domain</RootNamespace>
+        <AssemblyName>Northwind.Domain</AssemblyName>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
 </Project>

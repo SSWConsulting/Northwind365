@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net70</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <RootNamespace>Northwind.WebUI</RootNamespace>
         <AssemblyName>Northwind.WebUI</AssemblyName>
         <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
@@ -13,6 +13,7 @@
         <!-- Set this to true if you enable server-side prerendering -->
         <BuildServerSideRenderer>false</BuildServerSideRenderer>
         <UserSecretsId>f887bb79-4c4b-46b5-a783-c7ca8d16c955</UserSecretsId>
+        <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
     <ItemGroup>
