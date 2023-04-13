@@ -50,10 +50,15 @@
         <ProjectReference Include="..\Persistence\Persistence.csproj" />
     </ItemGroup>
 
-    <Target Name="NSwag" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+    <!--<Target Name="NSwag" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
         <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
         <Exec Command="nswag run /variables:Configuration=$(Configuration) /runtime:Net70" />
         <RemoveDir Directories="$(OutDir)References" />
+    </Target>-->
+
+    <Target Name="SwaggerPostBuildClientAndSpec" AfterTargets="PostBuildEvent">
+        <!-- nswag will run all *.nswag and nswag.json by default -->       
+        <Exec WorkingDirectory="$(ProjectDir)" Command="$(NSwagExe_Net70) run /variables:Configuration=$(Configuration)"/>
     </Target>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
