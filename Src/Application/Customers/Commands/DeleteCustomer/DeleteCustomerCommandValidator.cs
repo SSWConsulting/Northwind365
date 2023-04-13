@@ -1,12 +1,11 @@
 ﻿using FluentValidation;
 
-namespace Northwind.Application.Customers.Commands.DeleteCustomer
+namespace Northwind.Application.Customers.Commands.DeleteCustomer;
+
+public class DeleteCustomerCommandValidator : AbstractValidator<DeleteCustomerCommand>
 {
-    public class DeleteCustomerCommandValidator : AbstractValidator<DeleteCustomerCommand>
+    public DeleteCustomerCommandValidator()
     {
-        public DeleteCustomerCommandValidator()
-        {
-            RuleFor(v => v.Id).NotEmpty().Length(5);
-        }
+        RuleFor(v => v.Id).NotEmpty().Length(5);
     }
 }

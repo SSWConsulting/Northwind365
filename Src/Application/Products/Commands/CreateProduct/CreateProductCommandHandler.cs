@@ -4,33 +4,32 @@ using MediatR;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Domain.Entities;
 
-namespace Northwind.Application.Products.Commands.CreateProduct
+namespace Northwind.Application.Products.Commands.CreateProduct;
+
+public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, int>
 {
-    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, int>
+    private readonly INorthwindDbContext _context;
+
+    public CreateProductCommandHandler(INorthwindDbContext context)
     {
-        private readonly INorthwindDbContext _context;
+        _context = context;
+    }
 
-        public CreateProductCommandHandler(INorthwindDbContext context)
+    public async Task<int> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    {
+        var entity = new Product
         {
-            _context = context;
-        }
+            ProductName = request.ProductName,
+            CategoryId = request.CategoryId,
+            SupplierId = request.SupplierId,
+            UnitPrice = request.UnitPrice,
+            Discontinued = request.Discontinued
+        };
 
-        public async Task<int> Handle(CreateProductCommand request, CancellationToken cancellationToken)
-        {
-            var entity = new Product
-            {
-                ProductName = request.ProductName,
-                CategoryId = request.CategoryId,
-                SupplierId = request.SupplierId,
-                UnitPrice = request.UnitPrice,
-                Discontinued = request.Discontinued
-            };
+        _context.Products.Add(entity);
 
-            _context.Products.Add(entity);
+        await _context.SaveChangesAsync(cancellationToken);
 
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return entity.ProductId;
-        }
+        return entity.ProductId;
     }
 }

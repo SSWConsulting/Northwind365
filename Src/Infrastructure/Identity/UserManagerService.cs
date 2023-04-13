@@ -2,33 +2,32 @@
 using Microsoft.AspNetCore.Identity;
 using Northwind.Application.Common.Interfaces;
 
-namespace Northwind.Infrastructure.Identity
+namespace Northwind.Infrastructure.Identity;
+
+public class UserManagerService : IUserManager
 {
-    public class UserManagerService : IUserManager
+    private readonly UserManager<ApplicationUser> _userManager;
+
+    public UserManagerService(UserManager<ApplicationUser> userManager)
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        _userManager = userManager;
+    }
 
-        public UserManagerService(UserManager<ApplicationUser> userManager)
+    public async Task<string> CreateUserAsync(string userName, string password)
+    {
+        var user = new ApplicationUser
         {
-            _userManager = userManager;
+            UserName = userName,
+            Email = userName,
+        };
+
+        var result = await _userManager.CreateAsync(user, password);
+
+        if (result.Succeeded)
+        {
+            return user.Id;
         }
 
-        public async Task<string> CreateUserAsync(string userName, string password)
-        {
-            var user = new ApplicationUser
-            {
-                UserName = userName,
-                Email = userName,
-            };
-
-            var result = await _userManager.CreateAsync(user, password);
-
-            if (result.Succeeded)
-            {
-                return user.Id;
-            }
-
-            return null;
-        }
+        return null;
     }
 }

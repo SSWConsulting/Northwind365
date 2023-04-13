@@ -1,12 +1,11 @@
 ﻿using System;
 using Northwind.Common;
 
-namespace Northwind.Infrastructure
-{
-    public class MachineDateTime : IDateTime
-    {
-        public DateTime Now => DateTime.Now;
+namespace Northwind.Infrastructure;
 
-        public int CurrentYear => DateTime.Now.Year;
-    }
+public class MachineDateTime : IDateTime
+{
+    public DateTime Now => DateTime.Now;
+
+    public int CurrentYear => DateTime.Now.Year;
 }

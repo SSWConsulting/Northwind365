@@ -1,14 +1,13 @@
 ﻿using CsvHelper.Configuration;
 using Northwind.Application.Products.Queries.GetProductsFile;
 
-namespace Northwind.Infrastructure.Files
+namespace Northwind.Infrastructure.Files;
+
+public sealed class ProductFileRecordMap : ClassMap<ProductRecordDto>
 {
-    public sealed class ProductFileRecordMap : ClassMap<ProductRecordDto>
+    public ProductFileRecordMap()
     {
-        public ProductFileRecordMap()
-        {
-            AutoMap();
-            Map(m => m.UnitPrice).Name("Unit Price").ConvertUsing(c => (c.UnitPrice ?? 0).ToString("C"));
-        }
+        AutoMap();
+        Map(m => m.UnitPrice).Name("Unit Price").ConvertUsing(c => (c.UnitPrice ?? 0).ToString("C"));
     }
 }

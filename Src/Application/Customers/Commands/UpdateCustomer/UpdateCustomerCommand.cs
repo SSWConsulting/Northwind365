@@ -6,53 +6,52 @@ using Northwind.Domain.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Northwind.Application.Customers.Commands.UpdateCustomer
+namespace Northwind.Application.Customers.Commands.UpdateCustomer;
+
+public class UpdateCustomerCommand : IRequest
 {
-    public class UpdateCustomerCommand : IRequest
+    public string Id { get; set; }
+    public string Address { get; set; }
+    public string City { get; set; }
+    public string CompanyName { get; set; }
+    public string ContactName { get; set; }
+    public string ContactTitle { get; set; }
+    public string Country { get; set; }
+    public string Fax { get; set; }
+    public string Phone { get; set; }
+    public string PostalCode { get; set; }
+    public string Region { get; set; }
+
+    public class Handler : IRequestHandler<UpdateCustomerCommand>
     {
-        public string Id { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public string CompanyName { get; set; }
-        public string ContactName { get; set; }
-        public string ContactTitle { get; set; }
-        public string Country { get; set; }
-        public string Fax { get; set; }
-        public string Phone { get; set; }
-        public string PostalCode { get; set; }
-        public string Region { get; set; }
+        private readonly INorthwindDbContext _context;
 
-        public class Handler : IRequestHandler<UpdateCustomerCommand>
+        public Handler(INorthwindDbContext context)
         {
-            private readonly INorthwindDbContext _context;
+            _context = context;
+        }
 
-            public Handler(INorthwindDbContext context)
+        public async Task Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
+        {
+            var entity = await _context.Customers
+                .SingleOrDefaultAsync(c => c.CustomerId == request.Id, cancellationToken);
+
+            if (entity == null)
             {
-                _context = context;
+                throw new NotFoundException(nameof(Customer), request.Id);
             }
 
-            public async Task Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
-            {
-                var entity = await _context.Customers
-                    .SingleOrDefaultAsync(c => c.CustomerId == request.Id, cancellationToken);
+            entity.Address = request.Address;
+            entity.City = request.City;
+            entity.CompanyName = request.CompanyName;
+            entity.ContactName = request.ContactName;
+            entity.ContactTitle = request.ContactTitle;
+            entity.Country = request.Country;
+            entity.Fax = request.Fax;
+            entity.Phone = request.Phone;
+            entity.PostalCode = request.PostalCode;
 
-                if (entity == null)
-                {
-                    throw new NotFoundException(nameof(Customer), request.Id);
-                }
-
-                entity.Address = request.Address;
-                entity.City = request.City;
-                entity.CompanyName = request.CompanyName;
-                entity.ContactName = request.ContactName;
-                entity.ContactTitle = request.ContactTitle;
-                entity.Country = request.Country;
-                entity.Fax = request.Fax;
-                entity.Phone = request.Phone;
-                entity.PostalCode = request.PostalCode;
-
-                await _context.SaveChangesAsync(cancellationToken);
-            }
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

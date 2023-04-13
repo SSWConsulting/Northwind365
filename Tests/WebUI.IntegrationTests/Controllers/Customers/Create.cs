@@ -4,41 +4,40 @@ using Northwind.Application.Customers.Commands.CreateCustomer;
 using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
 
-namespace Northwind.WebUI.IntegrationTests.Controllers.Customers
+namespace Northwind.WebUI.IntegrationTests.Controllers.Customers;
+
+public class Create : IClassFixture<CustomWebApplicationFactory<Startup>>
 {
-    public class Create : IClassFixture<CustomWebApplicationFactory<Startup>>
+    private readonly CustomWebApplicationFactory<Startup> _factory;
+
+    public Create(CustomWebApplicationFactory<Startup> factory)
     {
-        private readonly CustomWebApplicationFactory<Startup> _factory;
+        _factory = factory;
+    }
 
-        public Create(CustomWebApplicationFactory<Startup> factory)
+    [Fact]
+    public async Task GivenCreateCustomerCommand_ReturnsSuccessStatusCode()
+    {
+        var client = await _factory.GetAuthenticatedClientAsync();
+
+        var command = new CreateCustomerCommand
         {
-            _factory = factory;
-        }
+            Id = "ABCDE",
+            Address = "Obere Str. 57",
+            City = "Berlin",
+            CompanyName = "Alfreds Futterkiste",
+            ContactName = "Maria Anders",
+            ContactTitle = "Sales Representative",
+            Country = "Germany",
+            Fax = "030-0076545",
+            Phone = "030-0074321",
+            PostalCode = "12209"
+        };
 
-        [Fact]
-        public async Task GivenCreateCustomerCommand_ReturnsSuccessStatusCode()
-        {
-            var client = await _factory.GetAuthenticatedClientAsync();
+        var content = Utilities.GetRequestContent(command);
 
-            var command = new CreateCustomerCommand
-            {
-                Id = "ABCDE",
-                Address = "Obere Str. 57",
-                City = "Berlin",
-                CompanyName = "Alfreds Futterkiste",
-                ContactName = "Maria Anders",
-                ContactTitle = "Sales Representative",
-                Country = "Germany",
-                Fax = "030-0076545",
-                Phone = "030-0074321",
-                PostalCode = "12209"
-            };
+        var response = await client.PostAsync($"/api/customers/create", content);
 
-            var content = Utilities.GetRequestContent(command);
-
-            var response = await client.PostAsync($"/api/customers/create", content);
-
-            response.EnsureSuccessStatusCode();
-        }
+        response.EnsureSuccessStatusCode();
     }
 }

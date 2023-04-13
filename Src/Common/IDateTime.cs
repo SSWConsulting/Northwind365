@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace Northwind.Common
+namespace Northwind.Common;
+
+public interface IDateTime
 {
-    public interface IDateTime
-    {
-        DateTime Now { get; }
-    }
+    DateTime Now { get; }
 }
