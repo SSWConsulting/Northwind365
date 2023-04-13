@@ -20,7 +20,8 @@ You will need the following tools:
 
 * [Visual Studio Code or Visual Studio 2019](https://visualstudio.microsoft.com/vs/) (version 16.3 or later)
 * [.NET Core SDK 3](https://dotnet.microsoft.com/download/dotnet-core/3.0)
- * [Node.js](https://nodejs.org/en/) (version 10 or later) with npm (version 6.11.3 or later)
+* [Node.js](https://nodejs.org/en/) (version 10 or later) with npm (version 6.11.3 or later)
+* Angular CLI (version 8.3.23 or later) - install by running `npm install -g @angular/cli`
 
 ### Setup
 Follow these steps to get your development environment set up:
