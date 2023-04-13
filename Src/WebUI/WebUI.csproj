@@ -27,7 +27,7 @@
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.5" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
         <PackageReference Include="NSwag.AspNetCore" Version="13.18.2" />
         <PackageReference Include="NSwag.Core" Version="13.18.2" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0-preview5" />
@@ -52,7 +52,7 @@
 
     <Target Name="NSwag" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
         <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References" />
-        <Exec Command="nswag run /variables:Configuration=$(Configuration) /runtime:NetCore31" />
+        <Exec Command="nswag run /variables:Configuration=$(Configuration) /runtime:Net70" />
         <RemoveDir Directories="$(OutDir)References" />
     </Target>
 
