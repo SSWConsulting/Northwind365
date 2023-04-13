@@ -25,8 +25,8 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="3.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.5" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
         <PackageReference Include="NSwag.AspNetCore" Version="13.18.2" />
         <PackageReference Include="NSwag.Core" Version="13.18.2" />
