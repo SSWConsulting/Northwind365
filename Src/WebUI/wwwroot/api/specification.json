@@ -395,8 +395,7 @@
             "format": "int32"
           },
           "name": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         }
       },
@@ -406,7 +405,6 @@
         "properties": {
           "customers": {
             "type": "array",
-            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/CustomerLookupDto"
             }
@@ -418,12 +416,10 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "name": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         }
       },
@@ -432,48 +428,37 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "address": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "city": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "companyName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "contactName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "contactTitle": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "country": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "fax": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "phone": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "postalCode": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "region": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         }
       },
@@ -515,48 +500,37 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "address": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "city": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "companyName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "contactName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "contactTitle": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "country": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "fax": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "phone": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "postalCode": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "region": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         }
       },
@@ -565,48 +539,37 @@
         "additionalProperties": false,
         "properties": {
           "id": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "address": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "city": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "companyName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "contactName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "contactTitle": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "country": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "fax": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "phone": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "postalCode": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "region": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         }
       },
@@ -616,7 +579,6 @@
         "properties": {
           "products": {
             "type": "array",
-            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/ProductDto"
             }
@@ -635,8 +597,7 @@
             "format": "int32"
           },
           "productName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "unitPrice": {
             "type": "number",
@@ -649,8 +610,7 @@
             "nullable": true
           },
           "supplierCompanyName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "categoryId": {
             "type": "integer",
@@ -658,8 +618,7 @@
             "nullable": true
           },
           "categoryName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "discontinued": {
             "type": "boolean"
@@ -675,8 +634,7 @@
             "format": "int32"
           },
           "productName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "unitPrice": {
             "type": "number",
@@ -689,8 +647,7 @@
             "nullable": true
           },
           "supplierCompanyName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "categoryId": {
             "type": "integer",
@@ -698,8 +655,7 @@
             "nullable": true
           },
           "categoryName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "discontinued": {
             "type": "boolean"
@@ -717,8 +673,7 @@
         "additionalProperties": false,
         "properties": {
           "productName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "unitPrice": {
             "type": "number",
@@ -749,8 +704,7 @@
             "format": "int32"
           },
           "productName": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "unitPrice": {
             "type": "number",

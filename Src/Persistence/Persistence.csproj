@@ -4,6 +4,7 @@
         <RootNamespace>Northwind.Persistence</RootNamespace>
         <AssemblyName>Northwind.Persistence</AssemblyName>
         <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>

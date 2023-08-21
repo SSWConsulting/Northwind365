@@ -6,6 +6,7 @@
         <AssemblyName>Northwind.WebUI.IntegrationTests</AssemblyName>
         <IsPackable>false</IsPackable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
