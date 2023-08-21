@@ -700,7 +700,7 @@ export class ProductsClient implements IProductsClient {
 
 export class CategoryLookupDto implements ICategoryLookupDto {
     id?: number;
-    name?: string | undefined;
+    name?: string;
 
     constructor(data?: ICategoryLookupDto) {
         if (data) {
@@ -735,11 +735,11 @@ export class CategoryLookupDto implements ICategoryLookupDto {
 
 export interface ICategoryLookupDto {
     id?: number;
-    name?: string | undefined;
+    name?: string;
 }
 
 export class CustomersListVm implements ICustomersListVm {
-    customers?: CustomerLookupDto[] | undefined;
+    customers?: CustomerLookupDto[];
 
     constructor(data?: ICustomersListVm) {
         if (data) {
@@ -779,12 +779,12 @@ export class CustomersListVm implements ICustomersListVm {
 }
 
 export interface ICustomersListVm {
-    customers?: CustomerLookupDto[] | undefined;
+    customers?: CustomerLookupDto[];
 }
 
 export class CustomerLookupDto implements ICustomerLookupDto {
-    id?: string | undefined;
-    name?: string | undefined;
+    id?: string;
+    name?: string;
 
     constructor(data?: ICustomerLookupDto) {
         if (data) {
@@ -818,22 +818,22 @@ export class CustomerLookupDto implements ICustomerLookupDto {
 }
 
 export interface ICustomerLookupDto {
-    id?: string | undefined;
-    name?: string | undefined;
+    id?: string;
+    name?: string;
 }
 
 export class CustomerDetailVm implements ICustomerDetailVm {
-    id?: string | undefined;
-    address?: string | undefined;
-    city?: string | undefined;
-    companyName?: string | undefined;
-    contactName?: string | undefined;
-    contactTitle?: string | undefined;
-    country?: string | undefined;
-    fax?: string | undefined;
-    phone?: string | undefined;
-    postalCode?: string | undefined;
-    region?: string | undefined;
+    id?: string;
+    address?: string;
+    city?: string;
+    companyName?: string;
+    contactName?: string;
+    contactTitle?: string;
+    country?: string;
+    fax?: string;
+    phone?: string;
+    postalCode?: string;
+    region?: string;
 
     constructor(data?: ICustomerDetailVm) {
         if (data) {
@@ -885,17 +885,17 @@ export class CustomerDetailVm implements ICustomerDetailVm {
 }
 
 export interface ICustomerDetailVm {
-    id?: string | undefined;
-    address?: string | undefined;
-    city?: string | undefined;
-    companyName?: string | undefined;
-    contactName?: string | undefined;
-    contactTitle?: string | undefined;
-    country?: string | undefined;
-    fax?: string | undefined;
-    phone?: string | undefined;
-    postalCode?: string | undefined;
-    region?: string | undefined;
+    id?: string;
+    address?: string;
+    city?: string;
+    companyName?: string;
+    contactName?: string;
+    contactTitle?: string;
+    country?: string;
+    fax?: string;
+    phone?: string;
+    postalCode?: string;
+    region?: string;
 }
 
 export class ProblemDetails implements IProblemDetails {
@@ -979,17 +979,17 @@ export interface IProblemDetails {
 }
 
 export class CreateCustomerCommand implements ICreateCustomerCommand {
-    id?: string | undefined;
-    address?: string | undefined;
-    city?: string | undefined;
-    companyName?: string | undefined;
-    contactName?: string | undefined;
-    contactTitle?: string | undefined;
-    country?: string | undefined;
-    fax?: string | undefined;
-    phone?: string | undefined;
-    postalCode?: string | undefined;
-    region?: string | undefined;
+    id?: string;
+    address?: string;
+    city?: string;
+    companyName?: string;
+    contactName?: string;
+    contactTitle?: string;
+    country?: string;
+    fax?: string;
+    phone?: string;
+    postalCode?: string;
+    region?: string;
 
     constructor(data?: ICreateCustomerCommand) {
         if (data) {
@@ -1041,31 +1041,31 @@ export class CreateCustomerCommand implements ICreateCustomerCommand {
 }
 
 export interface ICreateCustomerCommand {
-    id?: string | undefined;
-    address?: string | undefined;
-    city?: string | undefined;
-    companyName?: string | undefined;
-    contactName?: string | undefined;
-    contactTitle?: string | undefined;
-    country?: string | undefined;
-    fax?: string | undefined;
-    phone?: string | undefined;
-    postalCode?: string | undefined;
-    region?: string | undefined;
+    id?: string;
+    address?: string;
+    city?: string;
+    companyName?: string;
+    contactName?: string;
+    contactTitle?: string;
+    country?: string;
+    fax?: string;
+    phone?: string;
+    postalCode?: string;
+    region?: string;
 }
 
 export class UpdateCustomerCommand implements IUpdateCustomerCommand {
-    id?: string | undefined;
-    address?: string | undefined;
-    city?: string | undefined;
-    companyName?: string | undefined;
-    contactName?: string | undefined;
-    contactTitle?: string | undefined;
-    country?: string | undefined;
-    fax?: string | undefined;
-    phone?: string | undefined;
-    postalCode?: string | undefined;
-    region?: string | undefined;
+    id?: string;
+    address?: string;
+    city?: string;
+    companyName?: string;
+    contactName?: string;
+    contactTitle?: string;
+    country?: string;
+    fax?: string;
+    phone?: string;
+    postalCode?: string;
+    region?: string;
 
     constructor(data?: IUpdateCustomerCommand) {
         if (data) {
@@ -1117,21 +1117,21 @@ export class UpdateCustomerCommand implements IUpdateCustomerCommand {
 }
 
 export interface IUpdateCustomerCommand {
-    id?: string | undefined;
-    address?: string | undefined;
-    city?: string | undefined;
-    companyName?: string | undefined;
-    contactName?: string | undefined;
-    contactTitle?: string | undefined;
-    country?: string | undefined;
-    fax?: string | undefined;
-    phone?: string | undefined;
-    postalCode?: string | undefined;
-    region?: string | undefined;
+    id?: string;
+    address?: string;
+    city?: string;
+    companyName?: string;
+    contactName?: string;
+    contactTitle?: string;
+    country?: string;
+    fax?: string;
+    phone?: string;
+    postalCode?: string;
+    region?: string;
 }
 
 export class ProductsListVm implements IProductsListVm {
-    products?: ProductDto[] | undefined;
+    products?: ProductDto[];
     createEnabled?: boolean;
 
     constructor(data?: IProductsListVm) {
@@ -1174,18 +1174,18 @@ export class ProductsListVm implements IProductsListVm {
 }
 
 export interface IProductsListVm {
-    products?: ProductDto[] | undefined;
+    products?: ProductDto[];
     createEnabled?: boolean;
 }
 
 export class ProductDto implements IProductDto {
     productId?: number;
-    productName?: string | undefined;
+    productName?: string;
     unitPrice?: number | undefined;
     supplierId?: number | undefined;
-    supplierCompanyName?: string | undefined;
+    supplierCompanyName?: string;
     categoryId?: number | undefined;
-    categoryName?: string | undefined;
+    categoryName?: string;
     discontinued?: boolean;
 
     constructor(data?: IProductDto) {
@@ -1233,23 +1233,23 @@ export class ProductDto implements IProductDto {
 
 export interface IProductDto {
     productId?: number;
-    productName?: string | undefined;
+    productName?: string;
     unitPrice?: number | undefined;
     supplierId?: number | undefined;
-    supplierCompanyName?: string | undefined;
+    supplierCompanyName?: string;
     categoryId?: number | undefined;
-    categoryName?: string | undefined;
+    categoryName?: string;
     discontinued?: boolean;
 }
 
 export class ProductDetailVm implements IProductDetailVm {
     productId?: number;
-    productName?: string | undefined;
+    productName?: string;
     unitPrice?: number | undefined;
     supplierId?: number | undefined;
-    supplierCompanyName?: string | undefined;
+    supplierCompanyName?: string;
     categoryId?: number | undefined;
-    categoryName?: string | undefined;
+    categoryName?: string;
     discontinued?: boolean;
     editEnabled?: boolean;
     deleteEnabled?: boolean;
@@ -1303,19 +1303,19 @@ export class ProductDetailVm implements IProductDetailVm {
 
 export interface IProductDetailVm {
     productId?: number;
-    productName?: string | undefined;
+    productName?: string;
     unitPrice?: number | undefined;
     supplierId?: number | undefined;
-    supplierCompanyName?: string | undefined;
+    supplierCompanyName?: string;
     categoryId?: number | undefined;
-    categoryName?: string | undefined;
+    categoryName?: string;
     discontinued?: boolean;
     editEnabled?: boolean;
     deleteEnabled?: boolean;
 }
 
 export class CreateProductCommand implements ICreateProductCommand {
-    productName?: string | undefined;
+    productName?: string;
     unitPrice?: number | undefined;
     supplierId?: number | undefined;
     categoryId?: number | undefined;
@@ -1359,7 +1359,7 @@ export class CreateProductCommand implements ICreateProductCommand {
 }
 
 export interface ICreateProductCommand {
-    productName?: string | undefined;
+    productName?: string;
     unitPrice?: number | undefined;
     supplierId?: number | undefined;
     categoryId?: number | undefined;
@@ -1368,7 +1368,7 @@ export interface ICreateProductCommand {
 
 export class UpdateProductCommand implements IUpdateProductCommand {
     productId?: number;
-    productName?: string | undefined;
+    productName?: string;
     unitPrice?: number | undefined;
     supplierId?: number | undefined;
     categoryId?: number | undefined;
@@ -1415,7 +1415,7 @@ export class UpdateProductCommand implements IUpdateProductCommand {
 
 export interface IUpdateProductCommand {
     productId?: number;
-    productName?: string | undefined;
+    productName?: string;
     unitPrice?: number | undefined;
     supplierId?: number | undefined;
     categoryId?: number | undefined;
