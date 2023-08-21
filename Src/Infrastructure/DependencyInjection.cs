@@ -5,14 +5,15 @@ using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Test;
 
 using IdentityModel;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
 using Northwind.Application.Common.Interfaces;
-using Northwind.Common;
 using Northwind.Infrastructure.Files;
 using Northwind.Infrastructure.Identity;
 

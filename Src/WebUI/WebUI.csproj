@@ -47,7 +47,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Common\Common.csproj" />
         <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
         <ProjectReference Include="..\Persistence\Persistence.csproj" />
     </ItemGroup>
@@ -60,7 +59,7 @@
 
     <Target Name="SwaggerPostBuildClientAndSpec" AfterTargets="PostBuildEvent">
         <!-- nswag will run all *.nswag and nswag.json by default -->       
-        <Exec WorkingDirectory="$(ProjectDir)" Command="$(NSwagExe_Net70) run /variables:Configuration=$(Configuration)"/>
+        <Exec WorkingDirectory="$(ProjectDir)" Command="$(NSwagExe_Net70) run /variables:Configuration=$(Configuration)" />
     </Target>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
