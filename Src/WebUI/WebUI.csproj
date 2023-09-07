@@ -18,7 +18,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3"/>
+      <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.5" />
         <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="7.0.5" />

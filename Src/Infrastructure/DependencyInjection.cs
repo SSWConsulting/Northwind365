@@ -34,7 +34,7 @@ public static class DependencyInjection
         services.AddDefaultIdentity<ApplicationUser>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
-        if (environment.IsEnvironment("Test"))
+        if (environment.IsEnvironment("Test") || environment.IsDevelopment())
         {
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>

@@ -48,9 +48,9 @@ Follow these steps to get your development environment set up:
   6. Launch [https://localhost:44376/api](http://localhost:44376/api) in your browser to view the API
 
 ## Technologies
-* .NET Core 3
-* ASP.NET Core 3
-* Entity Framework Core 3
+* .NET 7
+* ASP.NET Core 7
+* Entity Framework Core 7
 * Angular 8
 
 ## Marketing

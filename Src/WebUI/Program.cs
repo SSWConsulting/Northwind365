@@ -73,7 +73,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 // TODO: Fix and add back in
-//app.UseIdentityServer();
+app.UseIdentityServer();
 app.UseAuthorization();
 
 app.MapControllerRoute(
