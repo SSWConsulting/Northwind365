@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-public class GetById : IClassFixture<CustomWebApplicationFactory<Startup>>
+public class GetById : IClassFixture<CustomWebApplicationFactory<Program>>
 {
-    private readonly CustomWebApplicationFactory<Startup> _factory;
+    private readonly CustomWebApplicationFactory<Program> _factory;
 
-    public GetById(CustomWebApplicationFactory<Startup> factory)
+    public GetById(CustomWebApplicationFactory<Program> factory)
     {
         _factory = factory;
     }

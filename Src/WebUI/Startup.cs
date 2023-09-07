@@ -1,135 +1,135 @@
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Mvc;
-using Northwind.Application;
-using Northwind.Application.Common.Interfaces;
-using Northwind.Infrastructure;
-using Northwind.Persistence;
-using Northwind.WebUI.Common;
-using Northwind.WebUI.Services;
-using System.Text;
+//using FluentValidation.AspNetCore;
+//using Microsoft.AspNetCore.Mvc;
+//using Northwind.Application;
+//using Northwind.Application.Common.Interfaces;
+//using Northwind.Infrastructure;
+//using Northwind.Persistence;
+//using Northwind.WebUI.Common;
+//using Northwind.WebUI.Services;
+//using System.Text;
 
-namespace Northwind.WebUI;
+//namespace Northwind.WebUI;
 
-public class Startup
-{
-    private IServiceCollection _services;
+//public class Startup
+//{
+//    private IServiceCollection _services;
 
-    public Startup(IConfiguration configuration, IWebHostEnvironment environment)
-    {
-        Configuration = configuration;
-        Environment = environment;
-    }
+//    public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+//    {
+//        Configuration = configuration;
+//        Environment = environment;
+//    }
 
-    public IConfiguration Configuration { get; }
-    public IWebHostEnvironment Environment { get; }
+//    public IConfiguration Configuration { get; }
+//    public IWebHostEnvironment Environment { get; }
 
-    // This method gets called by the runtime. Use this method to add services to the container.
-    public void ConfigureServices(IServiceCollection services)
-    {
-        services.AddInfrastructure(Configuration, Environment);
-        services.AddPersistence(Configuration);
-        services.AddApplication();
+//    // This method gets called by the runtime. Use this method to add services to the container.
+////    public void ConfigureServices(IServiceCollection services)
+////    {
+////        //services.AddInfrastructure(Configuration, Environment);
+////        //services.AddPersistence(Configuration);
+////        //services.AddApplication();
 
-        services.AddHealthChecks()
-            .AddDbContextCheck<NorthwindDbContext>();
+////        //services.AddHealthChecks()
+////        //    .AddDbContextCheck<NorthwindDbContext>();
 
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
+////        //services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-        services.AddHttpContextAccessor();
+////        //services.AddHttpContextAccessor();
 
-        // NOTE: This will be removed soon
-#pragma warning disable CS0618 // Type or member is obsolete
-        services
-            .AddControllersWithViews()
-            .AddNewtonsoftJson()
-            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<INorthwindDbContext>());
-#pragma warning restore CS0618 // Type or member is obsolete
+////        // NOTE: This will be removed soon
+//////#pragma warning disable CS0618 // Type or member is obsolete
+//////        services
+//////            .AddControllersWithViews()
+//////            .AddNewtonsoftJson()
+//////            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<INorthwindDbContext>());
+//////#pragma warning restore CS0618 // Type or member is obsolete
 
-        services.AddRazorPages();
+////        //services.AddRazorPages();
 
-        // Customise default API behaviour
-        services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
+////        //// Customise default API behaviour
+////        //services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
-        // In production, the Angular files will be served from this directory
-        services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/dist");
+////        //// In production, the Angular files will be served from this directory
+////        //services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/dist");
 
-        services.AddOpenApiDocument(configure => configure.Title = "Northwind Traders API");
+////        //services.AddOpenApiDocument(configure => configure.Title = "Northwind Traders API");
 
-        _services = services;
-    }
+////        //_services = services;
+////    }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app)
-    {
-        if (Environment.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-            RegisteredServicesPage(app);
-        }
-        else
-        {
-            app.UseExceptionHandler("/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
-        }
+//    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+//    public void Configure(IApplicationBuilder app)
+//    {
+//        if (Environment.IsDevelopment())
+//        {
+//            //app.UseDeveloperExceptionPage();
+//            //RegisteredServicesPage(app);
+//        }
+//        else
+//        {
+//            //app.UseExceptionHandler("/Error");
+//            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+//            //app.UseHsts();
+//        }
 
-        app.UseCustomExceptionHandler();
-        app.UseHealthChecks("/health");
-        app.UseHttpsRedirection();
-        app.UseStaticFiles();
-        app.UseSpaStaticFiles();
+//        //app.UseCustomExceptionHandler();
+//        //app.UseHealthChecks("/health");
+//        //app.UseHttpsRedirection();
+//        //app.UseStaticFiles();
+//        //app.UseSpaStaticFiles();
 
-        app.UseOpenApi();
+//        //app.UseOpenApi();
 
-        app.UseSwaggerUi3(settings => settings.Path = "/api");
+//        //app.UseSwaggerUi3(settings => settings.Path = "/api");
 
-        app.UseRouting();
+//        //app.UseRouting();
 
-        app.UseAuthentication();
-        app.UseIdentityServer();
-        app.UseAuthorization();
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller}/{action=Index}/{id?}");
-            endpoints.MapControllers();
-            endpoints.MapRazorPages();
-        });
+//        //app.UseAuthentication();
+//        //app.UseIdentityServer();
+//        //app.UseAuthorization();
+//        //app.UseEndpoints(endpoints =>
+//        //{
+//        //    endpoints.MapControllerRoute(
+//        //        name: "default",
+//        //        pattern: "{controller}/{action=Index}/{id?}");
+//        //    endpoints.MapControllers();
+//        //    endpoints.MapRazorPages();
+//        //});
 
-        app.UseSpa(spa =>
-        {
-            // To learn more about options for serving an Angular SPA from ASP.NET Core,
-            // see https://go.microsoft.com/fwlink/?linkid=864501
+//        //app.UseSpa(spa =>
+//        //{
+//        //    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+//        //    // see https://go.microsoft.com/fwlink/?linkid=864501
 
-            spa.Options.SourcePath = "ClientApp";
+//        //    spa.Options.SourcePath = "ClientApp";
 
-            if (Environment.IsDevelopment())
-            {
-                spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-            }
-        });
-    }
+//        //    if (Environment.IsDevelopment())
+//        //    {
+//        //        spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+//        //    }
+//        //});
+//    }
 
-    private void RegisteredServicesPage(IApplicationBuilder app)
-    {
-        app.Map("/services", builder => builder.Run(async context =>
-        {
-            var sb = new StringBuilder();
-            sb.Append("<h1>Registered Services</h1>");
-            sb.Append("<table><thead>");
-            sb.Append("<tr><th>Type</th><th>Lifetime</th><th>Instance</th></tr>");
-            sb.Append("</thead><tbody>");
-            foreach (var svc in _services)
-            {
-                sb.Append("<tr>");
-                sb.Append($"<td>{svc.ServiceType.FullName}</td>");
-                sb.Append($"<td>{svc.Lifetime}</td>");
-                sb.Append($"<td>{svc.ImplementationType?.FullName}</td>");
-                sb.Append("</tr>");
-            }
-            sb.Append("</tbody></table>");
-            await context.Response.WriteAsync(sb.ToString());
-        }));
-    }
-}
+//    //private void RegisteredServicesPage(IApplicationBuilder app)
+//    //{
+//    //    app.Map("/services", builder => builder.Run(async context =>
+//    //    {
+//    //        var sb = new StringBuilder();
+//    //        sb.Append("<h1>Registered Services</h1>");
+//    //        sb.Append("<table><thead>");
+//    //        sb.Append("<tr><th>Type</th><th>Lifetime</th><th>Instance</th></tr>");
+//    //        sb.Append("</thead><tbody>");
+//    //        foreach (var svc in _services)
+//    //        {
+//    //            sb.Append("<tr>");
+//    //            sb.Append($"<td>{svc.ServiceType.FullName}</td>");
+//    //            sb.Append($"<td>{svc.Lifetime}</td>");
+//    //            sb.Append($"<td>{svc.ImplementationType?.FullName}</td>");
+//    //            sb.Append("</tr>");
+//    //        }
+//    //        sb.Append("</tbody></table>");
+//    //        await context.Response.WriteAsync(sb.ToString());
+//    //    }));
+//    //}
+//}

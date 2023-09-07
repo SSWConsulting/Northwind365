@@ -4,11 +4,11 @@ using Xunit;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Categories;
 
-public class GetCategoryList : IClassFixture<CustomWebApplicationFactory<Startup>>
+public class GetCategoryList : IClassFixture<CustomWebApplicationFactory<Program>>
 {
-    private readonly CustomWebApplicationFactory<Startup> _factory;
+    private readonly CustomWebApplicationFactory<Program> _factory;
 
-    public GetCategoryList(CustomWebApplicationFactory<Startup> factory)
+    public GetCategoryList(CustomWebApplicationFactory<Program> factory)
     {
         _factory = factory;
     }
