@@ -12,7 +12,7 @@ import { NavTopMenuComponent } from './nav-top-menu/nav-top-menu.component';
 import { NavSideMenuComponent } from './nav-side-menu/nav-side-menu.component';
 import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 
-import { CustomersClient, ProductsClient, API_BASE_URL } from './northwind-traders-api';
+import { Client, API_BASE_URL } from './northwind-traders-api';
 
 import { CamelCaseToText } from '../pipes/camel-case-to-text';
 
@@ -45,8 +45,7 @@ import { environment } from "../environments/environment";
   providers: [
       { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
       { provide: API_BASE_URL, useValue: environment.apiBaseUrl },
-      CustomersClient,
-      ProductsClient
+      Client,
   ],
   bootstrap: [AppComponent]
 })

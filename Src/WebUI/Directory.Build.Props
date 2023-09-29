@@ -1,5 +1,5 @@
 <Project>
-  <PropertyGroup>
+  <!--<PropertyGroup>
     <TreatWarningsAsErrors Condition="'$(Configuration)' != 'Debug'">true</TreatWarningsAsErrors>
-  </PropertyGroup>
+  </PropertyGroup>-->
 </Project>

@@ -1,69 +1,108 @@
 using MediatR;
-using Microsoft.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Northwind.Application.System.Commands.SeedSampleData;
+using Northwind.Infrastructure;
 using Northwind.Infrastructure.Identity;
 using Northwind.Persistence;
-using System.Reflection;
+using Northwind.Application;
+using Northwind.WebUI.Common;
+using Northwind.WebUI.Controllers;
 
-namespace Northwind.WebUI;
+var builder = WebApplication.CreateBuilder(args);
 
-public class Program
+builder.Services.AddWebUI();
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
+builder.Services.AddPersistence(builder.Configuration);
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    public static async Task Main(string[] args)
+    app.UseDeveloperExceptionPage();
+    app.UseRegisteredServicesPage(app.Services);
+
+    // Initialise and seed database
+    using var scope = app.Services.CreateScope();
+
+    // TODO: Update to use intializer
+    //var initializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
+    //await initializer.InitializeAsync();
+    //await initializer.SeedAsync();
+
+    try
     {
-        var host = CreateWebHostBuilder(args).Build();
+        var northwindContext = scope.ServiceProvider.GetRequiredService<NorthwindDbContext>();
+        northwindContext.Database.Migrate();
 
-        using (var scope = host.Services.CreateScope())
-        {
-            var services = scope.ServiceProvider;
+        var identityContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        identityContext.Database.Migrate();
 
-            try
-            {
-                var northwindContext = services.GetRequiredService<NorthwindDbContext>();
-                northwindContext.Database.Migrate();
-
-                var identityContext = services.GetRequiredService<ApplicationDbContext>();
-                identityContext.Database.Migrate();
-
-                var mediator = services.GetRequiredService<IMediator>();
-                await mediator.Send(new SeedSampleDataCommand(), CancellationToken.None);
-            }
-            catch (Exception ex)
-            {
-                var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "An error occurred while migrating or initializing the database.");
-            }
-        }
-
-        host.Run();
+        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+        await mediator.Send(new SeedSampleDataCommand(), CancellationToken.None);
     }
-
-    public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-        WebHost.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((hostingContext, config) =>
-            {
-                var env = hostingContext.HostingEnvironment;
-
-                config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                    .AddJsonFile($"appsettings.Local.json", optional: true, reloadOnChange: true);
-
-                if (env.IsDevelopment())
-                {
-                    var appAssembly = Assembly.Load(new AssemblyName(env.ApplicationName));
-                    if (appAssembly != null)
-                    {
-                        config.AddUserSecrets(appAssembly, optional: true);
-                    }
-                }
-
-                config.AddEnvironmentVariables();
-
-                if (args != null)
-                {
-                    config.AddCommandLine(args);
-                }
-            })
-            .UseStartup<Startup>();
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating or initializing the database.");
+    }
 }
+else
+{
+    app.UseExceptionHandler("/Error");
+
+
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+// TODO: Replace this with 'app.UseExceptionFilter();'
+//app.UseCustomExceptionHandler();
+
+app.UseHealthChecks("/health");
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseSpaStaticFiles();
+
+app.UseOpenApi();
+
+//app.UseSwaggerUi3(settings => settings.DocumentPath = "/api/specification.json");
+app.UseSwaggerUi3(settings => settings.Path = "/api");
+
+app.UseRouting();
+
+app.UseAuthentication();
+// TODO: Fix and add back in
+app.UseIdentityServer();
+app.UseAuthorization();
+
+// TODO: Are controllers needed?
+// app.MapControllerRoute(
+//          "default",
+//          "{controller}/{action=Index}/{id?}");
+// app.MapControllers();
+app.MapRazorPages();
+
+app.MapCategoryEndpoints();
+app.MapCustomerEndpoints();
+app.MapIdentityEndpoints();
+app.MapProductEndpoints();
+
+// TODO: Fix and add back in
+// app.UseSpa(spa =>
+// {
+//     // To learn more about options for serving an Angular SPA from ASP.NET Core,
+//     // see https://go.microsoft.com/fwlink/?linkid=864501
+//
+//     spa.Options.SourcePath = "ClientApp";
+//
+//     if (app.Environment.IsDevelopment())
+//     {
+//         spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+//     }
+// });
+
+app.Run();
+
+public partial class Program { }

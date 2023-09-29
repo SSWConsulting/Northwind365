@@ -6,12 +6,12 @@
     "version": "1.0.0"
   },
   "paths": {
-    "/api/Categories/GetAll": {
+    "/api/categories": {
       "get": {
         "tags": [
-          "Categories"
+          "categories"
         ],
-        "operationId": "Categories_GetAll",
+        "operationId": "GetCategoriesList",
         "responses": {
           "200": {
             "description": "",
@@ -25,60 +25,18 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/api/Customers/GetAll": {
-      "get": {
-        "tags": [
-          "Customers"
-        ],
-        "operationId": "Customers_GetAll",
-        "responses": {
-          "200": {
+          },
+          "404": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomersListVm"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/Customers/Get/{id}": {
-      "get": {
-        "tags": [
-          "Customers"
-        ],
-        "operationId": "Customers_Get",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "nullable": true
-            },
-            "x-position": 1
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CustomerDetailVm"
+                  "$ref": "#/components/schemas/CategoriesListVm"
                 }
               }
             }
           },
-          "404": {
+          "500": {
             "description": "",
             "content": {
               "application/json": {
@@ -91,14 +49,53 @@
         }
       }
     },
-    "/api/Customers/Create": {
+    "/api/customers": {
+      "get": {
+        "tags": [
+          "customers"
+        ],
+        "operationId": "GetCustomersList",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomersListVm"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomersListVm"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
-          "Customers"
+          "customers"
         ],
-        "operationId": "Customers_Create",
+        "operationId": "CreateCustomer",
         "requestBody": {
           "x-name": "command",
+          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -110,10 +107,20 @@
           "x-position": 1
         },
         "responses": {
-          "204": {
+          "201": {
             "description": ""
           },
-          "default": {
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
             "description": "",
             "content": {
               "application/json": {
@@ -124,27 +131,15 @@
             }
           }
         }
-      }
-    },
-    "/api/Customers/Update/{id}": {
+      },
       "put": {
         "tags": [
-          "Customers"
+          "customers"
         ],
-        "operationId": "Customers_Update",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "x-position": 2
-          }
-        ],
+        "operationId": "UpdateCustomer",
         "requestBody": {
           "x-name": "command",
+          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -160,6 +155,19 @@
             "description": ""
           },
           "404": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
             "description": "",
             "content": {
               "application/json": {
@@ -172,12 +180,62 @@
         }
       }
     },
-    "/api/Customers/Delete/{id}": {
+    "/api/customers/{id}": {
+      "get": {
+        "tags": [
+          "customers"
+        ],
+        "operationId": "GetCustomer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomersListVm"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerDetailVm"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "tags": [
-          "Customers"
+          "customers"
         ],
-        "operationId": "Customers_Delete",
+        "operationId": "DeleteCustomer",
         "parameters": [
           {
             "name": "id",
@@ -195,6 +253,9 @@
             "description": ""
           },
           "404": {
+            "description": ""
+          },
+          "500": {
             "description": "",
             "content": {
               "application/json": {
@@ -207,12 +268,70 @@
         }
       }
     },
-    "/api/Products/GetAll": {
+    "/_configuration/{clientId}": {
       "get": {
         "tags": [
-          "Products"
+          "identity"
         ],
-        "operationId": "Products_GetAll",
+        "operationId": "GetClientRequestParameters",
+        "parameters": [
+          {
+            "name": "clientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            },
+            "x-position": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "operationId": "GetProductsList",
         "responses": {
           "200": {
             "description": "",
@@ -223,24 +342,133 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductsListVm"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
-      }
-    },
-    "/api/Products/Download": {
-      "get": {
+      },
+      "post": {
         "tags": [
-          "Products"
+          "products"
         ],
-        "operationId": "Products_Download",
+        "operationId": "CreateProduct",
+        "requestBody": {
+          "x-name": "command",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
-              "application/octet-stream": {
+              "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "binary"
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "products"
+        ],
+        "operationId": "UpdateProduct",
+        "requestBody": {
+          "x-name": "command",
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "404": {
+            "description": ""
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
                 }
               }
             }
@@ -248,12 +476,45 @@
         }
       }
     },
-    "/api/Products/Get/{id}": {
+    "/api/products/Download": {
       "get": {
         "tags": [
-          "Products"
+          "products"
         ],
-        "operationId": "Products_Get",
+        "operationId": "Download",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductsListVm"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/{id}": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "operationId": "GetProductDetail",
         "parameters": [
           {
             "name": "id",
@@ -276,66 +537,18 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/api/Products/Create": {
-      "post": {
-        "tags": [
-          "Products"
-        ],
-        "operationId": "Products_Create",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateProductCommand"
-              }
-            }
           },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "200": {
+          "404": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "integer",
-                  "format": "int32"
+                  "$ref": "#/components/schemas/ProductDetailVm"
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/api/Products/Update": {
-      "put": {
-        "tags": [
-          "Products"
-        ],
-        "operationId": "Products_Update",
-        "requestBody": {
-          "x-name": "command",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateProductCommand"
-              }
-            }
           },
-          "required": true,
-          "x-position": 1
-        },
-        "responses": {
-          "204": {
-            "description": ""
-          },
-          "default": {
+          "500": {
             "description": "",
             "content": {
               "application/json": {
@@ -346,14 +559,12 @@
             }
           }
         }
-      }
-    },
-    "/api/Products/Delete/{id}": {
-      "delete": {
+      },
+      "put": {
         "tags": [
-          "Products"
+          "products"
         ],
-        "operationId": "Products_Delete",
+        "operationId": "DeleteProduct",
         "parameters": [
           {
             "name": "id",
@@ -370,7 +581,10 @@
           "204": {
             "description": ""
           },
-          "default": {
+          "404": {
+            "description": ""
+          },
+          "500": {
             "description": "",
             "content": {
               "application/json": {
@@ -396,6 +610,51 @@
           },
           "name": {
             "type": "string"
+          }
+        }
+      },
+      "CategoriesListVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryLookupDto"
+            }
+          }
+        }
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "additionalProperties": {
+          "nullable": true
+        },
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": {}
           }
         }
       },
@@ -462,38 +721,29 @@
           }
         }
       },
-      "ProblemDetails": {
-        "type": "object",
-        "additionalProperties": {
-          "nullable": true
-        },
-        "properties": {
-          "type": {
-            "type": "string",
-            "nullable": true
+      "HttpValidationProblemDetails": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ProblemDetails"
           },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "detail": {
-            "type": "string",
-            "nullable": true
-          },
-          "instance": {
-            "type": "string",
-            "nullable": true
-          },
-          "extensions": {
+          {
             "type": "object",
-            "additionalProperties": {}
+            "additionalProperties": {
+              "nullable": true
+            },
+            "properties": {
+              "errors": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
           }
-        }
+        ]
       },
       "CreateCustomerCommand": {
         "type": "object",
