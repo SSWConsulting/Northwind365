@@ -47,7 +47,7 @@ public static class EndpointRouteBuilderExt
 public static class WebApplicationExt
 {
     public static RouteGroupBuilder MapApiGroup(this WebApplication app, string prefix) => app
-         .MapGroup($"api/{prefix}")
+        .MapGroup($"api/{prefix}")
         .WithTags(prefix)
         .WithOpenApi();
 }

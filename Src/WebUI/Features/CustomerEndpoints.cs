@@ -14,8 +14,9 @@ public static class CustomerEndpoints
     public static void MapCustomerEndpoints(this WebApplication app)
     {
         var group = app
-            .MapApiGroup("customers")
-            .RequireAuthorization();
+            .MapApiGroup("customers");
+            // TODO: Add back
+            //.RequireAuthorization();
 
         //[HttpGet]
         //[ProducesResponseType(StatusCodes.Status200OK)]
@@ -37,7 +38,7 @@ public static class CustomerEndpoints
         //}
         group
             .MapGet("/{id}", (string id, ISender sender, CancellationToken ct) => sender.Send(new GetCustomerDetailQuery { Id = id }, ct))
-            .WithName("GetCustomersList")
+            .WithName("GetCustomer")
             .ProducesGet<CustomersListVm>();
 
         //[HttpPost]
@@ -62,7 +63,7 @@ public static class CustomerEndpoints
         //    return NoContent();
         //}
         group
-            .MapPost("/", ([FromBody] UpdateCustomerCommand command, ISender sender, CancellationToken ct) => sender.Send(command, ct))
+            .MapPut("/", ([FromBody] UpdateCustomerCommand command, ISender sender, CancellationToken ct) => sender.Send(command, ct))
             .WithName("UpdateCustomer")
             .ProducesPut();
 

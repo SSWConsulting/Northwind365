@@ -37,7 +37,7 @@ public static class ProductEndpoints
         //    return File(vm.Content, vm.ContentType, vm.FileName);
         //}
         group
-            .MapGet("/", async (ISender sender, CancellationToken ct) =>
+            .MapGet("/Download", async (ISender sender, CancellationToken ct) =>
             {
                 var file = await sender.Send(new GetProductsFileQuery(), ct);
                 return TypedResults.File(file.Content, file.ContentType, file.FileName);
