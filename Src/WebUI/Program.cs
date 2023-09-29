@@ -6,6 +6,7 @@ using Northwind.Infrastructure.Identity;
 using Northwind.Persistence;
 using Northwind.Application;
 using Northwind.WebUI.Common;
+using Northwind.WebUI.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,9 +66,10 @@ app.UseStaticFiles();
 app.UseSpaStaticFiles();
 
 // TODO: Is this needed?
-//app.UseOpenApi();
+app.UseOpenApi();
 
-app.UseSwaggerUi3(settings => settings.DocumentPath = "/wwwroot/api/specification.json");
+app.UseSwaggerUi3(settings => settings.DocumentPath = "/api/specification.json");
+//app.UseSwaggerUi3(settings => settings.Path = "/api");
 
 app.UseRouting();
 
@@ -84,19 +86,20 @@ app.MapRazorPages();
 
 // TODO: Fix up
 //app.MapTodoItemEndpoints();
+app.MapCategoryEndpoints();
 
-app.UseSpa(spa =>
-{
-    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-    // see https://go.microsoft.com/fwlink/?linkid=864501
-
-    spa.Options.SourcePath = "ClientApp";
-
-    if (app.Environment.IsDevelopment())
-    {
-        spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-    }
-});
+// app.UseSpa(spa =>
+// {
+//     // To learn more about options for serving an Angular SPA from ASP.NET Core,
+//     // see https://go.microsoft.com/fwlink/?linkid=864501
+//
+//     spa.Options.SourcePath = "ClientApp";
+//
+//     if (app.Environment.IsDevelopment())
+//     {
+//         spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+//     }
+// });
 
 app.Run();
 

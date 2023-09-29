@@ -14,8 +14,7 @@ public static class DependencyInjection
         services.AddHealthChecks()
             .AddDbContextCheck<NorthwindDbContext>();
 
-        //services.AddOpenApiDocument(configure => configure.Title = "CleanArchitecture API");
-
+        services.AddOpenApiDocument(configure => configure.Title = "Northwind Traders API");
         services.AddEndpointsApiExplorer();
 
         // NOTE: This will be removed soon
@@ -33,7 +32,5 @@ public static class DependencyInjection
 
         // In production, the Angular files will be served from this directory
         services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/dist");
-
-        services.AddOpenApiDocument(configure => configure.Title = "Northwind Traders API");
     }
 }

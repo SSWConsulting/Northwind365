@@ -6,7 +6,6 @@
       "project": "WebUI.csproj",
       "msBuildProjectExtensionsPath": null,
       "configuration": "$(Configuration)",
-      //"configuration": null,
       "runtime": null,
       "targetFramework": null,
       "noBuild": true,
