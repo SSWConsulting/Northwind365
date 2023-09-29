@@ -14,8 +14,9 @@ public static class ProductEndpoints
     public static void MapProductEndpoints(this WebApplication app)
     {
         var group = app
-            .MapApiGroup("products")
-            .RequireAuthorization();
+            .MapApiGroup("products");
+        // TODO: Add back
+        //.RequireAuthorization();
 
         //[HttpGet]
         //[AllowAnonymous]

@@ -58,14 +58,13 @@ else
 }
 
 // TODO: Replace this with 'app.UseExceptionFilter();'
-app.UseCustomExceptionHandler();
+//app.UseCustomExceptionHandler();
 
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseSpaStaticFiles();
 
-// TODO: Is this needed?
 app.UseOpenApi();
 
 //app.UseSwaggerUi3(settings => settings.DocumentPath = "/api/specification.json");
@@ -79,8 +78,8 @@ app.UseIdentityServer();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-        "default",
-        "{controller}/{action=Index}/{id?}");
+         "default",
+         "{controller}/{action=Index}/{id?}");
 app.MapControllers();
 app.MapRazorPages();
 

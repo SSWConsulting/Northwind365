@@ -82,7 +82,7 @@ export class Client implements IClient {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(CategoryLookupDto.fromJS(item));
+                    result200.push(CategoryLookupDto.fromJS(item));
             }
             else {
                 result200 = <any>null;
@@ -468,7 +468,7 @@ export class Client implements IClient {
                 result200 = {} as any;
                 for (let key in resultData200) {
                     if (resultData200.hasOwnProperty(key))
-                        (<any>result200)![key] = resultData200[key] !== undefined ? resultData200[key] : <any>null;
+                        (<any>result200)[key] = resultData200[key] !== undefined ? resultData200[key] : <any>null;
                 }
             }
             else {
@@ -484,7 +484,7 @@ export class Client implements IClient {
                 result404 = {} as any;
                 for (let key in resultData404) {
                     if (resultData404.hasOwnProperty(key))
-                        (<any>result404)![key] = resultData404[key] !== undefined ? resultData404[key] : <any>null;
+                        (<any>result404)[key] = resultData404[key] !== undefined ? resultData404[key] : <any>null;
                 }
             }
             else {
@@ -950,7 +950,7 @@ export class CategoriesListVm implements ICategoriesListVm {
             if (Array.isArray(_data["categories"])) {
                 this.categories = [] as any;
                 for (let item of _data["categories"])
-                    this.categories!.push(CategoryLookupDto.fromJS(item));
+                    this.categories.push(CategoryLookupDto.fromJS(item));
             }
         }
     }
@@ -1011,7 +1011,7 @@ export class ProblemDetails implements IProblemDetails {
                 this.extensions = {} as any;
                 for (let key in _data["extensions"]) {
                     if (_data["extensions"].hasOwnProperty(key))
-                        (<any>this.extensions)![key] = _data["extensions"][key];
+                        (<any>this.extensions)[key] = _data["extensions"][key];
                 }
             }
         }
@@ -1074,7 +1074,7 @@ export class CustomersListVm implements ICustomersListVm {
             if (Array.isArray(_data["customers"])) {
                 this.customers = [] as any;
                 for (let item of _data["customers"])
-                    this.customers!.push(CustomerLookupDto.fromJS(item));
+                    this.customers.push(CustomerLookupDto.fromJS(item));
             }
         }
     }
@@ -1237,7 +1237,7 @@ export class HttpValidationProblemDetails extends ProblemDetails implements IHtt
                 this.errors = {} as any;
                 for (let key in _data["errors"]) {
                     if (_data["errors"].hasOwnProperty(key))
-                        (<any>this.errors)![key] = _data["errors"][key] !== undefined ? _data["errors"][key] : [];
+                        (<any>this.errors)[key] = _data["errors"][key] !== undefined ? _data["errors"][key] : [];
                 }
             }
         }
@@ -1444,7 +1444,7 @@ export class ProductsListVm implements IProductsListVm {
             if (Array.isArray(_data["products"])) {
                 this.products = [] as any;
                 for (let item of _data["products"])
-                    this.products!.push(ProductDto.fromJS(item));
+                    this.products.push(ProductDto.fromJS(item));
             }
             this.createEnabled = _data["createEnabled"];
         }

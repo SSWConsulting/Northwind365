@@ -9,7 +9,7 @@ public static class IdentityEndpoints
     {
         var group = app
                     .MapGroup("_configuration")
-                    .WithTags("Identity");
+                    .WithTags("identity");
 
         //[HttpGet("_configuration/{clientId}")]
         //public IActionResult GetClientRequestParameters([FromRoute] string clientId)

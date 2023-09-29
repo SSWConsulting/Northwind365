@@ -271,7 +271,7 @@
     "/_configuration/{clientId}": {
       "get": {
         "tags": [
-          "Identity"
+          "identity"
         ],
         "operationId": "GetClientRequestParameters",
         "parameters": [

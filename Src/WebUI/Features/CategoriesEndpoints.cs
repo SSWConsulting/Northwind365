@@ -9,8 +9,9 @@ public static class CategoryEndpoints
     public static void MapCategoryEndpoints(this WebApplication app)
     {
         var group = app
-            .MapApiGroup("categories")
-            .RequireAuthorization();
+            .MapApiGroup("categories");
+        // TODO: Add back
+        //.RequireAuthorization();
 
         //    [HttpGet]
         //    public async Task<ActionResult<IList<CategoryLookupDto>>> GetAll()
@@ -20,7 +21,7 @@ public static class CategoryEndpoints
         group
             .MapGet("/", (ISender sender, CancellationToken ct) => sender.Send(new GetCategoriesListQuery(), ct))
             .WithName("GetCategoriesList")
-            .ProducesGet<CategoryLookupDto[]>()
-            .RequireAuthorization();
+            .ProducesGet<CategoryLookupDto[]>();
+        //.RequireAuthorization();
     }
 }

@@ -1,11 +1,11 @@
-﻿{
+{
   "runtime": "Net70",
   "defaultVariables": null,
   "documentGenerator": {
     "aspNetCoreToOpenApi": {
       "project": "WebUI.csproj",
       "msBuildProjectExtensionsPath": null,
-      "configuration": "$(Configuration)",
+      "configuration": "Debug",
       "runtime": null,
       "targetFramework": null,
       "noBuild": true,
@@ -65,10 +65,11 @@
       "className": "{controller}Client",
       "moduleName": "",
       "namespace": "",
-      "typeScriptVersion": 2.7,
+      "typeScriptVersion": 2.4,
       "template": "Angular",
       "promiseType": "Promise",
       "httpClass": "HttpClient",
+      "withCredentials": false,
       "useSingletonProvider": false,
       "injectionTokenType": "InjectionToken",
       "rxJsVersion": 6.0,
@@ -94,6 +95,8 @@
       "markOptionalProperties": true,
       "generateCloneMethod": false,
       "typeStyle": "Class",
+      "enumStyle": "Enum",
+      "useLeafType": false,
       "classTypes": [],
       "extendedClasses": [],
       "extensionCode": null,
@@ -101,21 +104,25 @@
       "excludedTypeNames": [],
       "excludedParameterNames": [],
       "handleReferences": false,
+      "generateTypeCheckFunctions": false,
       "generateConstructorInterface": true,
       "convertConstructorInterfaceData": false,
       "importRequiredTypes": true,
       "useGetBaseUrlMethod": false,
       "baseUrlTokenName": "API_BASE_URL",
       "queryNullValue": "",
+      "useAbortSignal": false,
       "inlineNamedDictionaries": false,
       "inlineNamedAny": false,
+      "includeHttpContext": false,
       "templateDirectory": null,
       "typeNameGeneratorType": null,
       "propertyNameGeneratorType": null,
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "ClientApp/src/app/northwind-traders-api.ts"
+      "output": "ClientApp/src/app/northwind-traders-api.ts",
+      "newLineBehavior": "Auto"
     }
   }
 }
