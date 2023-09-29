@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Northwind.Domain.Exceptions;
 using Northwind.Domain.Common;
+using Northwind.Domain.Common.Base;
 
 namespace Northwind.Domain.ValueObjects;
 

@@ -2,6 +2,7 @@
 
 using Northwind.Application.Common.Interfaces;
 using Northwind.Domain.Common;
+using Northwind.Domain.Common.Base;
 using Northwind.Domain.Entities;
 
 namespace Northwind.Persistence;
@@ -57,13 +58,13 @@ public class NorthwindDbContext : DbContext, INorthwindDbContext
             if (entry.State == EntityState.Added)
             {
                 entry.Entity.CreatedBy = _currentUserService.GetUserId();
-                entry.Entity.Created = _dateTime.Now;
+                entry.Entity.CreatedAt = _dateTime.Now;
                 
             }
             else if (entry.State == EntityState.Modified)
             {
-                entry.Entity.LastModifiedBy = _currentUserService.GetUserId();
-                entry.Entity.LastModified = _dateTime.Now;
+                entry.Entity.UpdatedBy = _currentUserService.GetUserId();
+                entry.Entity.UpdatedAt = _dateTime.Now;
             }
         }
 

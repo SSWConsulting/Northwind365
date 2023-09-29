@@ -1,4 +1,5 @@
 ﻿using Northwind.Domain.Common;
+using Northwind.Domain.Common.Base;
 
 namespace Northwind.Domain.Entities;
 

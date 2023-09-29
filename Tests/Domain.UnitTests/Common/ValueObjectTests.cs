@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Northwind.Domain.Common;
+using Northwind.Domain.Common.Base;
+
 using Xunit;
 
 namespace Northwind.Domain.UnitTests.Common;
