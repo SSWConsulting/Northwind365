@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Northwind.Domain.Common;
-using Northwind.Domain.Common.Base;
+﻿using Northwind.Domain.Common.Base;
+using Northwind.Domain.Customers;
+using Northwind.Domain.Employees;
+using Northwind.Domain.Shipping;
 
-namespace Northwind.Domain.Entities;
+namespace Northwind.Domain.Orders;
 
 public class Order : AuditableEntity
 {

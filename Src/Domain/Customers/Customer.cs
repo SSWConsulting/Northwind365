@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Northwind.Domain.Orders;
 
-namespace Northwind.Domain.Entities;
+namespace Northwind.Domain.Customers;
 
 public class Customer
 {

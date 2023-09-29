@@ -1,7 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Northwind.Domain.Entities;
+
 using System.Threading;
 using System.Threading.Tasks;
+
+using Northwind.Domain.Categories;
+using Northwind.Domain.Customers;
+using Northwind.Domain.Employees;
+using Northwind.Domain.Orders;
+using Northwind.Domain.Products;
+using Northwind.Domain.Shipping;
+using Northwind.Domain.Supplying;
 
 namespace Northwind.Application.Common.Interfaces;
 

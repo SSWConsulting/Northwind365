@@ -5,7 +5,10 @@ using Northwind.Application.Customers.Queries.GetCustomersList;
 using Northwind.Application.Products.Queries.GetProductsList;
 using Northwind.Application.Products.Queries.GetProductDetail;
 using Northwind.Application.Products.Queries.GetProductsFile;
-using Northwind.Domain.Entities;
+using Northwind.Domain.Categories;
+using Northwind.Domain.Customers;
+using Northwind.Domain.Products;
+
 using Shouldly;
 using Xunit;
 

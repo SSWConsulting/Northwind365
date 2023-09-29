@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Northwind.Domain.Entities;
+﻿namespace Northwind.Domain.Employees;
 
 public class Region
 {

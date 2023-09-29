@@ -1,7 +1,7 @@
-﻿using Northwind.Domain.Common;
-using Northwind.Domain.Common.Base;
+﻿using Northwind.Domain.Common.Base;
+using Northwind.Domain.Products;
 
-namespace Northwind.Domain.Entities;
+namespace Northwind.Domain.Orders;
 
 public class OrderDetail : AuditableEntity
 {

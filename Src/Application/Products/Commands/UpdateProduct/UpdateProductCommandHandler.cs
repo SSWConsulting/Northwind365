@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Northwind.Application.Common.Exceptions;
 using Northwind.Application.Common.Interfaces;
-using Northwind.Domain.Entities;
+using Northwind.Domain.Products;
 
 namespace Northwind.Application.Products.Commands.UpdateProduct;
 

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Northwind.Domain.Products;
 
-namespace Northwind.Domain.Entities;
+namespace Northwind.Domain.Supplying;
 
 public class Supplier
 {

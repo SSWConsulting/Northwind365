@@ -1,10 +1,12 @@
 ﻿using MediatR;
 using Northwind.Application.Common.Exceptions;
 using Northwind.Application.Common.Interfaces;
-using Northwind.Domain.Entities;
+
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
+using Northwind.Domain.Customers;
 
 namespace Northwind.Application.Customers.Commands.DeleteCustomer;
 

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Northwind.Application.Common.Mappings;
-using Northwind.Domain.Entities;
+using Northwind.Domain.Categories;
 
 namespace Northwind.Application.Categories.Queries.GetCategoriesList;
 

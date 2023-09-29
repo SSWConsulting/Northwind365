@@ -3,9 +3,11 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Northwind.Application.Common.Exceptions;
 using Northwind.Application.Common.Interfaces;
-using Northwind.Domain.Entities;
+
 using System.Threading;
 using System.Threading.Tasks;
+
+using Northwind.Domain.Products;
 
 namespace Northwind.Application.Products.Queries.GetProductDetail;
 

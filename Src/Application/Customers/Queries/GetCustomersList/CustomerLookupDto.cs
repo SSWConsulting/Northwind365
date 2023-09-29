@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Northwind.Application.Common.Mappings;
-using Northwind.Domain.Entities;
+using Northwind.Domain.Customers;
 
 namespace Northwind.Application.Customers.Queries.GetCustomersList;
 

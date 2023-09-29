@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Northwind.Domain.Common;
-using Northwind.Domain.Common.Base;
+﻿using Northwind.Domain.Common.Base;
+using Northwind.Domain.Orders;
 
-namespace Northwind.Domain.Entities;
+namespace Northwind.Domain.Employees;
 
 public class Employee : AuditableEntity
 {

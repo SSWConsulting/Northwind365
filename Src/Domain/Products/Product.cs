@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using Northwind.Domain.Common;
+﻿using Northwind.Domain.Categories;
 using Northwind.Domain.Common.Base;
+using Northwind.Domain.Orders;
+using Northwind.Domain.Supplying;
 
-namespace Northwind.Domain.Entities;
+namespace Northwind.Domain.Products;
 
 public class Product : AuditableEntity
 {

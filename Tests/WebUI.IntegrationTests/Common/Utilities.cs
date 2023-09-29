@@ -3,7 +3,11 @@ using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
-using Northwind.Domain.Entities;
+
+using Northwind.Domain.Categories;
+using Northwind.Domain.Customers;
+using Northwind.Domain.Products;
+using Northwind.Domain.Supplying;
 using Northwind.Persistence;
 
 namespace Northwind.WebUI.IntegrationTests.Common;
