@@ -29,4 +29,23 @@ public class Order : AuditableEntity
     public Employee Employee { get; set; }
     public Shipper Shipper { get; set; }
     public ICollection<OrderDetail> OrderDetails { get; private set; }
+
+    public void AddOrderDetails(OrderDetail detail)
+    {
+        var existing = OrderDetails.SingleOrDefault(x => x.ProductId == detail.ProductId);
+        if (existing != null)
+        {
+            existing.Quantity += detail.Quantity;
+        }
+        else
+        {
+            OrderDetails.Add(detail);
+        }
+    }
+
+    public void AddOrderDetails(IEnumerable<OrderDetail> details)
+    {
+        foreach (var detail in details)
+            this.AddOrderDetails(detail);
+    }
 }

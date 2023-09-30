@@ -12,24 +12,30 @@ public record CustomerId(Guid Value);
 
 public class Customer : BaseEntity<CustomerId>
 {
-    public Customer(string companyName, string contactName, string contactTitle, Address address, string phone, string fax)
+    private Customer() { }
+
+    public static Customer Create(string companyName, string contactName, string contactTitle, Address address,
+        string phone, string fax)
     {
-        Id = new CustomerId(Guid.NewGuid());
-        CompanyName = companyName;
-        Phone = phone;
-        Fax = fax;
-        UpdateAddress(address);
-        UpdateContact(contactName, contactTitle);
+        var customer = new Customer()
+        {
+            Id = new CustomerId(Guid.NewGuid()), CompanyName = companyName, Phone = phone, Fax = fax,
+        };
+
+        customer.UpdateAddress(address);
+        customer.UpdateContact(contactName, contactTitle);
+
+        return customer;
     }
 
-    public string CompanyName { get; private set; }
+    public string CompanyName { get; private set; } = null!;
     public string ContactName { get; private set; } = null!;
     public string ContactTitle { get; private set; } = null!;
 
     public Address Address { get; private set; } = null!;
 
-    public string Phone { get; private set; }
-    public string Fax { get; private set; }
+    public string Phone { get; private set; } = null!;
+    public string Fax { get; private set; } = null!;
 
     private List<Order> _orders = new();
 

@@ -11,7 +11,7 @@ internal static class AddressConfiguration
         priceBuilder.Property(m => m.Line1).HasMaxLength(60);
         priceBuilder.Property(m => m.City).HasMaxLength(50);
         priceBuilder.Property(m => m.PostalCode).HasMaxLength(10);
-        priceBuilder.Property(m => m.Region).HasMaxLength(15);
+        priceBuilder.Property(m => m.Region).HasMaxLength(100);
         priceBuilder.Property(m => m.Country).HasMaxLength(100);
     }
 }

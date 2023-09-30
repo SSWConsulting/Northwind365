@@ -7,7 +7,7 @@ namespace Northwind.Application.UnitTests.Common;
 
 public static class CustomerFactory
 {
-    private static Faker<Customer> _faker = new Faker<Customer>().CustomInstantiator(f => new Customer(
+    private static Faker<Customer> _faker = new Faker<Customer>().CustomInstantiator(f => Customer.Create(
         f.Company.CompanyName(0),
         f.Name.FullName(),
         f.Name.JobTitle(),

@@ -89,7 +89,7 @@ public class NorthwindDbContextInitializer
         if (_dbContext.Customers.Any())
             return;
 
-        var faker = new Faker<Customer>().CustomInstantiator(f => new Customer(
+        var faker = new Faker<Customer>().CustomInstantiator(f => Customer.Create(
             f.Company.CompanyName(0),
             f.Name.FullName(),
             f.Name.JobTitle(),
@@ -253,7 +253,7 @@ public class NorthwindDbContextInitializer
             ProductName = f.Commerce.ProductName(),
             Supplier = f.PickRandom(suppliers),
             Category = f.PickRandom(categories),
-            QuantityPerUnit = f.Lorem.Sentence(3),
+            QuantityPerUnit = f.Lorem.Sentence(2),
             UnitPrice = f.Random.Decimal(1, 100),
             UnitsInStock = f.Random.Short(1, 100),
             UnitsOnOrder = f.Random.Short(1, 100),
@@ -295,20 +295,20 @@ public class NorthwindDbContextInitializer
             Freight = f.Random.Decimal(1, 100),
             ShipName = f.Company.CompanyName(),
             ShipAddress = AddressFaker.Generate(),
-        }.AddOrderDetails(orderDetailFaker.Generate(f.Random.Int(1, 10))));
+        });
 
         var orders = faker.Generate(NumOrders);
+        var randomFaker = new Faker();
+
+        foreach (var order in orders)
+        {
+            var orderDetails = orderDetailFaker.Generate(randomFaker.Random.Int(1, 10));
+            order.AddOrderDetails(orderDetails);
+        }
+
         await _dbContext.Orders.AddRangeAsync(orders, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
-
-    // private static byte[] StringToByteArray(string hex)
-    // {
-    //     return Enumerable.Range(0, hex.Length)
-    //         .Where(x => x % 2 == 0)
-    //         .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-    //         .ToArray();
-    // }
 
     private async Task SeedUsersAsync(CancellationToken cancellationToken)
     {
@@ -336,16 +336,25 @@ public class NorthwindDbContextInitializer
     }
 }
 
-internal static class OrderExtensions
-{
-    public static Order AddOrderDetails(this Order order, IEnumerable<OrderDetail> orderDetails)
-    {
-        foreach (var orderDetail in orderDetails)
-            order.OrderDetails.Add(orderDetail);
-
-        return order;
-    }
-}
+// internal static class OrderExtensions
+// {
+//
+//
+//     public static Order AddOrderDetails(this Order order, int numOrderDetails, IEnumerable<Product> products)
+//     {
+//
+//
+//         for (int i = 0; i < numOrderDetails; i++)
+//         {
+//
+//             order.OrderDetails.Add(orderDetail);
+//         }
+//
+//
+//
+//         return order;
+//     }
+// }
 
 public static class NameExt
 {

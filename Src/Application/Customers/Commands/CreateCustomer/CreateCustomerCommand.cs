@@ -47,7 +47,7 @@ public class CreateCustomerCommand : IRequest
 
         public async Task Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
-            var entity = new Customer
+            var entity = Customer.Create
             (
                 request.CompanyName,
                 request.ContactName,

@@ -17,7 +17,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .IsRequired()
             .HasMaxLength(40);
 
-        builder.Property(e => e.QuantityPerUnit).HasMaxLength(20);
+        builder.Property(e => e.QuantityPerUnit).HasMaxLength(30);
 
         builder.Property(e => e.ReorderLevel).HasDefaultValueSql("((0))");
 

@@ -19,7 +19,7 @@ public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
 
         builder.Property(e => e.ContactName).HasMaxLength(30);
 
-        builder.Property(e => e.ContactTitle).HasMaxLength(30);
+        builder.Property(e => e.ContactTitle).HasMaxLength(50);
 
         builder.Property(e => e.Fax).HasMaxLength(24);
 
