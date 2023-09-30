@@ -37,24 +37,21 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
                 var sp = services.BuildServiceProvider();
 
                 // Create a scope to obtain a reference to the database
-                using (var scope = sp.CreateScope())
+                using var scope = sp.CreateScope();
+                var scopedServices = scope.ServiceProvider;
+                var logger = scopedServices.GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
+
+                try
                 {
-                    var scopedServices = scope.ServiceProvider;
-                    var context = scopedServices.GetRequiredService<NorthwindDbContext>();
-                    var logger = scopedServices.GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
-
-                    // Ensure the database is created.
-                    context.Database.EnsureCreated();
-
-                    try
-                    {
-                        // Seed the database with test data.
-                        Utilities.InitializeDbForTests(context);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, "An error occurred seeding the database with test messages. Error: {Message}", ex.Message);
-                    }
+                    // Initialise and seed database
+                    var initializer = scope.ServiceProvider.GetRequiredService<NorthwindDbContextInitializer>();
+                    initializer.InitializeAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    // TODO: Consider adding profiles to specify different amounts of data to seed
+                    initializer.SeedAsync().ConfigureAwait(false).GetAwaiter().GetResult();;
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "An error occurred seeding the database with test messages. Error: {Message}", ex.Message);
                 }
             })
             .UseEnvironment("Test");

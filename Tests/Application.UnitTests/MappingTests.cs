@@ -5,6 +5,7 @@ using Northwind.Application.Customers.Queries.GetCustomersList;
 using Northwind.Application.Products.Queries.GetProductsList;
 using Northwind.Application.Products.Queries.GetProductDetail;
 using Northwind.Application.Products.Queries.GetProductsFile;
+using Northwind.Application.UnitTests.Common;
 using Northwind.Domain.Categories;
 using Northwind.Domain.Customers;
 using Northwind.Domain.Products;
@@ -45,7 +46,7 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
     [Fact]
     public void ShouldMapCustomerToCustomerLookupDto()
     {
-        var entity = new Customer();
+        var entity = CustomerFactory.Generate();
 
         var result = _mapper.Map<CustomerLookupDto>(entity);
 
@@ -89,7 +90,7 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
     [Fact]
     public void ShouldMapCustomerToCustomerDetailVm()
     {
-        var entity = new Customer();
+        var entity = CustomerFactory.Generate();
 
         var result = _mapper.Map<CustomerDetailVm>(entity);
 

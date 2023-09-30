@@ -1,12 +1,8 @@
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Northwind.Application.System.Commands.SeedSampleData;
+using Northwind.Application;
 using Northwind.Infrastructure;
 using Northwind.Infrastructure.Identity;
 using Northwind.Persistence;
-using Northwind.Application;
-using Northwind.Application.Common.Interfaces;
-using Northwind.WebUI.Common;
 using Northwind.WebUI.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
