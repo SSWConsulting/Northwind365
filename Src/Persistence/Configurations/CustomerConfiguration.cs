@@ -9,7 +9,7 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
 {
     public void Configure(EntityTypeBuilder<Customer> builder)
     {
-        builder.Property(e => e.CustomerId)
+        builder.Property(e => e.Id)
             .HasColumnName("CustomerID")
             .HasMaxLength(5)
             .ValueGeneratedNever();

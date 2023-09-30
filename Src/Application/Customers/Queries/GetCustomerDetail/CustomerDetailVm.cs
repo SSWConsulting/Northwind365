@@ -20,8 +20,8 @@ public class CustomerDetailVm : IMapFrom<Customer>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<Customer, CustomerDetailVm>()
-            .ForMember(d => d.Id, opt => opt.MapFrom(s => s.CustomerId));
+        profile.CreateMap<Customer, CustomerDetailVm>();
+        //.ForMember(d => d.Id, opt => opt.MapFrom(s => s.CustomerId));
     }
 
     /*

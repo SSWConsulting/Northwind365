@@ -16,7 +16,7 @@ public class Category : BaseEntity<int>
     public string Description { get; }
     public byte[] Picture { get; }
 
-    private readonly IList<Product> _products = new List<Product>();
+    private readonly List<Product> _products = new();
 
     public IReadOnlyList<Product> Products => _products.AsReadOnly();
 }

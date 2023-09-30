@@ -36,22 +36,18 @@ public class UpdateCustomerCommand : IRequest
         public async Task Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
             var entity = await _context.Customers
-                .SingleOrDefaultAsync(c => c.CustomerId == request.Id, cancellationToken);
+                .SingleOrDefaultAsync(c => c.Id == request.Id, cancellationToken);
 
             if (entity == null)
             {
                 throw new NotFoundException(nameof(Customer), request.Id);
             }
 
-            entity.Address = request.Address;
-            entity.City = request.City;
-            entity.CompanyName = request.CompanyName;
-            entity.ContactName = request.ContactName;
-            entity.ContactTitle = request.ContactTitle;
-            entity.Country = request.Country;
-            entity.Fax = request.Fax;
-            entity.Phone = request.Phone;
-            entity.PostalCode = request.PostalCode;
+            entity.UpdateAddress(request.Address, request.PostalCode, request.City, request.Region, request.Country);
+            entity.UpdateContact(request.ContactName, request.ContactTitle);
+            entity.UpdatePhone(request.Phone);
+            entity.UpdateFax(request.Fax);
+            entity.UpdateCompanyName(request.CompanyName);
 
             await _context.SaveChangesAsync(cancellationToken);
         }

@@ -29,7 +29,7 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
             throw new NotFoundException(nameof(Customer), request.Id);
         }
 
-        var hasOrders = _context.Orders.Any(o => o.CustomerId == entity.CustomerId);
+        var hasOrders = _context.Orders.Any(o => o.CustomerId == entity.Id);
         if (hasOrders)
         {
             throw new DeleteFailureException(nameof(Customer), request.Id, "There are existing orders associated with this customer.");

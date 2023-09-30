@@ -46,24 +46,24 @@ public class CreateCustomerCommand : IRequest
         public async Task Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
         {
             var entity = new Customer
-            {
-                CustomerId = request.Id,
-                Address = request.Address,
-                City = request.City,
-                CompanyName = request.CompanyName,
-                ContactName = request.ContactName,
-                ContactTitle = request.ContactTitle,
-                Country = request.Country,
-                Fax = request.Fax,
-                Phone = request.Phone,
-                PostalCode = request.PostalCode
-            };
+            (
+                request.Id,
+                request.Address,
+                request.City,
+                request.CompanyName,
+                request.ContactName,
+                request.ContactTitle,
+                request.Country,
+                request.Fax,
+                request.Phone,
+                request.PostalCode
+            );
 
             _context.Customers.Add(entity);
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            await _mediator.Publish(new CustomerCreated { CustomerId = entity.CustomerId }, cancellationToken);
+            await _mediator.Publish(new CustomerCreated { CustomerId = entity.Id }, cancellationToken);
         }
     }
 }
