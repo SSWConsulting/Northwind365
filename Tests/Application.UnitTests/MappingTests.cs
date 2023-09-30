@@ -34,7 +34,7 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
     [Fact]
     public void ShouldMapCategoryToCategoryLookupDto()
     {
-        var entity = new Category();
+        var entity = new Category("category", "description", new byte[] { 0x20, 0x20, 0x20 });
 
         var result = _mapper.Map<CategoryLookupDto>(entity);
 

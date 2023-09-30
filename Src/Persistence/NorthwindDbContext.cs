@@ -63,14 +63,11 @@ public class NorthwindDbContext : DbContext, INorthwindDbContext
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.CreatedBy = _currentUserService.GetUserId();
-                entry.Entity.CreatedAt = _dateTime.Now;
-                
+                entry.Entity.SetCreated(_dateTime.Now, _currentUserService.GetUserId());
             }
             else if (entry.State == EntityState.Modified)
             {
-                entry.Entity.UpdatedBy = _currentUserService.GetUserId();
-                entry.Entity.UpdatedAt = _dateTime.Now;
+                entry.Entity.SetUpdated(_dateTime.Now, _currentUserService.GetUserId());
             }
         }
 

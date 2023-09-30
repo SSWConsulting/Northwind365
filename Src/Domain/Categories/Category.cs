@@ -1,18 +1,22 @@
-﻿using Northwind.Domain.Products;
+﻿using Northwind.Domain.Common.Base;
+using Northwind.Domain.Products;
 
 namespace Northwind.Domain.Categories;
 
-public class Category
+public class Category : BaseEntity<int>
 {
-    public Category()
+    public Category(string categoryName, string description, byte[] picture)
     {
-        Products = new HashSet<Product>();
+        CategoryName = categoryName;
+        Description = description;
+        Picture = picture;
     }
 
-    public int CategoryId { get; set; }
-    public string CategoryName { get; set; }
-    public string Description { get; set; }
-    public byte[] Picture { get; set; }
+    public string CategoryName { get; }
+    public string Description { get; }
+    public byte[] Picture { get; }
 
-    public ICollection<Product> Products { get; private set; }
+    private readonly IList<Product> _products = new List<Product>();
+
+    public IReadOnlyList<Product> Products => _products.AsReadOnly();
 }

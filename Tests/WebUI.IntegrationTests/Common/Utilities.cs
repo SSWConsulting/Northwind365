@@ -60,10 +60,11 @@ public class Utilities
         context.Suppliers.Add(supplier1);
 
         var category1 = new Category
-        {
-            CategoryName = "Beverages",
-            Description = "Soft drinks, coffees, teas, beers, and ales"
-        };
+        (
+            "Beverages",
+            "Soft drinks, coffees, teas, beers, and ales",
+            new byte[]{0x00}
+        );
 
         context.Categories.Add(category1);
 
