@@ -59,7 +59,7 @@
     </Target>-->
 
     <Target Name="SwaggerPostBuildClientAndSpec" AfterTargets="PostBuildEvent">
-        <!-- nswag will run all *.nswag and nswag.json by default -->       
+        <!-- nswag will run all *.nswag and nswag.json by default -->
         <Exec WorkingDirectory="$(ProjectDir)" Command="$(NSwagExe_Net70) run /variables:Configuration=$(Configuration)" />
     </Target>
 

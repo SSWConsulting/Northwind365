@@ -1,4 +1,8 @@
-﻿using Bogus;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+
+using Bogus;
+using Bogus.DataSets;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -12,8 +16,11 @@ using Northwind.Domain.Products;
 using Northwind.Domain.Shipping;
 using Northwind.Domain.Supplying;
 
+using Address = Northwind.Domain.Common.Address;
+
 namespace Northwind.Persistence;
 
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class NorthwindDbContextInitializer
 {
     private readonly ILogger<NorthwindDbContextInitializer> _logger;
@@ -29,7 +36,8 @@ public class NorthwindDbContextInitializer
     private const int NumProducts = 100;
     private const int NumOrders = 1000;
 
-    public NorthwindDbContextInitializer(ILogger<NorthwindDbContextInitializer> logger, NorthwindDbContext dbContext, IUserManager userManager)
+    public NorthwindDbContextInitializer(ILogger<NorthwindDbContextInitializer> logger, NorthwindDbContext dbContext,
+        IUserManager userManager)
     {
         _logger = logger;
         _dbContext = dbContext;
@@ -42,7 +50,9 @@ public class NorthwindDbContextInitializer
         {
             if (_dbContext.Database.IsSqlServer())
             {
-                await _dbContext.Database.MigrateAsync();
+                await _dbContext.Database.EnsureDeletedAsync();
+                await _dbContext.Database.EnsureCreatedAsync();
+                //await _dbContext.Database.MigrateAsync();
             }
         }
         catch (Exception e)
@@ -80,21 +90,16 @@ public class NorthwindDbContextInitializer
             return;
 
         var faker = new Faker<Customer>().CustomInstantiator(f => new Customer(
-            //CustomerId = "ALFKI",
             f.Company.CompanyName(0),
             f.Name.FullName(),
             f.Name.JobTitle(),
-            f.Address.StreetAddress(),
-            f.Address.City(),
-            f.Address.State(),
-            f.Address.ZipCode(),
-            f.Address.Country(),
+            AddressFaker.Generate(),
             f.Phone.PhoneNumber(),
             f.Phone.PhoneNumber()
         ));
 
         var customers = faker.Generate(NumCustomers);
-        await _dbContext.Customers.AddRangeAsync(customers);
+        await _dbContext.Customers.AddRangeAsync(customers, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
@@ -141,7 +146,7 @@ public class NorthwindDbContextInitializer
         if (_dbContext.Territories.Any())
             return;
 
-        var faker2 = new Faker();
+        var faker = new Faker();
 
         foreach (var region in await _dbContext.Region.ToListAsync(cancellationToken: cancellationToken))
         {
@@ -149,13 +154,23 @@ public class NorthwindDbContextInitializer
             {
                 _dbContext.Territories.Add(new Territory
                 {
-                    TerritoryId = faker2.Commerce.Ean8(), RegionId = region.RegionId
+                    TerritoryId = faker.Commerce.Ean8(),
+                    RegionId = region.RegionId,
+                    TerritoryDescription = faker.Lorem.Sentence(3)
                 });
             }
         }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
+
+    private Faker<Address> AddressFaker = new Faker<Address>()
+        .CustomInstantiator(f => new Address(
+            f.Address.StreetAddress(),
+            f.Address.City(),
+            f.Address.Country(),
+            f.Address.ZipCode(),
+            f.Address.State()));
 
     private async Task SeedEmployeesAsync(CancellationToken cancellationToken)
     {
@@ -164,24 +179,20 @@ public class NorthwindDbContextInitializer
 
         var territories = await _dbContext.Territories.ToListAsync();
 
-        var faker = new Faker<Employee>()
+            var faker = new Faker<Employee>()
             .CustomInstantiator(f => new Employee
             {
-                Address = f.Address.StreetAddress(),
                 BirthDate = f.Date.Past(50),
-                City = f.Address.City(),
-                Country = f.Address.Country(),
+                Address = AddressFaker.Generate(),
                 Extension = f.Random.ReplaceNumbers("####"),
                 FirstName = f.Name.FirstName(),
                 HireDate = f.Date.Past(10),
                 HomePhone = f.Phone.PhoneNumber(),
                 LastName = f.Name.LastName(),
                 Notes = f.Lorem.Sentence(10),
-                PostalCode = f.Address.ZipCode(),
-                Region = f.Address.State(),
                 Title = f.Name.JobTitle(),
                 TitleOfCourtesy = f.Name.Prefix(),
-                Photo = StringToByteArray(f.Image.PicsumUrl()),
+                Photo = f.Random.Bytes(5),
                 PhotoPath = f.Image.PicsumUrl(),
                 EmployeeTerritories = f.PickRandom(territories, f.Random.Int(2, 10))
                     .Select(t => new EmployeeTerritory { TerritoryId = t.TerritoryId }).ToList()
@@ -217,11 +228,7 @@ public class NorthwindDbContextInitializer
                 CompanyName = f.Company.CompanyName(),
                 ContactName = f.Name.FullName(),
                 ContactTitle = f.Name.JobTitle(),
-                Address = f.Address.StreetAddress(),
-                City = f.Address.City(),
-                Region = f.Address.State(),
-                PostalCode = f.Address.ZipCode(),
-                Country = f.Address.Country(),
+                Address = AddressFaker.Generate(),
                 Phone = f.Phone.PhoneNumber(),
                 Fax = f.Phone.PhoneNumber(),
                 HomePage = f.Internet.Url()
@@ -287,26 +294,21 @@ public class NorthwindDbContextInitializer
             Shipper = f.PickRandom(shippers),
             Freight = f.Random.Decimal(1, 100),
             ShipName = f.Company.CompanyName(),
-            ShipAddress = f.Address.StreetAddress(),
-            ShipCity = f.Address.City(),
-            ShipRegion = f.Address.State(),
-            ShipPostalCode = f.Address.ZipCode(),
-            ShipCountry = f.Address.Country(),
+            ShipAddress = AddressFaker.Generate(),
         }.AddOrderDetails(orderDetailFaker.Generate(f.Random.Int(1, 10))));
-
 
         var orders = faker.Generate(NumOrders);
         await _dbContext.Orders.AddRangeAsync(orders, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    private static byte[] StringToByteArray(string hex)
-    {
-        return Enumerable.Range(0, hex.Length)
-            .Where(x => x % 2 == 0)
-            .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
-            .ToArray();
-    }
+    // private static byte[] StringToByteArray(string hex)
+    // {
+    //     return Enumerable.Range(0, hex.Length)
+    //         .Where(x => x % 2 == 0)
+    //         .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
+    //         .ToArray();
+    // }
 
     private async Task SeedUsersAsync(CancellationToken cancellationToken)
     {
@@ -342,5 +344,30 @@ internal static class OrderExtensions
             order.OrderDetails.Add(orderDetail);
 
         return order;
+    }
+}
+
+public static class NameExt
+{
+    private static List<string> _jobTitles = new()
+    {
+        "Accountant",
+        "Assistant Sales Rep",
+        "Chief Executive Officer",
+        "Chief Financial Officer",
+        "Chief Marketing Officer",
+        "Chief Operating Officer",
+        "Chief Technology Officer",
+        "Controller",
+        "Customer Service Rep",
+        "Design Engineer",
+        "Owner",
+        "Manager"
+    };
+
+    public static string JobTitleShort(this Name name)
+    {
+        var faker = new Faker();
+        return faker.PickRandom(_jobTitles);
     }
 }

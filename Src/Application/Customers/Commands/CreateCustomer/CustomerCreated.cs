@@ -4,11 +4,13 @@ using Northwind.Application.Notifications.Models;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Northwind.Domain.Customers;
+
 namespace Northwind.Application.Customers.Commands.CreateCustomer;
 
 public class CustomerCreated : INotification
 {
-    public string CustomerId { get; set; }
+    public CustomerId CustomerId { get; set; }
 
     public class CustomerCreatedHandler : INotificationHandler<CustomerCreated>
     {

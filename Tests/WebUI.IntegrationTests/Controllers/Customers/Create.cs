@@ -22,7 +22,8 @@ public class Create : IClassFixture<CustomWebApplicationFactory<Program>>
 
         var command = new CreateCustomerCommand
         {
-            Id = "ABCDE",
+            // TODO: Look up ID from DB
+            Id = Guid.NewGuid(),
             Address = "Obere Str. 57",
             City = "Berlin",
             CompanyName = "Alfreds Futterkiste",

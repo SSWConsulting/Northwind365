@@ -25,17 +25,9 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.Property(e => e.RequiredDate).HasColumnType("datetime");
 
-        builder.Property(e => e.ShipAddress).HasMaxLength(60);
-
-        builder.Property(e => e.ShipCity).HasMaxLength(15);
-
-        builder.Property(e => e.ShipCountry).HasMaxLength(15);
-
         builder.Property(e => e.ShipName).HasMaxLength(40);
 
-        builder.Property(e => e.ShipPostalCode).HasMaxLength(10);
-
-        builder.Property(e => e.ShipRegion).HasMaxLength(15);
+        builder.OwnsOne(e => e.ShipAddress, AddressConfiguration.BuildAction);
 
         builder.Property(e => e.ShippedDate).HasColumnType("datetime");
 

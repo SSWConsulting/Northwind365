@@ -1,33 +1,33 @@
-﻿using Northwind.Domain.Common.Base;
+﻿using System.Runtime.CompilerServices;
+
+using Ardalis.GuardClauses;
+
+using Northwind.Domain.Common;
+using Northwind.Domain.Common.Base;
 using Northwind.Domain.Orders;
 
 namespace Northwind.Domain.Customers;
 
-public class Customer : BaseEntity<string>
+public record CustomerId(Guid Value);
+
+public class Customer : BaseEntity<CustomerId>
 {
-    public Customer(string companyName, string contactName, string contactTitle, string address, string city,
-        string region, string postalCode, string country, string phone, string fax)
+    public Customer(string companyName, string contactName, string contactTitle, Address address, string phone, string fax)
     {
+        Id = new CustomerId(Guid.NewGuid());
         CompanyName = companyName;
-        ContactName = contactName;
-        ContactTitle = contactTitle;
-        Address = address;
-        City = city;
-        Region = region;
-        PostalCode = postalCode;
-        Country = country;
         Phone = phone;
         Fax = fax;
+        UpdateAddress(address);
+        UpdateContact(contactName, contactTitle);
     }
 
     public string CompanyName { get; private set; }
-    public string ContactName { get; private set; }
-    public string ContactTitle { get; private set; }
-    public string Address { get; private set; }
-    public string City { get; private set; }
-    public string Region { get; private set; }
-    public string PostalCode { get; private set; }
-    public string Country { get; private set; }
+    public string ContactName { get; private set; } = null!;
+    public string ContactTitle { get; private set; } = null!;
+
+    public Address Address { get; private set; } = null!;
+
     public string Phone { get; private set; }
     public string Fax { get; private set; }
 
@@ -35,19 +35,15 @@ public class Customer : BaseEntity<string>
 
     public IReadOnlyList<Order> Orders => _orders.AsReadOnly();
 
-    public void UpdateAddress(string address, string postalCode, string city, string region, string country)
+    public void UpdateAddress(Address address)
     {
         Address = address;
-        PostalCode = postalCode;
-        City = city;
-        Region = region;
-        Country = country;
     }
 
     public void UpdateContact(string contactName, string contactTitle)
     {
-        ContactName = contactName;
-        ContactTitle = contactTitle;
+        ContactName = Guard.Against.StringLength(contactName, 30);
+        ContactTitle = Guard.Against.StringLength(contactTitle, 50);
     }
 
     public void UpdatePhone(string phone)
@@ -63,5 +59,19 @@ public class Customer : BaseEntity<string>
     public void UpdateCompanyName(string companyName)
     {
         CompanyName = companyName;
+    }
+}
+
+public static class StringLengthGuard
+{
+    public static string StringLength(this IGuardClause guardClause,
+        string input,
+        int maxLength,
+        [CallerArgumentExpression("input")] string? parameterName = null)
+    {
+        if (input?.Length > maxLength)
+            throw new ArgumentException($"Cannot exceed string length of {maxLength}", parameterName);
+
+        return input!;
     }
 }

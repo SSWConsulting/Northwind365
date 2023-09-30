@@ -3,6 +3,8 @@ using Moq;
 using Northwind.Application.Customers.Commands.CreateCustomer;
 using System.Threading;
 using Northwind.Application.UnitTests.Common;
+using Northwind.Domain.Customers;
+
 using Xunit;
 
 namespace Northwind.Application.UnitTests.Customers.Commands.CreateCustomer;
@@ -15,10 +17,10 @@ public class CreateCustomerCommandTests : CommandTestBase
         // Arrange
         var mediatorMock = new Mock<IMediator>();
         var sut = new CreateCustomerCommand.Handler(_context, mediatorMock.Object);
-        var newCustomerId = "QAZQ1";
+        var newCustomerId = new CustomerId(Guid.NewGuid());
 
         // Act
-        var result = sut.Handle(new CreateCustomerCommand { Id = newCustomerId }, CancellationToken.None);
+        var result = sut.Handle(new CreateCustomerCommand { Id = newCustomerId.Value }, CancellationToken.None);
 
 
         // Assert

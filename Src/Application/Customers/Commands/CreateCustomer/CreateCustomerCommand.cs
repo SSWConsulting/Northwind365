@@ -1,16 +1,18 @@
 ﻿using MediatR;
+
 using Northwind.Application.Common.Interfaces;
 
 using System.Threading;
 using System.Threading.Tasks;
 
+using Northwind.Domain.Common;
 using Northwind.Domain.Customers;
 
 namespace Northwind.Application.Customers.Commands.CreateCustomer;
 
 public class CreateCustomerCommand : IRequest
 {
-    public string Id { get; set; }
+    public Guid Id { get; set; }
 
     public string Address { get; set; }
 
@@ -47,16 +49,18 @@ public class CreateCustomerCommand : IRequest
         {
             var entity = new Customer
             (
-                request.Id,
-                request.Address,
-                request.City,
                 request.CompanyName,
                 request.ContactName,
                 request.ContactTitle,
-                request.Country,
+                new Address(
+                    request.Address,
+                    request.City,
+                    request.Region,
+                    request.PostalCode,
+                    request.Country
+                ),
                 request.Fax,
-                request.Phone,
-                request.PostalCode
+                request.Phone
             );
 
             _context.Customers.Add(entity);

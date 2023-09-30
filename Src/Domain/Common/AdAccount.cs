@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Northwind.Domain.Common.Base;
 using Northwind.Domain.Exceptions;
-using Northwind.Domain.Common;
-using Northwind.Domain.Common.Base;
 
-namespace Northwind.Domain.ValueObjects;
+namespace Northwind.Domain.Common;
 
 public class AdAccount : ValueObject
 {
