@@ -50,9 +50,9 @@ public class NorthwindDbContextInitializer
         {
             if (_dbContext.Database.IsSqlServer())
             {
-                await _dbContext.Database.EnsureDeletedAsync();
-                await _dbContext.Database.EnsureCreatedAsync();
-                //await _dbContext.Database.MigrateAsync();
+                // await _dbContext.Database.EnsureDeletedAsync();
+                //await _dbContext.Database.EnsureCreatedAsync();
+                await _dbContext.Database.MigrateAsync();
             }
         }
         catch (Exception e)
@@ -179,7 +179,7 @@ public class NorthwindDbContextInitializer
 
         var territories = await _dbContext.Territories.ToListAsync();
 
-            var faker = new Faker<Employee>()
+        var faker = new Faker<Employee>()
             .CustomInstantiator(f => new Employee
             {
                 BirthDate = f.Date.Past(50),
@@ -333,50 +333,5 @@ public class NorthwindDbContextInitializer
 
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
-    }
-}
-
-// internal static class OrderExtensions
-// {
-//
-//
-//     public static Order AddOrderDetails(this Order order, int numOrderDetails, IEnumerable<Product> products)
-//     {
-//
-//
-//         for (int i = 0; i < numOrderDetails; i++)
-//         {
-//
-//             order.OrderDetails.Add(orderDetail);
-//         }
-//
-//
-//
-//         return order;
-//     }
-// }
-
-public static class NameExt
-{
-    private static List<string> _jobTitles = new()
-    {
-        "Accountant",
-        "Assistant Sales Rep",
-        "Chief Executive Officer",
-        "Chief Financial Officer",
-        "Chief Marketing Officer",
-        "Chief Operating Officer",
-        "Chief Technology Officer",
-        "Controller",
-        "Customer Service Rep",
-        "Design Engineer",
-        "Owner",
-        "Manager"
-    };
-
-    public static string JobTitleShort(this Name name)
-    {
-        var faker = new Faker();
-        return faker.PickRandom(_jobTitles);
     }
 }

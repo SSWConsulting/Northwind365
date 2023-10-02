@@ -24,13 +24,14 @@ if (app.Environment.IsDevelopment())
 
     try
     {
+
+        var identityInitializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
+        await identityInitializer.InitializeAsync();
+
         // Initialise and seed database
         var initializer = scope.ServiceProvider.GetRequiredService<NorthwindDbContextInitializer>();
         await initializer.InitializeAsync();
         await initializer.SeedAsync();
-
-        var identityContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        identityContext.Database.Migrate();
     }
     catch (Exception ex)
     {

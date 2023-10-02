@@ -11,7 +11,7 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
     {
         builder.Property(e => e.Id)
             .HasColumnName("CustomerID")
-            .HasMaxLength(5)
+            .HasMaxLength(10)
             .HasConversion(x => x.Value,
                 x => new CustomerId(x))
             .ValueGeneratedNever();

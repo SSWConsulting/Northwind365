@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+using Northwind.Domain.Customers;
 using Northwind.Domain.Orders;
 
 namespace Northwind.Persistence.Configurations;
@@ -13,7 +14,9 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.Property(e => e.CustomerId)
             .HasColumnName("CustomerID")
-            .HasMaxLength(5);
+            .HasMaxLength(10)
+            .HasConversion(x => x.Value,
+                x => new CustomerId(x));
 
         builder.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
