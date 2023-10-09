@@ -9,7 +9,11 @@ public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
 {
     public void Configure(EntityTypeBuilder<Supplier> builder)
     {
-        builder.Property(e => e.SupplierId).HasColumnName("SupplierID");
+        builder.Property(e => e.Id)
+            .HasColumnName("SupplierID")
+            .HasConversion(x => x.Value,
+                x => new SupplierId(x))
+            .ValueGeneratedNever();
 
         builder.OwnsOne(e => e.Address, AddressConfiguration.BuildAction);
 

@@ -37,9 +37,9 @@ public class Customer : BaseEntity<CustomerId>
     public string Phone { get; private set; } = null!;
     public string Fax { get; private set; } = null!;
 
-    private List<Order> _orders = new();
+    private readonly List<Order> _orders = new();
 
-    public IReadOnlyList<Order> Orders => _orders.AsReadOnly();
+    public IEnumerable<Order> Orders => _orders.AsReadOnly();
 
     public void UpdateAddress(Address address)
     {

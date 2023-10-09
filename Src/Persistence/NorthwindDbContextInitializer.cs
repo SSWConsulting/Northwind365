@@ -49,11 +49,7 @@ public class NorthwindDbContextInitializer
         try
         {
             if (_dbContext.Database.IsSqlServer())
-            {
-                // await _dbContext.Database.EnsureDeletedAsync();
-                //await _dbContext.Database.EnsureCreatedAsync();
                 await _dbContext.Database.MigrateAsync();
-            }
         }
         catch (Exception e)
         {
@@ -223,17 +219,16 @@ public class NorthwindDbContextInitializer
         if (_dbContext.Suppliers.Any())
             return;
 
-        var faker = new Faker<Supplier>().CustomInstantiator(f => new Supplier
-            {
-                CompanyName = f.Company.CompanyName(),
-                ContactName = f.Name.FullName(),
-                ContactTitle = f.Name.JobTitle(),
-                Address = AddressFaker.Generate(),
-                Phone = f.Phone.PhoneNumber(),
-                Fax = f.Phone.PhoneNumber(),
-                HomePage = f.Internet.Url()
-            }
-        );
+        var faker = new Faker<Supplier>().CustomInstantiator(f => Supplier.Create
+        (
+            f.Company.CompanyName(),
+            f.Name.FullName(),
+            f.Name.JobTitle(),
+            AddressFaker.Generate(),
+            f.Phone.PhoneNumber(),
+            f.Phone.PhoneNumber(),
+            f.Internet.Url()
+        ));
 
         var suppliers = faker.Generate(NumSuppliers);
         await _dbContext.Suppliers.AddRangeAsync(suppliers, cancellationToken);

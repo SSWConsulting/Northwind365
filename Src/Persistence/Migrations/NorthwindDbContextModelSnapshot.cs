@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Northwind.Persistence;
 
@@ -12,11 +11,9 @@ using Northwind.Persistence;
 namespace Northwind.Persistence.Migrations
 {
     [DbContext(typeof(NorthwindDbContext))]
-    [Migration("20231001234506_AddOwnedEntities")]
-    partial class AddOwnedEntities
+    partial class NorthwindDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,7 +64,7 @@ namespace Northwind.Persistence.Migrations
             modelBuilder.Entity("Northwind.Domain.Customers.Customer", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasMaxLength(5)
+                        .HasMaxLength(10)
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("CustomerID");
 
@@ -275,7 +272,7 @@ namespace Northwind.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("CustomerId")
-                        .HasMaxLength(5)
+                        .HasMaxLength(10)
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("CustomerID");
 

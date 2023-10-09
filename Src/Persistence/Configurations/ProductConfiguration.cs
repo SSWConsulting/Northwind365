@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using Northwind.Domain.Products;
+using Northwind.Domain.Supplying;
 
 namespace Northwind.Persistence.Configurations;
 
@@ -21,7 +22,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(e => e.ReorderLevel).HasDefaultValueSql("((0))");
 
-        builder.Property(e => e.SupplierId).HasColumnName("SupplierID");
+        builder.Property(e => e.SupplierId)
+            .HasColumnName("SupplierID")
+            .HasConversion(x => x.Value,
+                x => new SupplierId(x))
+            .ValueGeneratedNever();
 
         builder.Property(e => e.UnitPrice)
             .HasColumnType("money")
