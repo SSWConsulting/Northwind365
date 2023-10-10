@@ -1,12 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-
 using Bogus;
 using Bogus.DataSets;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-
 using Northwind.Application.Common.Interfaces;
 using Northwind.Domain.Categories;
 using Northwind.Domain.Customers;
@@ -15,7 +12,6 @@ using Northwind.Domain.Orders;
 using Northwind.Domain.Products;
 using Northwind.Domain.Shipping;
 using Northwind.Domain.Supplying;
-
 using Address = Northwind.Domain.Common.Address;
 
 namespace Northwind.Persistence;
@@ -246,7 +242,6 @@ public class NorthwindDbContextInitializer
 
         var faker = new Faker<Product>().CustomInstantiator(f =>
         {
-
             var product = Product.Create
             (
                 f.Commerce.ProductName(),
@@ -287,18 +282,18 @@ public class NorthwindDbContextInitializer
             Discount = f.Random.Float(0, 20)
         });
 
-        var faker = new Faker<Order>().CustomInstantiator(f => new Order
-        {
-            CustomerId = f.PickRandom(customer).Id,
-            Employee = f.PickRandom(employees),
-            OrderDate = f.Date.Past(10),
-            RequiredDate = f.Date.Future(10),
-            ShippedDate = f.Date.Future(10),
-            Shipper = f.PickRandom(shippers),
-            Freight = f.Random.Decimal(1, 100),
-            ShipName = f.Company.CompanyName(),
-            ShipAddress = AddressFaker.Generate(),
-        });
+        var faker = new Faker<Order>().CustomInstantiator(f => Order.Create
+        (
+            f.PickRandom(customer).Id,
+            f.PickRandom(employees).Id,
+            f.Date.Past(10),
+            f.Date.Future(10),
+            f.Date.Future(10),
+            f.PickRandom(shippers).Id,
+            f.Random.Decimal(1, 100),
+            f.Company.CompanyName(),
+            AddressFaker.Generate()
+        ));
 
         var orders = faker.Generate(NumOrders);
         var randomFaker = new Faker();

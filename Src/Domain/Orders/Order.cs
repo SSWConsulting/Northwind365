@@ -6,46 +6,66 @@ using Northwind.Domain.Shipping;
 
 namespace Northwind.Domain.Orders;
 
-public class Order : AuditableEntity
+public record OrderId(int Value);
+
+public class Order : BaseEntity<OrderId>
 {
-    public Order()
+    public CustomerId CustomerId { get; private set; } = null!;
+    public EmployeeId? EmployeeId { get; private set; }
+    public DateTime? OrderDate { get; private set; }
+    public DateTime? RequiredDate { get; private set; }
+    public DateTime? ShippedDate { get; private set; }
+    public ShipperId? ShipVia { get; private set; }
+    public decimal? Freight { get; private set; }
+    public string ShipName { get; private set; } = null!;
+
+    public Address ShipAddress { get; private set; } = null!;
+
+    public Customer Customer { get; private set; } = null!;
+    public Employee? Employee { get; private set; }
+    public Shipper? Shipper { get; private set; }
+
+
+    private List<OrderDetail> _orderDetails = new();
+    public IEnumerable<OrderDetail> OrderDetails => _orderDetails.AsReadOnly();
+
+    private Order() { }
+
+    public static Order Create(CustomerId customerId, EmployeeId? employeeId, DateTime orderDate, DateTime requiredDate,
+        DateTime shippedDate, ShipperId shipper, decimal freight, string shipName, Address address)
     {
-        OrderDetails = new HashSet<OrderDetail>();
+        var order = new Order
+        {
+            CustomerId = customerId,
+            EmployeeId = employeeId,
+            OrderDate = orderDate,
+            RequiredDate = requiredDate,
+            ShippedDate = shippedDate,
+            ShipVia = shipper,
+            Freight = freight,
+            ShipName = shipName,
+            ShipAddress = address
+        };
+
+        return order;
     }
 
-    public int OrderId { get; set; }
-    public CustomerId CustomerId { get; set; }
-    public int? EmployeeId { get; set; }
-    public DateTime? OrderDate { get; set; }
-    public DateTime? RequiredDate { get; set; }
-    public DateTime? ShippedDate { get; set; }
-    public int? ShipVia { get; set; }
-    public decimal? Freight { get; set; }
-    public string ShipName { get; set; }
-
-    public Address ShipAddress { get; set; } = null!;
-
-    public Customer Customer { get; set; }
-    public Employee Employee { get; set; }
-    public Shipper Shipper { get; set; }
-    public ICollection<OrderDetail> OrderDetails { get; private set; }
-
-    public void AddOrderDetails(OrderDetail detail)
+    private void AddOrderDetails(OrderDetail detail)
     {
-        var existing = OrderDetails.SingleOrDefault(x => x.ProductId == detail.ProductId);
+        var existing = _orderDetails.SingleOrDefault(x => x.ProductId == detail.ProductId);
         if (existing != null)
         {
             existing.Quantity += detail.Quantity;
         }
         else
         {
-            OrderDetails.Add(detail);
+            _orderDetails.Add(detail);
         }
     }
 
     public void AddOrderDetails(IEnumerable<OrderDetail> details)
     {
         foreach (var detail in details)
-            this.AddOrderDetails(detail);
+            AddOrderDetails(detail);
     }
 }

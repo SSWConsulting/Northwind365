@@ -31,8 +31,8 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.Property(e => e.Phone).HasMaxLength(24);
 
         builder.HasMany(e => e.Orders)
-            .WithOne(e => e.Customer)
-            .HasForeignKey(fk => fk.OrderId)
+            .WithOne(p => p.Customer)
+            .HasForeignKey(e => e.Id)
             .IsRequired();
     }
 }
