@@ -3,7 +3,9 @@ using Northwind.Domain.Products;
 
 namespace Northwind.Domain.Categories;
 
-public class Category : BaseEntity<int>
+public record CategoryId(int Value);
+
+public class Category : BaseEntity<CategoryId>
 {
     public Category(string categoryName, string description, byte[] picture)
     {

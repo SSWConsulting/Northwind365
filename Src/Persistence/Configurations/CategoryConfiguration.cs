@@ -9,8 +9,9 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 {
     public void Configure(EntityTypeBuilder<Category> builder)
     {
-
-        builder.Property(e => e.Id).HasColumnName("CategoryID");
+        builder.Property(e => e.Id)
+            .HasColumnName("CategoryID")
+            .HasConversion(e => e.Value, e => new CategoryId(e));
 
         builder.Property(e => e.CategoryName)
             .IsRequired()
