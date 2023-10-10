@@ -34,40 +34,42 @@ public class CreateCustomerCommand : IRequest
 
     public string Region { get; set; }
 
-    public class Handler : IRequestHandler<CreateCustomerCommand>
+
+}
+
+public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand>
+{
+    private readonly INorthwindDbContext _context;
+    private readonly IMediator _mediator;
+
+    public CreateCustomerCommandHandler(INorthwindDbContext context, IMediator mediator)
     {
-        private readonly INorthwindDbContext _context;
-        private readonly IMediator _mediator;
+        _context = context;
+        _mediator = mediator;
+    }
 
-        public Handler(INorthwindDbContext context, IMediator mediator)
-        {
-            _context = context;
-            _mediator = mediator;
-        }
+    public async Task Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+    {
+        var entity = Customer.Create
+        (
+            request.CompanyName,
+            request.ContactName,
+            request.ContactTitle,
+            new Address(
+                request.Address,
+                request.City,
+                request.Region,
+                request.PostalCode,
+                request.Country
+            ),
+            request.Fax,
+            request.Phone
+        );
 
-        public async Task Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
-        {
-            var entity = Customer.Create
-            (
-                request.CompanyName,
-                request.ContactName,
-                request.ContactTitle,
-                new Address(
-                    request.Address,
-                    request.City,
-                    request.Region,
-                    request.PostalCode,
-                    request.Country
-                ),
-                request.Fax,
-                request.Phone
-            );
+        _context.Customers.Add(entity);
 
-            _context.Customers.Add(entity);
+        await _context.SaveChangesAsync(cancellationToken);
 
-            await _context.SaveChangesAsync(cancellationToken);
-
-            await _mediator.Publish(new CustomerCreated { CustomerId = entity.Id }, cancellationToken);
-        }
+        await _mediator.Publish(new CustomerCreated { CustomerId = entity.Id }, cancellationToken);
     }
 }

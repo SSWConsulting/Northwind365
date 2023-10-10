@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Northwind.Application.Customers.Queries.GetCustomersList;
 
+public class GetCustomersListQuery : IRequest<CustomersListVm>
+{
+}
+
 public class GetCustomersListQueryHandler : IRequestHandler<GetCustomersListQuery, CustomersListVm>
 {
     private readonly INorthwindDbContext _context;

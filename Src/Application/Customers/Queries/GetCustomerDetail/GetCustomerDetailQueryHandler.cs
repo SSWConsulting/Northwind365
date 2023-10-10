@@ -10,6 +10,11 @@ using Northwind.Domain.Customers;
 
 namespace Northwind.Application.Customers.Queries.GetCustomerDetail;
 
+public class GetCustomerDetailQuery : IRequest<CustomerDetailVm>
+{
+    public string Id { get; set; }
+}
+
 public class GetCustomerDetailQueryHandler : IRequestHandler<GetCustomerDetailQuery, CustomerDetailVm>
 {
     private readonly INorthwindDbContext _context;

@@ -10,6 +10,11 @@ using Northwind.Domain.Customers;
 
 namespace Northwind.Application.Customers.Commands.DeleteCustomer;
 
+public class DeleteCustomerCommand : IRequest
+{
+    public string Id { get; set; }
+}
+
 public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand>
 {
     private readonly INorthwindDbContext _context;

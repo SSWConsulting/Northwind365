@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace Northwind.Application.Categories.Queries.GetCategoriesList;
 
+public class GetCategoriesListQuery : IRequest<CategoriesListVm>
+{
+}
+
 public class GetCategoriesListQueryHandler : IRequestHandler<GetCategoriesListQuery, CategoriesListVm>
 {
     private readonly INorthwindDbContext _context;
