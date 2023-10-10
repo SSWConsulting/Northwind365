@@ -8,6 +8,7 @@ namespace Northwind.Application.UnitTests.Common;
 public static class CustomerFactory
 {
     private static readonly Faker<Customer> Faker = new Faker<Customer>().CustomInstantiator(f => Customer.Create(
+        new CustomerId(f.Commerce.Ean8()),
         f.Company.CompanyName(0),
         f.Name.FullName(),
         f.Name.JobTitle(),

@@ -1,14 +1,21 @@
-﻿namespace Northwind.Domain.Employees;
+﻿using Northwind.Domain.Common.Base;
 
-public class Region
+namespace Northwind.Domain.Employees;
+
+public record RegionId(int Value);
+
+public class Region : BaseEntity<RegionId>
 {
-    public Region()
+    public string RegionDescription { get; private set; } = null!;
+
+    private readonly List<Territory> _territories = new();
+    public IEnumerable<Territory> Territories => _territories.AsReadOnly();
+
+    private Region() { }
+
+    public static Region Create(string description)
     {
-        Territories = new HashSet<Territory>();
+        var region = new Region { RegionDescription = description };
+        return region;
     }
-
-    public int RegionId { get; set; }
-    public string RegionDescription { get; set; }
-
-    public ICollection<Territory> Territories { get; private set; }
 }

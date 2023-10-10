@@ -82,6 +82,7 @@ public class NorthwindDbContextInitializer
             return;
 
         var faker = new Faker<Customer>().CustomInstantiator(f => Customer.Create(
+            new CustomerId(f.Commerce.Ean8()),
             f.Company.CompanyName(0),
             f.Name.FullName(),
             f.Name.JobTitle(),
@@ -122,10 +123,8 @@ public class NorthwindDbContextInitializer
 
         var regions = new[]
         {
-            new Region { RegionId = 1, RegionDescription = "Eastern" },
-            new Region { RegionId = 2, RegionDescription = "Western" },
-            new Region { RegionId = 3, RegionDescription = "Northern" },
-            new Region { RegionId = 4, RegionDescription = "Southern" }
+            Region.Create("Eastern"), Region.Create("Western"), Region.Create("Northern"),
+            Region.Create("Southern"),
         };
 
         _dbContext.Region.AddRange(regions);
@@ -142,14 +141,14 @@ public class NorthwindDbContextInitializer
 
         foreach (var region in await _dbContext.Region.ToListAsync(cancellationToken: cancellationToken))
         {
-            for (int i = 0; i < NumTerritoriesPerRegion; i++)
+            for (var i = 0; i < NumTerritoriesPerRegion; i++)
             {
-                _dbContext.Territories.Add(new Territory
-                {
-                    TerritoryId = faker.Commerce.Ean8(),
-                    RegionId = region.RegionId,
-                    TerritoryDescription = faker.Lorem.Sentence(3)
-                });
+                var territoryId = new TerritoryId(faker.Commerce.Ean8());
+                var regionId = region.Id;
+                var territoryDescription = faker.Lorem.Sentence(3);
+                var territory = Territory.Create(territoryId, regionId, territoryDescription);
+
+                _dbContext.Territories.Add(territory);
             }
         }
 
@@ -187,7 +186,6 @@ public class NorthwindDbContextInitializer
                 f.Name.JobTitle(),
                 f.Name.Prefix(),
                 f.PickRandom(territories, f.Random.Int(2, 10))
-                    .Select(t => new EmployeeTerritory { TerritoryId = t.TerritoryId }).ToList()
             ));
 
         var employees = faker.Generate(NumEmployees);

@@ -12,7 +12,7 @@ namespace Northwind.Application.Customers.Commands.CreateCustomer;
 
 public class CreateCustomerCommand : IRequest
 {
-    public Guid Id { get; set; }
+    public string Id { get; set; }
 
     public string Address { get; set; }
 
@@ -52,6 +52,7 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
     {
         var entity = Customer.Create
         (
+            new CustomerId(request.Id),
             request.CompanyName,
             request.ContactName,
             request.ContactTitle,

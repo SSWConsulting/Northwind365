@@ -1,25 +1,23 @@
 ﻿using System.Runtime.CompilerServices;
-
 using Ardalis.GuardClauses;
-
 using Northwind.Domain.Common;
 using Northwind.Domain.Common.Base;
 using Northwind.Domain.Orders;
 
 namespace Northwind.Domain.Customers;
 
-public record CustomerId(Guid Value);
+public record CustomerId(string Value);
 
 public class Customer : BaseEntity<CustomerId>
 {
     private Customer() { }
 
-    public static Customer Create(string companyName, string contactName, string contactTitle, Address address,
-        string phone, string fax)
+    public static Customer Create(CustomerId customerId, string companyName, string contactName, string contactTitle,
+        Address address, string phone, string fax)
     {
         var customer = new Customer()
         {
-            Id = new CustomerId(Guid.NewGuid()), CompanyName = companyName, Phone = phone, Fax = fax,
+            Id = customerId, CompanyName = companyName, Phone = phone, Fax = fax,
         };
 
         customer.UpdateAddress(address);

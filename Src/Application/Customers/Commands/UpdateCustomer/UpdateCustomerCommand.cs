@@ -10,12 +10,13 @@ using System.Threading.Tasks;
 
 using Northwind.Domain.Common;
 using Northwind.Domain.Customers;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Northwind.Application.Customers.Commands.UpdateCustomer;
 
 public class UpdateCustomerCommand : IRequest
 {
-    public Guid Id { get; set; }
+    public string Id { get; set; }
     public string Address { get; set; }
     public string City { get; set; }
     public string CompanyName { get; set; }
@@ -26,34 +27,35 @@ public class UpdateCustomerCommand : IRequest
     public string Phone { get; set; }
     public string PostalCode { get; set; }
     public string Region { get; set; }
+}
 
-    public class Handler : IRequestHandler<UpdateCustomerCommand>
+[SuppressMessage("ReSharper", "UnusedType.Global")]
+public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand>
+{
+    private readonly INorthwindDbContext _context;
+
+    public UpdateCustomerCommandHandler(INorthwindDbContext context)
     {
-        private readonly INorthwindDbContext _context;
+        _context = context;
+    }
 
-        public Handler(INorthwindDbContext context)
+    public async Task Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
+    {
+        var entity = await _context.Customers
+            .SingleOrDefaultAsync(c => c.Id == new CustomerId(request.Id), cancellationToken);
+
+        if (entity == null)
         {
-            _context = context;
+            throw new NotFoundException(nameof(Customer), request.Id);
         }
 
-        public async Task Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
-        {
-            var entity = await _context.Customers
-                .SingleOrDefaultAsync(c => c.Id == new CustomerId(request.Id), cancellationToken);
+        entity.UpdateAddress(new Address(request.Address, request.City, request.Region, request.PostalCode,
+            request.Country));
+        entity.UpdateContact(request.ContactName, request.ContactTitle);
+        entity.UpdatePhone(request.Phone);
+        entity.UpdateFax(request.Fax);
+        entity.UpdateCompanyName(request.CompanyName);
 
-            if (entity == null)
-            {
-                throw new NotFoundException(nameof(Customer), request.Id);
-            }
-
-            entity.UpdateAddress(new Address(request.Address, request.City, request.Region, request.PostalCode,
-                request.Country));
-            entity.UpdateContact(request.ContactName, request.ContactTitle);
-            entity.UpdatePhone(request.Phone);
-            entity.UpdateFax(request.Fax);
-            entity.UpdateCompanyName(request.CompanyName);
-
-            await _context.SaveChangesAsync(cancellationToken);
-        }
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

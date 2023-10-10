@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 using Northwind.Domain.Employees;
 
 namespace Northwind.Persistence.Configurations;
@@ -11,9 +10,8 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
     {
         builder.Property(e => e.Id)
             .HasColumnName("EmployeeID")
-            .HasConversion(x => x.Value,
-                x => new EmployeeId(x))
-            .ValueGeneratedNever();
+            .HasConversion(x => x.Value, x => new EmployeeId(x))
+            .ValueGeneratedOnAdd();
 
         builder.Property(e => e.BirthDate).HasColumnType("datetime");
 
@@ -47,5 +45,9 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
             .WithMany(p => p.DirectReports)
             .HasForeignKey(d => d.ReportsTo)
             .HasConstraintName("FK_Employees_Employees");
+
+        builder.HasMany(e => e.Territories)
+            .WithMany(e => e.Employees)
+            .UsingEntity<EmployeeTerritory>();
     }
 }

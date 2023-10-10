@@ -24,7 +24,7 @@ public class Update : IClassFixture<CustomWebApplicationFactory<Program>>
         var command = new UpdateCustomerCommand
         {
             // TODO: Look up ID from DB
-            Id = Guid.NewGuid(),
+            Id = "123",
             Address = "Obere Str. 57",
             City = "Berlin",
             CompanyName = "Alfreds Futterkiste",
@@ -51,7 +51,7 @@ public class Update : IClassFixture<CustomWebApplicationFactory<Program>>
         var invalidCommand = new UpdateCustomerCommand
         {
             // TODO: Look up ID from DB
-            Id = Guid.NewGuid(),
+            Id = "123",
             Address = "Obere Str. 57",
             City = "Berlin",
             CompanyName = "Alfreds Futterkiste",

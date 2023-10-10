@@ -7,13 +7,13 @@ namespace Northwind.Application.Common.Mappings;
 
 public static class StronglyTypedIdExtensions
 {
-    public static SupplierId? ToSupplierId(this Guid? guid) => guid == null ? null : new SupplierId(guid.Value);
+    public static SupplierId? ToSupplierId(this int? integer) => integer == null ? null : new SupplierId(integer.Value);
 
-    public static CustomerId? ToCustomerId(this Guid? guid) => guid == null ? null : new CustomerId(guid.Value);
+    //public static CustomerId? ToCustomerId(this string? str) => str == null ? null : new CustomerId(str.Value);
 
-    public static ProductId? ToProductId(this int? integer) => integer == null ? null : new ProductId(integer.Value);
-
-    public static ProductId ToProductId(this int integer) => new ProductId(integer);
+    // public static ProductId? ToProductId(this int? integer) => integer == null ? null : new ProductId(integer.Value);
+    //
+    // public static ProductId ToProductId(this int integer) => new ProductId(integer);
 
     public static CategoryId? ToCategoryId(this int? integer) => integer == null ? null : new CategoryId(integer.Value);
 }

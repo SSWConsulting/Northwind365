@@ -25,7 +25,7 @@ public class Create : IClassFixture<CustomWebApplicationFactory<Program>>
         var command = new CreateProductCommand
         {
             ProductName = "Coffee",
-            SupplierId = Guid.NewGuid(),
+            SupplierId = 1,
             CategoryId = 1,
             UnitPrice = 19.00m,
             Discontinued = false

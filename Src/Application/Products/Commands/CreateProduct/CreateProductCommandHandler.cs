@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Application.Common.Mappings;
 using Northwind.Domain.Products;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Northwind.Application.Products.Commands.CreateProduct;
 
@@ -17,13 +18,14 @@ public class CreateProductCommand : IRequest<int>
 
     public decimal? UnitPrice { get; set; }
 
-    public Guid? SupplierId { get; set; }
+    public int? SupplierId { get; set; }
 
     public int? CategoryId { get; set; }
 
     public bool Discontinued { get; set; }
 }
 
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, int>
 {
     private readonly INorthwindDbContext _context;

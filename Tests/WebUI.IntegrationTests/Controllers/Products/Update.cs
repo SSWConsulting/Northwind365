@@ -25,7 +25,7 @@ public class Update : IClassFixture<CustomWebApplicationFactory<Program>>
         {
             ProductId = 1,
             ProductName = "Chai",
-            SupplierId = Guid.NewGuid(),
+            SupplierId = 1,
             CategoryId = 1,
             UnitPrice = 15.00m,
             Discontinued = false
@@ -47,7 +47,7 @@ public class Update : IClassFixture<CustomWebApplicationFactory<Program>>
         {
             ProductId = 0,
             ProductName = "Original Frankfurter grüne Soße",
-            SupplierId = Guid.NewGuid(),
+            SupplierId = 1,
             CategoryId = 2,
             UnitPrice = 15.00m,
             Discontinued = false

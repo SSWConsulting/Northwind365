@@ -17,7 +17,7 @@ public class CreateCustomerCommandTests : CommandTestBase
         // Arrange
         var mediatorMock = new Mock<IMediator>();
         var sut = new CreateCustomerCommandHandler(_context, mediatorMock.Object);
-        var newCustomerId = new CustomerId(Guid.NewGuid());
+        var newCustomerId = new CustomerId("123");
 
         // Act
         var result = sut.Handle(new CreateCustomerCommand { Id = newCustomerId.Value }, CancellationToken.None);
