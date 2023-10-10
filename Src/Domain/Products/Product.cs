@@ -20,8 +20,8 @@ public class Product : BaseEntity<ProductId>
     public short? ReorderLevel { get; private set; }
     public bool Discontinued { get; private set; }
 
-    public Category Category { get; private set; } = null!;
-    public Supplier Supplier { get; private set; } = null!;
+    public Category? Category { get; private set; } = null!;
+    public Supplier? Supplier { get; private set; } = null!;
 
     private List<OrderDetail> _orderDetails = new();
 

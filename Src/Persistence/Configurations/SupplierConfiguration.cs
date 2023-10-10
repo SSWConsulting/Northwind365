@@ -34,9 +34,9 @@ public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
         builder.Property(e => e.Phone)
             .HasMaxLength(24);
 
-        builder.HasMany(e => e.Products)
-            .WithOne(p => p.Supplier)
-            .HasForeignKey(fk => fk.Id)
-            .IsRequired();
+        // builder.HasMany(e => e.Products)
+        //     .WithOne(p => p.Supplier)
+        //     .HasForeignKey(fk => fk.Id)
+        //     .IsRequired();
     }
 }

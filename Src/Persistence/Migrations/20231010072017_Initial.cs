@@ -15,8 +15,7 @@ namespace Northwind.Persistence.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    CategoryID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CategoryID = table.Column<int>(type: "int", nullable: false),
                     CategoryName = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     Description = table.Column<string>(type: "ntext", nullable: false),
                     Picture = table.Column<byte[]>(type: "image", nullable: false),
@@ -34,7 +33,7 @@ namespace Northwind.Persistence.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    CustomerID = table.Column<Guid>(type: "uniqueidentifier", maxLength: 10, nullable: false),
+                    CustomerID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     CompanyName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     ContactName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     ContactTitle = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
@@ -98,8 +97,13 @@ namespace Northwind.Persistence.Migrations
                 name: "Region",
                 columns: table => new
                 {
-                    RegionID = table.Column<int>(type: "int", nullable: false),
-                    RegionDescription = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    RegionID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RegionDescription = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -114,7 +118,11 @@ namespace Northwind.Persistence.Migrations
                     ShipperID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CompanyName = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false)
+                    Phone = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -137,7 +145,11 @@ namespace Northwind.Persistence.Migrations
                     Address_Country = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
                     Fax = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
-                    HomePage = table.Column<string>(type: "ntext", nullable: false)
+                    HomePage = table.Column<string>(type: "ntext", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -150,7 +162,11 @@ namespace Northwind.Persistence.Migrations
                 {
                     TerritoryID = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     TerritoryDescription = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    RegionID = table.Column<int>(type: "int", nullable: false)
+                    RegionID = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -169,7 +185,7 @@ namespace Northwind.Persistence.Migrations
                 {
                     OrderID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerID = table.Column<Guid>(type: "uniqueidentifier", maxLength: 10, nullable: false),
+                    CustomerID = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     EmployeeID = table.Column<int>(type: "int", nullable: true),
                     OrderDate = table.Column<DateTime>(type: "datetime", nullable: true),
                     RequiredDate = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -255,15 +271,17 @@ namespace Northwind.Persistence.Migrations
                     table.PrimaryKey("PK_EmployeeTerritories", x => new { x.EmployeeID, x.TerritoryID })
                         .Annotation("SqlServer:Clustered", false);
                     table.ForeignKey(
-                        name: "FK_EmployeeTerritories_Employees",
+                        name: "FK_EmployeeTerritories_Employees_EmployeeID",
                         column: x => x.EmployeeID,
                         principalTable: "Employees",
-                        principalColumn: "EmployeeID");
+                        principalColumn: "EmployeeID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmployeeTerritories_Territories",
+                        name: "FK_EmployeeTerritories_Territories_TerritoryID",
                         column: x => x.TerritoryID,
                         principalTable: "Territories",
-                        principalColumn: "TerritoryID");
+                        principalColumn: "TerritoryID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

@@ -12,7 +12,7 @@ using Northwind.Persistence;
 namespace Northwind.Persistence.Migrations
 {
     [DbContext(typeof(NorthwindDbContext))]
-    [Migration("20231002024306_Initial")]
+    [Migration("20231010072017_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -28,11 +28,8 @@ namespace Northwind.Persistence.Migrations
             modelBuilder.Entity("Northwind.Domain.Categories.Category", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("CategoryID");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
@@ -66,9 +63,9 @@ namespace Northwind.Persistence.Migrations
 
             modelBuilder.Entity("Northwind.Domain.Customers.Customer", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .HasMaxLength(10)
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("nvarchar(10)")
                         .HasColumnName("CustomerID");
 
                     b.Property<string>("CompanyName")
@@ -115,12 +112,12 @@ namespace Northwind.Persistence.Migrations
 
             modelBuilder.Entity("Northwind.Domain.Employees.Employee", b =>
                 {
-                    b.Property<int>("EmployeeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("EmployeeID");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime");
@@ -189,7 +186,7 @@ namespace Northwind.Persistence.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("EmployeeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ReportsTo");
 
@@ -218,28 +215,49 @@ namespace Northwind.Persistence.Migrations
 
             modelBuilder.Entity("Northwind.Domain.Employees.Region", b =>
                 {
-                    b.Property<int>("RegionId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("RegionID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegionDescription")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("RegionId");
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
 
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("RegionId"), false);
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"), false);
 
                     b.ToTable("Region");
                 });
 
             modelBuilder.Entity("Northwind.Domain.Employees.Territory", b =>
                 {
-                    b.Property<string>("TerritoryId")
+                    b.Property<string>("Id")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("TerritoryID");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RegionId")
                         .HasColumnType("int")
@@ -250,9 +268,15 @@ namespace Northwind.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("TerritoryId");
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
 
-                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("TerritoryId"), false);
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"), false);
 
                     b.HasIndex("RegionId");
 
@@ -261,12 +285,12 @@ namespace Northwind.Persistence.Migrations
 
             modelBuilder.Entity("Northwind.Domain.Orders.Order", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("OrderID");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("datetimeoffset");
@@ -274,9 +298,10 @@ namespace Northwind.Persistence.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("CustomerId")
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
                         .HasMaxLength(10)
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("nvarchar(10)")
                         .HasColumnName("CustomerID");
 
                     b.Property<int?>("EmployeeId")
@@ -311,7 +336,7 @@ namespace Northwind.Persistence.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("OrderId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
@@ -364,12 +389,12 @@ namespace Northwind.Persistence.Migrations
 
             modelBuilder.Entity("Northwind.Domain.Products.Product", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ProductID");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int")
@@ -424,7 +449,7 @@ namespace Northwind.Persistence.Migrations
                     b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
@@ -435,36 +460,48 @@ namespace Northwind.Persistence.Migrations
 
             modelBuilder.Entity("Northwind.Domain.Shipping.Shipper", b =>
                 {
-                    b.Property<int>("ShipperId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("ShipperID");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShipperId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(24)
                         .HasColumnType("nvarchar(24)");
 
-                    b.HasKey("ShipperId");
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Shippers");
                 });
 
             modelBuilder.Entity("Northwind.Domain.Supplying.Supplier", b =>
                 {
-                    b.Property<int>("SupplierId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("SupplierID");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SupplierId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CompanyName")
                         .IsRequired()
@@ -481,6 +518,12 @@ namespace Northwind.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Fax")
                         .IsRequired()
                         .HasMaxLength(24)
@@ -495,7 +538,13 @@ namespace Northwind.Persistence.Migrations
                         .HasMaxLength(24)
                         .HasColumnType("nvarchar(24)");
 
-                    b.HasKey("SupplierId");
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Suppliers");
                 });
@@ -504,8 +553,8 @@ namespace Northwind.Persistence.Migrations
                 {
                     b.OwnsOne("Northwind.Domain.Common.Address", "Address", b1 =>
                         {
-                            b1.Property<Guid>("CustomerId")
-                                .HasColumnType("uniqueidentifier");
+                            b1.Property<string>("CustomerId")
+                                .HasColumnType("nvarchar(10)");
 
                             b1.Property<string>("City")
                                 .IsRequired()
@@ -598,16 +647,16 @@ namespace Northwind.Persistence.Migrations
             modelBuilder.Entity("Northwind.Domain.Employees.EmployeeTerritory", b =>
                 {
                     b.HasOne("Northwind.Domain.Employees.Employee", "Employee")
-                        .WithMany("EmployeeTerritories")
+                        .WithMany()
                         .HasForeignKey("EmployeeId")
-                        .IsRequired()
-                        .HasConstraintName("FK_EmployeeTerritories_Employees");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Northwind.Domain.Employees.Territory", "Territory")
-                        .WithMany("EmployeeTerritories")
+                        .WithMany()
                         .HasForeignKey("TerritoryId")
-                        .IsRequired()
-                        .HasConstraintName("FK_EmployeeTerritories_Territories");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Employee");
 
@@ -782,19 +831,12 @@ namespace Northwind.Persistence.Migrations
                 {
                     b.Navigation("DirectReports");
 
-                    b.Navigation("EmployeeTerritories");
-
                     b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Northwind.Domain.Employees.Region", b =>
                 {
                     b.Navigation("Territories");
-                });
-
-            modelBuilder.Entity("Northwind.Domain.Employees.Territory", b =>
-                {
-                    b.Navigation("EmployeeTerritories");
                 });
 
             modelBuilder.Entity("Northwind.Domain.Orders.Order", b =>

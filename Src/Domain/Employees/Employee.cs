@@ -22,7 +22,7 @@ public class Employee : BaseEntity<EmployeeId>
     public string Extension { get; private set; } = null!;
     public byte[] Photo { get; private set; } = null!;
     public string Notes { get; private set; } = null!;
-    public int? ReportsTo { get; private set; }
+    public EmployeeId? ReportsTo { get; private set; }
     public string PhotoPath { get; private set; } = null!;
 
     public Employee Manager { get; private set; } = null!;
