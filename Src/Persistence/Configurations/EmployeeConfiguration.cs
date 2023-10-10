@@ -9,7 +9,11 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
-        builder.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+        builder.Property(e => e.Id)
+            .HasColumnName("EmployeeID")
+            .HasConversion(x => x.Value,
+                x => new EmployeeId(x))
+            .ValueGeneratedNever();
 
         builder.Property(e => e.BirthDate).HasColumnType("datetime");
 

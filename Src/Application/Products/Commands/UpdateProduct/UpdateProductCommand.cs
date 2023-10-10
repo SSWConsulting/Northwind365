@@ -10,7 +10,7 @@ public class UpdateProductCommand : IRequest
 
     public decimal? UnitPrice { get; set; }
 
-    public int? SupplierId { get; set; }
+    public Guid? SupplierId { get; set; }
 
     public int? CategoryId { get; set; }
 

@@ -1,10 +1,15 @@
-﻿using Northwind.Domain.Common;
+﻿using System.Dynamic;
+
+using Northwind.Domain.Common;
 using Northwind.Domain.Common.Base;
 using Northwind.Domain.Products;
 
 namespace Northwind.Domain.Supplying;
 
-public record SupplierId(Guid Value);
+public record SupplierId(Guid Value)
+{
+    public static SupplierId Create() => new(Guid.NewGuid());
+}
 
 public class Supplier : BaseEntity<SupplierId>
 {
@@ -15,7 +20,7 @@ public class Supplier : BaseEntity<SupplierId>
     {
         var supplier = new Supplier()
         {
-            Id = new SupplierId(Guid.NewGuid()),
+            Id = SupplierId.Create(),
             CompanyName = companyName,
             ContactName = contactName,
             ContactTitle = contactTitle,

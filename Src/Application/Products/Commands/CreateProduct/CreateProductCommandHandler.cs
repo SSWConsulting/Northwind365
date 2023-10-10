@@ -1,7 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+
 using MediatR;
+
+using Microsoft.Extensions.DependencyInjection;
+
 using Northwind.Application.Common.Interfaces;
+using Northwind.Application.Common.Mappings;
 using Northwind.Domain.Products;
 
 namespace Northwind.Application.Products.Commands.CreateProduct;
@@ -21,7 +26,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
         {
             ProductName = request.ProductName,
             CategoryId = request.CategoryId,
-            SupplierId = request.SupplierId,
+            SupplierId = request.SupplierId.ToSupplierId(),
             UnitPrice = request.UnitPrice,
             Discontinued = request.Discontinued
         };

@@ -30,5 +30,10 @@ public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
         builder.Property(e => e.HomePage).HasColumnType("ntext");
 
         builder.Property(e => e.Phone).HasMaxLength(24);
+
+        builder.HasMany(e => e.Products)
+            .WithOne(e => e.Supplier)
+            .HasForeignKey(fk => fk.ProductId)
+            .IsRequired();
     }
 }

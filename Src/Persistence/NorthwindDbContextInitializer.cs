@@ -176,23 +176,23 @@ public class NorthwindDbContextInitializer
         var territories = await _dbContext.Territories.ToListAsync();
 
         var faker = new Faker<Employee>()
-            .CustomInstantiator(f => new Employee
-            {
-                BirthDate = f.Date.Past(50),
-                Address = AddressFaker.Generate(),
-                Extension = f.Random.ReplaceNumbers("####"),
-                FirstName = f.Name.FirstName(),
-                HireDate = f.Date.Past(10),
-                HomePhone = f.Phone.PhoneNumber(),
-                LastName = f.Name.LastName(),
-                Notes = f.Lorem.Sentence(10),
-                Title = f.Name.JobTitle(),
-                TitleOfCourtesy = f.Name.Prefix(),
-                Photo = f.Random.Bytes(5),
-                PhotoPath = f.Image.PicsumUrl(),
-                EmployeeTerritories = f.PickRandom(territories, f.Random.Int(2, 10))
+            .CustomInstantiator(f => Employee.Create
+            (
+                f.Date.Past(50),
+                AddressFaker.Generate(),
+                f.Random.ReplaceNumbers("####"),
+                f.Name.FirstName(),
+                f.Phone.PhoneNumber(),
+                f.Date.Past(10),
+                f.Name.LastName(),
+                f.Lorem.Sentence(10),
+                f.Image.PicsumUrl(),
+                f.Random.Bytes(5),
+                f.Name.JobTitle(),
+                f.Name.Prefix(),
+                f.PickRandom(territories, f.Random.Int(2, 10))
                     .Select(t => new EmployeeTerritory { TerritoryId = t.TerritoryId }).ToList()
-            });
+            ));
 
         var employees = faker.Generate(NumEmployees);
         await _dbContext.Employees.AddRangeAsync(employees, cancellationToken);
@@ -318,7 +318,7 @@ public class NorthwindDbContextInitializer
             {
                 var userName = $"{employee.FirstName}@northwind".ToLower();
                 var userId = await _userManager.CreateUserAsync(userName, "Northwind1!");
-                employee.UserId = userId;
+                employee.UpdateUserId(userId);
 
                 if (employee.DirectReports.Any())
                 {

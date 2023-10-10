@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using Northwind.Application.Products.Commands.UpdateProduct;
+using Northwind.Domain.Supplying;
 using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
 
@@ -24,7 +25,7 @@ public class Update : IClassFixture<CustomWebApplicationFactory<Program>>
         {
             ProductId = 1,
             ProductName = "Chai",
-            SupplierId = 1,
+            SupplierId = Guid.NewGuid(),
             CategoryId = 1,
             UnitPrice = 15.00m,
             Discontinued = false
@@ -46,7 +47,7 @@ public class Update : IClassFixture<CustomWebApplicationFactory<Program>>
         {
             ProductId = 0,
             ProductName = "Original Frankfurter grüne Soße",
-            SupplierId = 12,
+            SupplierId = Guid.NewGuid(),
             CategoryId = 2,
             UnitPrice = 15.00m,
             Discontinued = false
