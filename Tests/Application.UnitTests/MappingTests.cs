@@ -57,7 +57,7 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
     [Fact]
     public void ShouldMapProductToProductDetailVm()
     {
-        var entity = new Product();
+        var entity = ProductFactory.Generate();
 
         var result = _mapper.Map<ProductDetailVm>(entity);
 
@@ -68,7 +68,7 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
     [Fact]
     public void ShouldMapProductToProductDto()
     {
-        var entity = new Product();
+        var entity = ProductFactory.Generate();
 
         var result = _mapper.Map<ProductDto>(entity);
 
@@ -79,7 +79,7 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
     [Fact]
     public void ShouldMapProductToProductRecordDto()
     {
-        var entity = new Product();
+        var entity = ProductFactory.Generate();
 
         var result = _mapper.Map<ProductRecordDto>(entity);
 

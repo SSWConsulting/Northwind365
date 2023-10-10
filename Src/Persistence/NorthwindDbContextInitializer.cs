@@ -243,17 +243,24 @@ public class NorthwindDbContextInitializer
         var suppliers = await _dbContext.Suppliers.ToListAsync(cancellationToken: cancellationToken);
         var categories = await _dbContext.Categories.ToListAsync(cancellationToken: cancellationToken);
 
-        var faker = new Faker<Product>().CustomInstantiator(f => new Product
+        var faker = new Faker<Product>().CustomInstantiator(f =>
         {
-            ProductName = f.Commerce.ProductName(),
-            Supplier = f.PickRandom(suppliers),
-            Category = f.PickRandom(categories),
-            QuantityPerUnit = f.Lorem.Sentence(2),
-            UnitPrice = f.Random.Decimal(1, 100),
-            UnitsInStock = f.Random.Short(1, 100),
-            UnitsOnOrder = f.Random.Short(1, 100),
-            ReorderLevel = f.Random.Short(1, 100),
-            Discontinued = f.Random.Bool()
+
+            var product = Product.Create
+            (
+                f.Commerce.ProductName(),
+                f.PickRandom(categories).Id,
+                f.PickRandom(suppliers).Id,
+                f.Random.Decimal(1, 100),
+                f.Random.Bool()
+            );
+
+            product.UpdateQuantityPerUnit(f.Lorem.Sentence(2));
+            product.UpdateUnitsInStock(f.Random.Short(1, 100));
+            product.UpdateUnitsOnOrder(f.Random.Short(1, 100));
+            product.UpdateReorderLevel(f.Random.Short(1, 100));
+
+            return product;
         });
 
         var products = faker.Generate(NumProducts);

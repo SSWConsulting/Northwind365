@@ -1,29 +1,70 @@
-﻿using Northwind.Domain.Categories;
+﻿using Ardalis.GuardClauses;
+using Northwind.Domain.Categories;
 using Northwind.Domain.Common.Base;
 using Northwind.Domain.Orders;
 using Northwind.Domain.Supplying;
 
 namespace Northwind.Domain.Products;
 
-public class Product : AuditableEntity
+public record ProductId(int Value);
+
+public class Product : BaseEntity<ProductId>
 {
-    public Product()
+    public string ProductName { get; private set; } = null!;
+    public SupplierId? SupplierId { get; private set; }
+    public CategoryId? CategoryId { get; private set; }
+    public string QuantityPerUnit { get; private set; } = null!;
+    public decimal? UnitPrice { get; private set; }
+    public short? UnitsInStock { get; private set; }
+    public short? UnitsOnOrder { get; private set; }
+    public short? ReorderLevel { get; private set; }
+    public bool Discontinued { get; private set; }
+
+    public Category Category { get; private set; } = null!;
+    public Supplier Supplier { get; private set; } = null!;
+
+    private List<OrderDetail> _orderDetails = new();
+
+    public IEnumerable<OrderDetail> OrderDetails => _orderDetails.AsReadOnly();
+
+    private Product() { }
+
+    public static Product Create(string productName, CategoryId? categoryId, SupplierId? supplierId,
+        decimal? unitPrice, bool discontinued)
     {
-        OrderDetails = new HashSet<OrderDetail>();
+        var product = new Product { UnitPrice = unitPrice };
+
+        product.UpdateProduct(productName, categoryId, supplierId, discontinued);
+
+        return product;
     }
 
-    public int ProductId { get; set; }
-    public string ProductName { get; set; }
-    public SupplierId? SupplierId { get; set; }
-    public int? CategoryId { get; set; }
-    public string QuantityPerUnit { get; set; }
-    public decimal? UnitPrice { get; set; }
-    public short? UnitsInStock { get; set; }
-    public short? UnitsOnOrder { get; set; }
-    public short? ReorderLevel { get; set; }
-    public bool Discontinued { get; set; }
+    public void UpdateProduct(string productName, CategoryId? categoryId, SupplierId? supplierId,
+        bool discontinued)
+    {
+        ProductName = Guard.Against.NullOrWhiteSpace(productName);
+        CategoryId = categoryId;
+        SupplierId = supplierId;
+        Discontinued = discontinued;
+    }
 
-    public Category Category { get; set; }
-    public Supplier Supplier { get; set; }
-    public ICollection<OrderDetail> OrderDetails { get; private set; }
+    public void UpdateQuantityPerUnit(string sentence)
+    {
+        QuantityPerUnit = sentence;
+    }
+
+    public void UpdateUnitsInStock(short s)
+    {
+        UnitsInStock = s;
+    }
+
+    public void UpdateUnitsOnOrder(short s)
+    {
+        UnitsOnOrder = s;
+    }
+
+    public void UpdateReorderLevel(short s)
+    {
+        ReorderLevel = s;
+    }
 }
