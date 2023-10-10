@@ -274,14 +274,6 @@ public class NorthwindDbContextInitializer
         var shippers = await _dbContext.Shippers.ToListAsync(cancellationToken: cancellationToken);
         var products = await _dbContext.Products.ToListAsync(cancellationToken: cancellationToken);
 
-        var orderDetailFaker = new Faker<OrderDetail>().CustomInstantiator(f => new OrderDetail
-        {
-            Product = f.PickRandom(products),
-            UnitPrice = f.Random.Decimal(1, 50),
-            Quantity = f.Random.Short(1, 5),
-            Discount = f.Random.Float(0, 20)
-        });
-
         var faker = new Faker<Order>().CustomInstantiator(f => Order.Create
         (
             f.PickRandom(customer).Id,
@@ -300,8 +292,15 @@ public class NorthwindDbContextInitializer
 
         foreach (var order in orders)
         {
-            var orderDetails = orderDetailFaker.Generate(randomFaker.Random.Int(1, 10));
-            order.AddOrderDetails(orderDetails);
+            var numOrderDetails = randomFaker.Random.Int(1, 10);
+            for (var i = 0; i < numOrderDetails; i++)
+            {
+                var productId = randomFaker.PickRandom(products).Id;
+                var unitPrice = randomFaker.Random.Decimal(1, 50);
+                var quantity = randomFaker.Random.Short(1, 5);
+                var discount = randomFaker.Random.Float(0, 20);
+                order.AddOrderDetails(productId, unitPrice, quantity, discount);
+            }
         }
 
         await _dbContext.Orders.AddRangeAsync(orders, cancellationToken);

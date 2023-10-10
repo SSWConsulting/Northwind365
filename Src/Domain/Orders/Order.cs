@@ -2,6 +2,7 @@
 using Northwind.Domain.Common.Base;
 using Northwind.Domain.Customers;
 using Northwind.Domain.Employees;
+using Northwind.Domain.Products;
 using Northwind.Domain.Shipping;
 
 namespace Northwind.Domain.Orders;
@@ -50,22 +51,23 @@ public class Order : BaseEntity<OrderId>
         return order;
     }
 
-    private void AddOrderDetails(OrderDetail detail)
+    public void AddOrderDetails(ProductId productId, decimal unitPrice, short quantity, float discount)
     {
-        var existing = _orderDetails.SingleOrDefault(x => x.ProductId == detail.ProductId);
+        var existing = _orderDetails.SingleOrDefault(x => x.ProductId == productId);
         if (existing != null)
         {
-            existing.Quantity += detail.Quantity;
+            existing.AddQuantity(quantity);
         }
         else
         {
-            _orderDetails.Add(detail);
+            var orderDetail = OrderDetail.Create(Id, productId, unitPrice, quantity, discount);
+            _orderDetails.Add(orderDetail);
         }
     }
 
-    public void AddOrderDetails(IEnumerable<OrderDetail> details)
-    {
-        foreach (var detail in details)
-            AddOrderDetails(detail);
-    }
+    // public void AddOrderDetails(IEnumerable<OrderDetail> details)
+    // {
+    //     foreach (var detail in details)
+    //         AddOrderDetails(detail);
+    // }
 }

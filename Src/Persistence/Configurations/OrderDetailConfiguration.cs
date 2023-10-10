@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using Northwind.Domain.Orders;
+using Northwind.Domain.Products;
 
 namespace Northwind.Persistence.Configurations;
 
@@ -13,13 +14,21 @@ public class OrderDetailConfiguration : IEntityTypeConfiguration<OrderDetail>
 
         builder.ToTable("Order Details");
 
-        builder.Property(e => e.OrderId).HasColumnName("OrderID");
+        builder.Property(e => e.OrderId)
+            .HasColumnName("OrderID")
+            .HasConversion(e => e.Value, e => new OrderId(e))
+            .ValueGeneratedNever();
 
-        builder.Property(e => e.ProductId).HasColumnName("ProductID");
+        builder.Property(e => e.ProductId)
+            .HasColumnName("ProductID")
+            .HasConversion(e => e.Value, e => new ProductId(e))
+            .ValueGeneratedNever();
 
-        builder.Property(e => e.Quantity).HasDefaultValueSql("((1))");
+        builder.Property(e => e.Quantity)
+            .HasDefaultValueSql("((1))");
 
-        builder.Property(e => e.UnitPrice).HasColumnType("money");
+        builder.Property(e => e.UnitPrice)
+            .HasColumnType("money");
 
         builder.HasOne(d => d.Order)
             .WithMany(p => p.OrderDetails)
