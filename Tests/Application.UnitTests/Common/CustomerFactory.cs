@@ -7,7 +7,7 @@ namespace Northwind.Application.UnitTests.Common;
 
 public static class CustomerFactory
 {
-    private static Faker<Customer> _faker = new Faker<Customer>().CustomInstantiator(f => Customer.Create(
+    private static readonly Faker<Customer> Faker = new Faker<Customer>().CustomInstantiator(f => Customer.Create(
         f.Company.CompanyName(0),
         f.Name.FullName(),
         f.Name.JobTitle(),
@@ -22,7 +22,7 @@ public static class CustomerFactory
         f.Phone.PhoneNumber()
     ));
 
-    public static Customer Generate() => _faker.Generate();
+    public static Customer Generate() => Faker.Generate();
 
-    public static IEnumerable<Customer> Generate(int num) => _faker.Generate(num);
+    public static IEnumerable<Customer> Generate(int num) => Faker.Generate(num);
 }

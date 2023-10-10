@@ -1,17 +1,24 @@
-﻿using Northwind.Domain.Orders;
+﻿using Northwind.Domain.Common.Base;
+using Northwind.Domain.Orders;
 
 namespace Northwind.Domain.Shipping;
 
-public class Shipper
+public record ShipperId(int Value);
+
+public class Shipper : BaseEntity<ShipperId>
 {
-    public Shipper()
+    public string CompanyName { get; private set; } = null!;
+    public string Phone { get; private set; } = null!;
+
+    private List<Order> _orders = new();
+
+    public IEnumerable<Order> Orders => _orders.AsReadOnly();
+
+    private Shipper() { }
+
+    public static Shipper Create(string companyName, string phoneNumber)
     {
-        Orders = new HashSet<Order>();
+        var shipper = new Shipper { CompanyName = companyName, Phone = phoneNumber };
+        return shipper;
     }
-
-    public int ShipperId { get; set; }
-    public string CompanyName { get; set; }
-    public string Phone { get; set; }
-
-    public ICollection<Order> Orders { get; private set; }
 }

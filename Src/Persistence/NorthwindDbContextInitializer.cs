@@ -204,10 +204,11 @@ public class NorthwindDbContextInitializer
         if (_dbContext.Shippers.Any())
             return;
 
-        var faker = new Faker<Shipper>().CustomInstantiator(f => new Shipper
-        {
-            CompanyName = f.Company.CompanyName(), Phone = f.Phone.PhoneNumber()
-        });
+        var faker = new Faker<Shipper>().CustomInstantiator(f => Shipper.Create
+        (
+            f.Company.CompanyName(),
+            f.Phone.PhoneNumber()
+        ));
 
         var shippers = faker.Generate(NumShippers);
         await _dbContext.Shippers.AddRangeAsync(shippers, cancellationToken);

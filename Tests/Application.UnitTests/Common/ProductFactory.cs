@@ -5,7 +5,7 @@ namespace Northwind.Application.UnitTests.Common;
 
 public static class ProductFactory
 {
-    private static Faker<Product> _faker = new Faker<Product>().CustomInstantiator(f => Product.Create(
+    private static readonly Faker<Product> Faker = new Faker<Product>().CustomInstantiator(f => Product.Create(
         f.Commerce.ProductName(),
         null,
         null,
@@ -13,7 +13,7 @@ public static class ProductFactory
         f.Random.Bool()
     ));
 
-    public static Product Generate() => _faker.Generate();
+    public static Product Generate() => Faker.Generate();
 
-    public static IEnumerable<Product> Generate(int num) => _faker.Generate(num);
+    public static IEnumerable<Product> Generate(int num) => Faker.Generate(num);
 }
