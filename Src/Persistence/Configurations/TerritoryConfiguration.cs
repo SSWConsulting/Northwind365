@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Northwind.Domain.Entities;
+
+using Northwind.Domain.Employees;
 
 namespace Northwind.Persistence.Configurations;
 
@@ -8,15 +9,18 @@ public class TerritoryConfiguration : IEntityTypeConfiguration<Territory>
 {
     public void Configure(EntityTypeBuilder<Territory> builder)
     {
-        builder.HasKey(e => e.TerritoryId)
+        builder.HasKey(e => e.Id)
             .IsClustered(false);
 
-        builder.Property(e => e.TerritoryId)
+        builder.Property(e => e.Id)
             .HasColumnName("TerritoryID")
             .HasMaxLength(20)
+            .HasConversion(e => e.Value, e => new TerritoryId(e))
             .ValueGeneratedNever();
 
-        builder.Property(e => e.RegionId).HasColumnName("RegionID");
+        builder.Property(e => e.RegionId)
+            .HasColumnName("RegionID")
+            .HasConversion(e => e.Value, e => new RegionId(e));
 
         builder.Property(e => e.TerritoryDescription)
             .IsRequired()

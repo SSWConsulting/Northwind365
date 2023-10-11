@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Northwind.Domain.Entities;
+
+using Northwind.Domain.Customers;
 
 namespace Northwind.Persistence.Configurations;
 
@@ -8,14 +9,14 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
 {
     public void Configure(EntityTypeBuilder<Customer> builder)
     {
-        builder.Property(e => e.CustomerId)
+        builder.Property(e => e.Id)
             .HasColumnName("CustomerID")
-            .HasMaxLength(5)
+            .HasMaxLength(10)
+            .HasConversion(x => x.Value,
+                x => new CustomerId(x))
             .ValueGeneratedNever();
 
-        builder.Property(e => e.Address).HasMaxLength(60);
-
-        builder.Property(e => e.City).HasMaxLength(15);
+        builder.OwnsOne(e => e.Address, AddressConfiguration.BuildAction);
 
         builder.Property(e => e.CompanyName)
             .IsRequired()
@@ -23,16 +24,15 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
 
         builder.Property(e => e.ContactName).HasMaxLength(30);
 
-        builder.Property(e => e.ContactTitle).HasMaxLength(30);
-
-        builder.Property(e => e.Country).HasMaxLength(15);
+        builder.Property(e => e.ContactTitle).HasMaxLength(50);
 
         builder.Property(e => e.Fax).HasMaxLength(24);
 
         builder.Property(e => e.Phone).HasMaxLength(24);
 
-        builder.Property(e => e.PostalCode).HasMaxLength(10);
-
-        builder.Property(e => e.Region).HasMaxLength(15);
+        builder.HasMany(e => e.Orders)
+            .WithOne(p => p.Customer)
+            .HasForeignKey(e => e.Id)
+            .IsRequired();
     }
 }

@@ -1,8 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using Northwind.Application.Common.Interfaces;
+using Northwind.Domain.Categories;
 using Northwind.Domain.Common;
-using Northwind.Domain.Entities;
+using Northwind.Domain.Common.Base;
+using Northwind.Domain.Customers;
+using Northwind.Domain.Employees;
+using Northwind.Domain.Orders;
+using Northwind.Domain.Products;
+using Northwind.Domain.Shipping;
+using Northwind.Domain.Supplying;
 
 namespace Northwind.Persistence;
 
@@ -56,14 +63,11 @@ public class NorthwindDbContext : DbContext, INorthwindDbContext
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.CreatedBy = _currentUserService.GetUserId();
-                entry.Entity.Created = _dateTime.Now;
-                
+                entry.Entity.SetCreated(_dateTime.Now, _currentUserService.GetUserId());
             }
             else if (entry.State == EntityState.Modified)
             {
-                entry.Entity.LastModifiedBy = _currentUserService.GetUserId();
-                entry.Entity.LastModified = _dateTime.Now;
+                entry.Entity.SetUpdated(_dateTime.Now, _currentUserService.GetUserId());
             }
         }
 

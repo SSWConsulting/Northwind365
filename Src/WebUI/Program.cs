@@ -1,11 +1,7 @@
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Northwind.Application.System.Commands.SeedSampleData;
+using Northwind.Application;
 using Northwind.Infrastructure;
 using Northwind.Infrastructure.Identity;
 using Northwind.Persistence;
-using Northwind.Application;
-using Northwind.WebUI.Common;
 using Northwind.WebUI.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,24 +19,19 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
     app.UseRegisteredServicesPage(app.Services);
 
-    // Initialise and seed database
     using var scope = app.Services.CreateScope();
-
-    // TODO: Update to use intializer
-    //var initializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
-    //await initializer.InitializeAsync();
-    //await initializer.SeedAsync();
 
     try
     {
-        var northwindContext = scope.ServiceProvider.GetRequiredService<NorthwindDbContext>();
-        northwindContext.Database.Migrate();
 
-        var identityContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        identityContext.Database.Migrate();
+        var identityInitializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
+        await identityInitializer.EnsureDeleted();
+        await identityInitializer.InitializeAsync();
 
-        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-        await mediator.Send(new SeedSampleDataCommand(), CancellationToken.None);
+        // Initialise and seed database
+        var initializer = scope.ServiceProvider.GetRequiredService<NorthwindDbContextInitializer>();
+        await initializer.InitializeAsync();
+        await initializer.SeedAsync();
     }
     catch (Exception ex)
     {
@@ -51,7 +42,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Error");
-
 
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
@@ -105,4 +95,6 @@ app.MapProductEndpoints();
 
 app.Run();
 
-public partial class Program { }
+public partial class Program
+{
+}

@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace Northwind.Application.Products.Queries.GetProductsList;
 
+public class GetProductsListQuery : IRequest<ProductsListVm>
+{
+}
+
 public class GetProductsListQueryHandler : IRequestHandler<GetProductsListQuery, ProductsListVm>
 {
     private readonly INorthwindDbContext _context;

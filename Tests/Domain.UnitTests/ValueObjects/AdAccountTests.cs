@@ -1,5 +1,6 @@
+using Northwind.Domain.Common;
 using Northwind.Domain.Exceptions;
-using Northwind.Domain.ValueObjects;
+
 using Xunit;
 
 namespace Northwind.Domain.UnitTests.ValueObjects;

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Northwind.Application.Common.Mappings;
-using Northwind.Domain.Entities;
+using Northwind.Domain.Customers;
 
 namespace Northwind.Application.Customers.Queries.GetCustomerDetail;
 
@@ -20,8 +20,7 @@ public class CustomerDetailVm : IMapFrom<Customer>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<Customer, CustomerDetailVm>()
-            .ForMember(d => d.Id, opt => opt.MapFrom(s => s.CustomerId));
+        profile.CreateMap<Customer, CustomerDetailVm>();
     }
 
     /*

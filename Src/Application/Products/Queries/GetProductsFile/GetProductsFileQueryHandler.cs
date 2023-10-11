@@ -9,6 +9,10 @@ using Northwind.Application.Common.Interfaces;
 
 namespace Northwind.Application.Products.Queries.GetProductsFile;
 
+public class GetProductsFileQuery : IRequest<ProductsFileVm>
+{
+}
+
 public class GetProductsFileQueryHandler : IRequestHandler<GetProductsFileQuery, ProductsFileVm>
 {
     private readonly INorthwindDbContext _context;

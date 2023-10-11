@@ -1,12 +1,19 @@
 ﻿using MediatR;
 using Northwind.Application.Common.Exceptions;
 using Northwind.Application.Common.Interfaces;
-using Northwind.Domain.Entities;
+
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Northwind.Domain.Customers;
+
 namespace Northwind.Application.Customers.Commands.DeleteCustomer;
+
+public class DeleteCustomerCommand : IRequest
+{
+    public string Id { get; set; }
+}
 
 public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand>
 {
@@ -27,7 +34,7 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
             throw new NotFoundException(nameof(Customer), request.Id);
         }
 
-        var hasOrders = _context.Orders.Any(o => o.CustomerId == entity.CustomerId);
+        var hasOrders = _context.Orders.Any(o => o.CustomerId == entity.Id);
         if (hasOrders)
         {
             throw new DeleteFailureException(nameof(Customer), request.Id, "There are existing orders associated with this customer.");

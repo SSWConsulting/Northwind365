@@ -27,6 +27,7 @@ public static class DependencyInjection
         services.AddTransient<INotificationService, NotificationService>();
         services.AddTransient<IDateTime, MachineDateTime>();
         services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
+        services.AddScoped<ApplicationDbContextInitializer>();
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("NorthwindDatabase")));

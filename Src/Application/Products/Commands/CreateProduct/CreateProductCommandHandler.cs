@@ -1,11 +1,31 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+
 using MediatR;
+
+using Microsoft.Extensions.DependencyInjection;
+
 using Northwind.Application.Common.Interfaces;
-using Northwind.Domain.Entities;
+using Northwind.Application.Common.Mappings;
+using Northwind.Domain.Products;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Northwind.Application.Products.Commands.CreateProduct;
 
+public class CreateProductCommand : IRequest<int>
+{
+    public string ProductName { get; set; }
+
+    public decimal? UnitPrice { get; set; }
+
+    public int? SupplierId { get; set; }
+
+    public int? CategoryId { get; set; }
+
+    public bool Discontinued { get; set; }
+}
+
+[SuppressMessage("ReSharper", "UnusedType.Global")]
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, int>
 {
     private readonly INorthwindDbContext _context;
@@ -17,19 +37,19 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
     public async Task<int> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
-        var entity = new Product
-        {
-            ProductName = request.ProductName,
-            CategoryId = request.CategoryId,
-            SupplierId = request.SupplierId,
-            UnitPrice = request.UnitPrice,
-            Discontinued = request.Discontinued
-        };
+        var entity = Product.Create
+        (
+            request.ProductName,
+            request.CategoryId.ToCategoryId(),
+            request.SupplierId.ToSupplierId(),
+            request.UnitPrice,
+            request.Discontinued
+        );
 
         _context.Products.Add(entity);
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return entity.ProductId;
+        return entity.Id.Value;
     }
 }

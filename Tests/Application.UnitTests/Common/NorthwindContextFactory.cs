@@ -1,6 +1,7 @@
 using System;
+
 using Microsoft.EntityFrameworkCore;
-using Northwind.Domain.Entities;
+
 using Northwind.Persistence;
 
 namespace Northwind.Application.UnitTests.Common;
@@ -14,15 +15,10 @@ public class NorthwindContextFactory
             .Options;
 
         var context = new NorthwindDbContext(options);
-
         context.Database.EnsureCreated();
 
-        context.Customers.AddRange(new[] {
-            new Customer { CustomerId = "ADAM", ContactName = "Adam Cogan" },
-            new Customer { CustomerId = "JASON", ContactName = "Jason Taylor" },
-            new Customer { CustomerId = "BREND", ContactName = "Brendan Richards" },
-        });
-
+        var customers = CustomerFactory.Generate(3);
+        context.Customers.AddRange(customers);
         context.SaveChanges();
 
         return context;

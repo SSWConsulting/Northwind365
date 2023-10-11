@@ -4,9 +4,14 @@ using System.Threading.Tasks;
 using MediatR;
 using Northwind.Application.Common.Exceptions;
 using Northwind.Application.Common.Interfaces;
-using Northwind.Domain.Entities;
+using Northwind.Domain.Products;
 
 namespace Northwind.Application.Products.Commands.DeleteProduct;
+
+public class DeleteProductCommand : IRequest
+{
+    public int Id { get; set; }
+}
 
 public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
 {
@@ -26,11 +31,12 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
             throw new NotFoundException(nameof(Product), request.Id);
         }
 
-        var hasOrders = _context.OrderDetails.Any(od => od.ProductId == entity.ProductId);
+        var hasOrders = _context.OrderDetails.Any(od => od.ProductId == entity.Id);
         if (hasOrders)
         {
             // TODO: Add functional test for this behaviour.
-            throw new DeleteFailureException(nameof(Product), request.Id, "There are existing orders associated with this product.");
+            throw new DeleteFailureException(nameof(Product), request.Id,
+                "There are existing orders associated with this product.");
         }
 
         _context.Products.Remove(entity);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Northwind.Domain.Entities;
+
+using Northwind.Domain.Employees;
 
 namespace Northwind.Persistence.Configurations;
 
@@ -8,12 +9,13 @@ public class RegionConfiguration : IEntityTypeConfiguration<Region>
 {
     public void Configure(EntityTypeBuilder<Region> builder)
     {
-        builder.HasKey(e => e.RegionId)
+        builder.HasKey(e => e.Id)
             .IsClustered(false);
 
-        builder.Property(e => e.RegionId)
+        builder.Property(e => e.Id)
             .HasColumnName("RegionID")
-            .ValueGeneratedNever();
+            .HasConversion(e => e.Value, e => new RegionId(e))
+            .ValueGeneratedOnAdd();
 
         builder.Property(e => e.RegionDescription)
             .IsRequired()

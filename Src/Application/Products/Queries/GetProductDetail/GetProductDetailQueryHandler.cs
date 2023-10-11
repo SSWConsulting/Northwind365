@@ -1,13 +1,21 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Northwind.Application.Common.Exceptions;
 using Northwind.Application.Common.Interfaces;
-using Northwind.Domain.Entities;
+
 using System.Threading;
 using System.Threading.Tasks;
 
+using Northwind.Domain.Products;
+
 namespace Northwind.Application.Products.Queries.GetProductDetail;
+
+public class GetProductDetailQuery : IRequest<ProductDetailVm>
+{
+    public int Id { get; set; }
+}
 
 public class GetProductDetailQueryHandler : MediatR.IRequestHandler<GetProductDetailQuery, ProductDetailVm>
 {

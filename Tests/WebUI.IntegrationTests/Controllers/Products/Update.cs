@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using Northwind.Application.Products.Commands.UpdateProduct;
+using Northwind.Domain.Supplying;
 using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
 
@@ -46,7 +47,7 @@ public class Update : IClassFixture<CustomWebApplicationFactory<Program>>
         {
             ProductId = 0,
             ProductName = "Original Frankfurter grüne Soße",
-            SupplierId = 12,
+            SupplierId = 1,
             CategoryId = 2,
             UnitPrice = 15.00m,
             Discontinued = false

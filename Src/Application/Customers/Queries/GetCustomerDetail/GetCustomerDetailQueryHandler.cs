@@ -2,11 +2,18 @@
 using MediatR;
 using Northwind.Application.Common.Exceptions;
 using Northwind.Application.Common.Interfaces;
-using Northwind.Domain.Entities;
+
 using System.Threading;
 using System.Threading.Tasks;
 
+using Northwind.Domain.Customers;
+
 namespace Northwind.Application.Customers.Queries.GetCustomerDetail;
+
+public class GetCustomerDetailQuery : IRequest<CustomerDetailVm>
+{
+    public string Id { get; set; }
+}
 
 public class GetCustomerDetailQueryHandler : IRequestHandler<GetCustomerDetailQuery, CustomerDetailVm>
 {

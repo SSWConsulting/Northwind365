@@ -5,7 +5,11 @@ using Northwind.Application.Customers.Queries.GetCustomersList;
 using Northwind.Application.Products.Queries.GetProductsList;
 using Northwind.Application.Products.Queries.GetProductDetail;
 using Northwind.Application.Products.Queries.GetProductsFile;
-using Northwind.Domain.Entities;
+using Northwind.Application.UnitTests.Common;
+using Northwind.Domain.Categories;
+using Northwind.Domain.Customers;
+using Northwind.Domain.Products;
+
 using Shouldly;
 using Xunit;
 
@@ -31,7 +35,7 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
     [Fact]
     public void ShouldMapCategoryToCategoryLookupDto()
     {
-        var entity = new Category();
+        var entity = new Category("category", "description", new byte[] { 0x20, 0x20, 0x20 });
 
         var result = _mapper.Map<CategoryLookupDto>(entity);
 
@@ -42,7 +46,7 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
     [Fact]
     public void ShouldMapCustomerToCustomerLookupDto()
     {
-        var entity = new Customer();
+        var entity = CustomerFactory.Generate();
 
         var result = _mapper.Map<CustomerLookupDto>(entity);
 
@@ -53,7 +57,7 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
     [Fact]
     public void ShouldMapProductToProductDetailVm()
     {
-        var entity = new Product();
+        var entity = ProductFactory.Generate();
 
         var result = _mapper.Map<ProductDetailVm>(entity);
 
@@ -64,7 +68,7 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
     [Fact]
     public void ShouldMapProductToProductDto()
     {
-        var entity = new Product();
+        var entity = ProductFactory.Generate();
 
         var result = _mapper.Map<ProductDto>(entity);
 
@@ -75,7 +79,7 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
     [Fact]
     public void ShouldMapProductToProductRecordDto()
     {
-        var entity = new Product();
+        var entity = ProductFactory.Generate();
 
         var result = _mapper.Map<ProductRecordDto>(entity);
 
@@ -86,7 +90,7 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
     [Fact]
     public void ShouldMapCustomerToCustomerDetailVm()
     {
-        var entity = new Customer();
+        var entity = CustomerFactory.Generate();
 
         var result = _mapper.Map<CustomerDetailVm>(entity);
 
