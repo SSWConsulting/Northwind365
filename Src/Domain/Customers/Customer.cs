@@ -6,7 +6,7 @@ using Northwind.Domain.Orders;
 
 namespace Northwind.Domain.Customers;
 
-public record CustomerId(string Value);
+public readonly record struct CustomerId(string Value);
 
 public class Customer : BaseEntity<CustomerId>
 {

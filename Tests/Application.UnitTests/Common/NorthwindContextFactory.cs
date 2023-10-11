@@ -6,7 +6,7 @@ using Northwind.Persistence;
 
 namespace Northwind.Application.UnitTests.Common;
 
-public class NorthwindContextFactory
+public static class NorthwindContextFactory
 {
     public static NorthwindDbContext Create()
     {

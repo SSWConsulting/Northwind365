@@ -6,8 +6,8 @@ namespace Northwind.Domain.Orders;
 // NOTE: Note inheriting from BaseEntity as we have a composite PK
 public class OrderDetail : AuditableEntity
 {
-    public OrderId OrderId { get; private set; } = null!;
-    public ProductId ProductId { get; private set; } = null!;
+    public OrderId OrderId { get; private set; }
+    public ProductId ProductId { get; private set; }
     public decimal UnitPrice { get; private set; }
     public short Quantity { get; private set; }
     public float Discount { get; private set; }

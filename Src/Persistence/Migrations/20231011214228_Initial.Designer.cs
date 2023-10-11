@@ -12,7 +12,7 @@ using Northwind.Persistence;
 namespace Northwind.Persistence.Migrations
 {
     [DbContext(typeof(NorthwindDbContext))]
-    [Migration("20231011035633_Initial")]
+    [Migration("20231011214228_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
