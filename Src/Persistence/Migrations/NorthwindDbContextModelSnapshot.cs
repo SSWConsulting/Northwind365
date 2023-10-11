@@ -25,8 +25,11 @@ namespace Northwind.Persistence.Migrations
             modelBuilder.Entity("Northwind.Domain.Categories.Category", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("CategoryID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CategoryName")
                         .IsRequired()

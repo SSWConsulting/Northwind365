@@ -11,14 +11,17 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
         builder.Property(e => e.Id)
             .HasColumnName("CategoryID")
-            .HasConversion(e => e.Value, e => new CategoryId(e));
+            .HasConversion(e => e.Value, e => new CategoryId(e))
+            .ValueGeneratedOnAdd();
 
         builder.Property(e => e.CategoryName)
             .IsRequired()
             .HasMaxLength(15);
 
-        builder.Property(e => e.Description).HasColumnType("ntext");
+        builder.Property(e => e.Description)
+            .HasColumnType("ntext");
 
-        builder.Property(e => e.Picture).HasColumnType("image");
+        builder.Property(e => e.Picture)
+            .HasColumnType("image");
     }
 }

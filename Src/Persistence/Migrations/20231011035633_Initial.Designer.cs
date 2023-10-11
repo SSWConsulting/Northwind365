@@ -12,7 +12,7 @@ using Northwind.Persistence;
 namespace Northwind.Persistence.Migrations
 {
     [DbContext(typeof(NorthwindDbContext))]
-    [Migration("20231010072017_Initial")]
+    [Migration("20231011035633_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -28,8 +28,11 @@ namespace Northwind.Persistence.Migrations
             modelBuilder.Entity("Northwind.Domain.Categories.Category", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("CategoryID");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CategoryName")
                         .IsRequired()

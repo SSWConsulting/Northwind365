@@ -1,18 +1,16 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-using Bogus;
-using Bogus.DataSets;
+﻿using Bogus;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Domain.Categories;
+using Northwind.Domain.Common;
 using Northwind.Domain.Customers;
 using Northwind.Domain.Employees;
 using Northwind.Domain.Orders;
 using Northwind.Domain.Products;
 using Northwind.Domain.Shipping;
 using Northwind.Domain.Supplying;
-using Address = Northwind.Domain.Common.Address;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Northwind.Persistence;
 
@@ -23,14 +21,19 @@ public class NorthwindDbContextInitializer
     private readonly NorthwindDbContext _dbContext;
     private readonly IUserManager _userManager;
 
-    private const int NumCategories = 10;
-    private const int NumTerritoriesPerRegion = 10;
-    private const int NumCustomers = 100;
-    private const int NumEmployees = 100;
-    private const int NumShippers = 3;
-    private const int NumSuppliers = 30;
-    private const int NumProducts = 100;
-    private const int NumOrders = 1000;
+    public const int NumCategories = 10;
+    public const int NumTerritoriesPerRegion = 10;
+    public const int NumCustomers = 100;
+    public const int NumEmployees = 100;
+    public const int NumShippers = 3;
+    public const int NumSuppliers = 30;
+    public const int NumProducts = 100;
+    public const int NumOrders = 1000;
+    public const int MinEmployeeTerritories = 2;
+    public const int MaxEmployeeTerritories = 10;
+    public const int MinOrderDetails = 1;
+    public const int MaxOrderDetails = 10;
+    public const int NumRegions = 4;
 
     public NorthwindDbContextInitializer(ILogger<NorthwindDbContextInitializer> logger, NorthwindDbContext dbContext,
         IUserManager userManager)
@@ -54,6 +57,7 @@ public class NorthwindDbContextInitializer
         }
     }
 
+    // NOTE: Consider splitting data between static and sample data
     public async Task SeedAsync(CancellationToken cancellationToken = default)
     {
         try
@@ -159,16 +163,17 @@ public class NorthwindDbContextInitializer
         .CustomInstantiator(f => new Address(
             f.Address.StreetAddress(),
             f.Address.City(),
-            f.Address.Country(),
+            f.Address.State(),
             f.Address.ZipCode(),
-            f.Address.State()));
+            f.Address.Country()
+            ));
 
     private async Task SeedEmployeesAsync(CancellationToken cancellationToken)
     {
         if (_dbContext.Employees.Any())
             return;
 
-        var territories = await _dbContext.Territories.ToListAsync();
+        var territories = await _dbContext.Territories.ToListAsync(cancellationToken);
 
         var faker = new Faker<Employee>()
             .CustomInstantiator(f => Employee.Create
@@ -185,7 +190,7 @@ public class NorthwindDbContextInitializer
                 f.Random.Bytes(5),
                 f.Name.JobTitle(),
                 f.Name.Prefix(),
-                f.PickRandom(territories, f.Random.Int(2, 10))
+                f.PickRandom(territories, f.Random.Int(MinEmployeeTerritories, MaxEmployeeTerritories))
             ));
 
         var employees = faker.Generate(NumEmployees);
@@ -290,7 +295,7 @@ public class NorthwindDbContextInitializer
 
         foreach (var order in orders)
         {
-            var numOrderDetails = randomFaker.Random.Int(1, 10);
+            var numOrderDetails = randomFaker.Random.Int(MinOrderDetails, MaxOrderDetails);
             for (var i = 0; i < numOrderDetails; i++)
             {
                 var productId = randomFaker.PickRandom(products).Id;
@@ -316,9 +321,14 @@ public class NorthwindDbContextInitializer
         {
             foreach (var employee in employees)
             {
-                var userName = $"{employee.FirstName}@northwind".ToLower();
+                var userName = $"{employee.FirstName}.{employee.LastName}@northwind".ToLower();
                 var userId = await _userManager.CreateUserAsync(userName, "Northwind1!");
-                employee.UpdateUserId(userId);
+
+                // NOTE: If the user already exists, then the user id will be null
+                if (!string.IsNullOrWhiteSpace(userId))
+                {
+                    employee.UpdateUserId(userId);
+                }
 
                 if (employee.DirectReports.Any())
                 {
