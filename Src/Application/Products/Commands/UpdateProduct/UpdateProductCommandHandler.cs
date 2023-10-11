@@ -41,7 +41,6 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
         if (entity == null)
             throw new NotFoundException(nameof(Product), request.ProductId);
 
-        //entity.Id = request.ProductId.ToProductId();
         entity.UpdateProduct(request.ProductName, request.CategoryId.ToCategoryId(), request.SupplierId.ToSupplierId(),
             request.Discontinued);
 

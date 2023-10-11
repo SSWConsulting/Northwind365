@@ -10,10 +10,4 @@ public class EmployeeTerritory
     public Territory? Territory { get; private set; }
 
     private EmployeeTerritory() { }
-
-    // public static EmployeeTerritory Create(EmployeeId employeeId, TerritoryId territoryId)
-    // {
-    //     var employeeTerritory = new EmployeeTerritory { EmployeeId = employeeId, TerritoryId = territoryId };
-    //     return employeeTerritory;
-    // }
 }

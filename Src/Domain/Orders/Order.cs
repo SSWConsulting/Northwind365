@@ -64,10 +64,4 @@ public class Order : BaseEntity<OrderId>
             _orderDetails.Add(orderDetail);
         }
     }
-
-    // public void AddOrderDetails(IEnumerable<OrderDetail> details)
-    // {
-    //     foreach (var detail in details)
-    //         AddOrderDetails(detail);
-    // }
 }

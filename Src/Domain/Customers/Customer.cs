@@ -1,7 +1,7 @@
-﻿using System.Runtime.CompilerServices;
-using Ardalis.GuardClauses;
+﻿using Ardalis.GuardClauses;
 using Northwind.Domain.Common;
 using Northwind.Domain.Common.Base;
+using Northwind.Domain.Common.Guards;
 using Northwind.Domain.Orders;
 
 namespace Northwind.Domain.Customers;
@@ -63,19 +63,5 @@ public class Customer : BaseEntity<CustomerId>
     public void UpdateCompanyName(string companyName)
     {
         CompanyName = companyName;
-    }
-}
-
-public static class StringLengthGuard
-{
-    public static string StringLength(this IGuardClause guardClause,
-        string input,
-        int maxLength,
-        [CallerArgumentExpression("input")] string? parameterName = null)
-    {
-        if (input?.Length > maxLength)
-            throw new ArgumentException($"Cannot exceed string length of {maxLength}", parameterName);
-
-        return input!;
     }
 }

@@ -15,14 +15,7 @@ public class NorthwindContextFactory
             .Options;
 
         var context = new NorthwindDbContext(options);
-
         context.Database.EnsureCreated();
-
-        // context.Customers.AddRange(new[] {
-        //     new Customer { Id = "ADAM", ContactName = "Adam Cogan" },
-        //     new Customer { Id = "JASON", ContactName = "Jason Taylor" },
-        //     new Customer { Id = "BREND", ContactName = "Brendan Richards" },
-        // });
 
         var customers = CustomerFactory.Generate(3);
         context.Customers.AddRange(customers);

@@ -1,6 +1,7 @@
 ﻿using Ardalis.GuardClauses;
 using Northwind.Domain.Categories;
 using Northwind.Domain.Common.Base;
+using Northwind.Domain.Common.Guards;
 using Northwind.Domain.Orders;
 using Northwind.Domain.Supplying;
 
@@ -48,23 +49,23 @@ public class Product : BaseEntity<ProductId>
         Discontinued = discontinued;
     }
 
-    public void UpdateQuantityPerUnit(string sentence)
+    public void UpdateQuantityPerUnit(string description)
     {
-        QuantityPerUnit = sentence;
+        QuantityPerUnit = description;
     }
 
     public void UpdateUnitsInStock(short s)
     {
-        UnitsInStock = s;
+        UnitsInStock = Guard.Against.Negative(s);
     }
 
     public void UpdateUnitsOnOrder(short s)
     {
-        UnitsOnOrder = s;
+        UnitsOnOrder = Guard.Against.Negative(s);
     }
 
     public void UpdateReorderLevel(short s)
     {
-        ReorderLevel = s;
+        ReorderLevel = Guard.Against.Negative(s);
     }
 }
