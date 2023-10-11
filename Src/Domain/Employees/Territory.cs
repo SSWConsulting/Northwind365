@@ -7,7 +7,7 @@ public record TerritoryId(string Value);
 public class Territory : BaseEntity<TerritoryId>
 {
     public string TerritoryDescription { get; private set; } = null!;
-    public RegionId RegionId { get; private set; } = null!;
+    public RegionId RegionId { get; private set; }
 
     public Region? Region { get; private set; }
 

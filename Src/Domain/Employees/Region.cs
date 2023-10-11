@@ -2,7 +2,7 @@
 
 namespace Northwind.Domain.Employees;
 
-public record RegionId(int Value);
+public readonly record struct RegionId(int Value);
 
 public class Region : BaseEntity<RegionId>
 {

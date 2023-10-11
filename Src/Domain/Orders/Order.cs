@@ -7,11 +7,11 @@ using Northwind.Domain.Shipping;
 
 namespace Northwind.Domain.Orders;
 
-public record OrderId(int Value);
+public readonly record struct OrderId(int Value);
 
 public class Order : BaseEntity<OrderId>
 {
-    public CustomerId CustomerId { get; private set; } = null!;
+    public CustomerId CustomerId { get; private set; }
     public EmployeeId? EmployeeId { get; private set; }
     public DateTime? OrderDate { get; private set; }
     public DateTime? RequiredDate { get; private set; }

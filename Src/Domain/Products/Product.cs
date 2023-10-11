@@ -7,7 +7,7 @@ using Northwind.Domain.Supplying;
 
 namespace Northwind.Domain.Products;
 
-public record ProductId(int Value);
+public readonly record struct ProductId(int Value);
 
 public class Product : BaseEntity<ProductId>
 {
