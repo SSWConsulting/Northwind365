@@ -18,7 +18,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(e => e.CategoryId)
             .HasColumnName("CategoryID")
-            .HasConversion(e => e.Value, e => new CategoryId(e));
+            .HasConversion(e => e.Value.Value, e => new CategoryId(e));
 
         builder.Property(e => e.ProductName)
             .IsRequired()
@@ -32,7 +32,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(e => e.SupplierId)
             .HasColumnName("SupplierID")
-            .HasConversion(x => x.Value, x => new SupplierId(x));
+            .HasConversion(x => x.Value.Value, x => new SupplierId(x));
 
         builder.Property(e => e.UnitPrice)
             .HasColumnType("money")

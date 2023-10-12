@@ -8,10 +8,7 @@ using Northwind.Domain.Products;
 
 namespace Northwind.Application.Products.Commands.DeleteProduct;
 
-public class DeleteProductCommand : IRequest
-{
-    public int Id { get; set; }
-}
+public record DeleteProductCommand(int Id) : IRequest;
 
 public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
 {

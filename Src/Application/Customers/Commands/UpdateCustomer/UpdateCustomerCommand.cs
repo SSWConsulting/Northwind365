@@ -14,22 +14,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Northwind.Application.Customers.Commands.UpdateCustomer;
 
-public class UpdateCustomerCommand : IRequest
-{
-    public string Id { get; set; }
-    public string Address { get; set; }
-    public string City { get; set; }
-    public string CompanyName { get; set; }
-    public string ContactName { get; set; }
-    public string ContactTitle { get; set; }
-    public string Country { get; set; }
-    public string Fax { get; set; }
-    public string Phone { get; set; }
-    public string PostalCode { get; set; }
-    public string Region { get; set; }
-}
+public record UpdateCustomerCommand(string Id, string Address, string City, string CompanyName, string ContactName,
+    string ContactTitle, string Country, string Fax, string Phone, string PostalCode, string Region) : IRequest;
 
-[SuppressMessage("ReSharper", "UnusedType.Global")]
+// ReSharper disable once UnusedType.Global
 public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand>
 {
     private readonly INorthwindDbContext _context;

@@ -7,7 +7,7 @@ using Northwind.Application.Products.Queries.GetProductsFile;
 using Northwind.Application.Products.Queries.GetProductsList;
 using SSW.CleanArchitecture.WebApi.Extensions;
 
-namespace Northwind.WebUI.Controllers;
+namespace Northwind.WebUI.Features;
 
 public static class ProductEndpoints
 {
@@ -53,7 +53,8 @@ public static class ProductEndpoints
         //    return Ok(await Mediator.Send(new GetProductDetailQuery { Id = id }));
         //}
         group
-            .MapGet("/{id}", (int id, ISender sender, CancellationToken ct) => sender.Send(new GetProductDetailQuery { Id = id }, ct))
+            .MapGet("/{id}",
+                (int id, ISender sender, CancellationToken ct) => sender.Send(new GetProductDetailQuery(id), ct))
             .WithName("GetProductDetail")
             .ProducesGet<ProductDetailVm>();
 
@@ -64,7 +65,8 @@ public static class ProductEndpoints
         //    return Ok(productId);
         //}
         group
-            .MapPost("/", (CreateProductCommand command, ISender sender, CancellationToken ct) => sender.Send(command, ct))
+            .MapPost("/",
+                (CreateProductCommand command, ISender sender, CancellationToken ct) => sender.Send(command, ct))
             .WithName("CreateProduct")
             .ProducesPost<int>();
 
@@ -77,7 +79,8 @@ public static class ProductEndpoints
         //    return NoContent();
         //}
         group
-            .MapPut("/", (UpdateProductCommand command, ISender sender, CancellationToken ct) => sender.Send(command, ct))
+            .MapPut("/",
+                (UpdateProductCommand command, ISender sender, CancellationToken ct) => sender.Send(command, ct))
             .WithName("UpdateProduct")
             .ProducesPut();
 
@@ -90,7 +93,8 @@ public static class ProductEndpoints
         //    return NoContent();
         //}
         group
-            .MapPut("/{id}", (int id, ISender sender, CancellationToken ct) => sender.Send(new DeleteProductCommand { Id = id }, ct))
+            .MapPut("/{id}",
+                (int id, ISender sender, CancellationToken ct) => sender.Send(new DeleteProductCommand(id), ct))
             .WithName("DeleteProduct")
             .ProducesDelete();
     }

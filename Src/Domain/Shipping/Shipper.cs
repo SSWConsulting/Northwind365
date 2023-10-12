@@ -3,7 +3,7 @@ using Northwind.Domain.Orders;
 
 namespace Northwind.Domain.Shipping;
 
-public record ShipperId(int Value);
+public readonly record struct ShipperId(int Value);
 
 public class Shipper : BaseEntity<ShipperId>
 {
