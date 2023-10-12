@@ -1,5 +1,4 @@
 ﻿using AutoFixture;
-using AutoFixture.Xunit2;
 using MediatR;
 using Moq;
 using Northwind.Application.Customers.Commands.CreateCustomer;
@@ -12,7 +11,6 @@ namespace Northwind.Application.UnitTests.Customers.Commands.CreateCustomer;
 public class CreateCustomerCommandTests : CommandTestBase
 {
     [Fact]
-    //[AutoData]
     public void Handle_GivenValidRequest_ShouldRaiseCustomerCreatedNotification()
     {
         // Arrange
