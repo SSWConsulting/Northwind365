@@ -6,7 +6,7 @@ using Northwind.Domain.Orders;
 
 namespace Northwind.Domain.Employees;
 
-public record EmployeeId(int Value);
+public readonly record struct EmployeeId(int Value);
 
 public class Employee : BaseEntity<EmployeeId>
 {
