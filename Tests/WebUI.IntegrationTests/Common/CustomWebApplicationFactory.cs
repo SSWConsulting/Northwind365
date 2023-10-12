@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Northwind.Application.Common.Interfaces;
+using Northwind.Infrastructure.Persistence;
 using Northwind.Persistence;
 
 namespace Northwind.WebUI.IntegrationTests.Common;

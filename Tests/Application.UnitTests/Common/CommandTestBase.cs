@@ -1,5 +1,4 @@
-using System;
-using Northwind.Persistence;
+using Northwind.Infrastructure.Persistence;
 
 namespace Northwind.Application.UnitTests.Common;
 

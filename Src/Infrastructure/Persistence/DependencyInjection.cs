@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Northwind.Application.Common.Interfaces;
 
-namespace Northwind.Persistence;
+namespace Northwind.Infrastructure.Persistence;
 
 public static class DependencyInjection
 {

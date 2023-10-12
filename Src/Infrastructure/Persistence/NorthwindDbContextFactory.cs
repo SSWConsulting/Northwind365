@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Northwind.Persistence;
+namespace Northwind.Infrastructure.Persistence;
 
 public class NorthwindDbContextFactory : DesignTimeDbContextFactoryBase<NorthwindDbContext>
 {

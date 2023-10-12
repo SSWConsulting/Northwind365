@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Northwind.Infrastructure.IntegrationTests.TestHelpers;
+using Northwind.Infrastructure.Persistence;
 using Northwind.Persistence;
 
 namespace Northwind.Infrastructure.IntegrationTests;

@@ -3,6 +3,7 @@ using Northwind.Persistence;
 using Northwind.WebUI.Services;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using Northwind.Infrastructure.Persistence;
 
 public static class DependencyInjection
 {

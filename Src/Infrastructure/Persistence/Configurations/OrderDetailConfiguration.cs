@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 using Northwind.Domain.Orders;
 using Northwind.Domain.Products;
 
-namespace Northwind.Persistence.Configurations;
+namespace Northwind.Infrastructure.Persistence.Configurations;
 
 public class OrderDetailConfiguration : IEntityTypeConfiguration<OrderDetail>
 {

@@ -1,8 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Northwind.Infrastructure.Identity;
 using Northwind.Infrastructure.IntegrationTests.TestHelpers;
+using Northwind.Infrastructure.Persistence;
 using Northwind.Persistence;
-using static Northwind.Persistence.NorthwindDbContextInitializer;
+using static Northwind.Infrastructure.Persistence.NorthwindDbContextInitializer;
 
 namespace Northwind.Infrastructure.IntegrationTests;
 

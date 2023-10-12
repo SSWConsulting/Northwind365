@@ -1,8 +1,5 @@
-using System;
-
 using Microsoft.EntityFrameworkCore;
-
-using Northwind.Persistence;
+using Northwind.Infrastructure.Persistence;
 
 namespace Northwind.Application.UnitTests.Common;
 

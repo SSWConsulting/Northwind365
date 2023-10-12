@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Infrastructure.Identity;
+using Northwind.Infrastructure.Persistence;
 using Northwind.Persistence;
 using Northwind.WebUI;
 
