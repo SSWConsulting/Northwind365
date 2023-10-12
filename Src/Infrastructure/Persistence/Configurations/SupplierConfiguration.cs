@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Northwind.Domain.Supplying;
 
-namespace Northwind.Persistence.Configurations;
+namespace Northwind.Infrastructure.Persistence.Configurations;
 
 public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
 {

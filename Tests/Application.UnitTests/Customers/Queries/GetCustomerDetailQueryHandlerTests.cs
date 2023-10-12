@@ -1,11 +1,9 @@
-﻿using Northwind.Application.Customers.Queries.GetCustomerDetail;
-using Northwind.Persistence;
-using Shouldly;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using Northwind.Application.Customers.Queries.GetCustomerDetail;
 using Northwind.Application.UnitTests.Common;
+using Northwind.Infrastructure.Persistence;
+using Shouldly;
 using Xunit;
-using AutoMapper;
 
 namespace Northwind.Application.UnitTests.Customers.Queries;
 

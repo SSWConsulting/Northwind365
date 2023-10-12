@@ -12,7 +12,7 @@ using Northwind.Domain.Shipping;
 using Northwind.Domain.Supplying;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Northwind.Persistence;
+namespace Northwind.Infrastructure.Persistence;
 
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class NorthwindDbContextInitializer

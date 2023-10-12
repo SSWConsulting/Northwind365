@@ -16,6 +16,9 @@ using Microsoft.Extensions.Hosting;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Infrastructure.Files;
 using Northwind.Infrastructure.Identity;
+using Northwind.Infrastructure.Persistence;
+using Northwind.Infrastructure.Services;
+using Northwind.Persistence;
 
 namespace Northwind.Infrastructure;
 
@@ -23,10 +26,39 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
     {
-        services.AddScoped<IUserManager, UserManagerService>();
+        AddFiles(services);
+        AddIdentity(services, configuration, environment);
+        AddPersistence(services, configuration);
+        AddServices(services);
+
+        return services;
+    }
+
+    private static void AddFiles(IServiceCollection services)
+    {
+        services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
+    }
+
+    private static void AddServices(IServiceCollection services)
+    {
         services.AddTransient<INotificationService, NotificationService>();
         services.AddTransient<IDateTime, MachineDateTime>();
-        services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
+    }
+
+    private static void AddPersistence(IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddDbContext<NorthwindDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("NorthwindDatabase")));
+
+        services.AddScoped<INorthwindDbContext>(provider => provider.GetService<NorthwindDbContext>());
+        services.AddScoped<NorthwindDbContextInitializer>();
+    }
+
+    private static void AddIdentity(IServiceCollection services, IConfiguration configuration,
+        IWebHostEnvironment environment)
+    {
+        services.AddScoped<IUserManager, UserManagerService>();
+
         services.AddScoped<ApplicationDbContextInitializer>();
 
         services.AddDbContext<ApplicationDbContext>(options =>
@@ -69,7 +101,5 @@ public static class DependencyInjection
 
         services.AddAuthentication()
             .AddIdentityServerJwt();
-
-        return services;
     }
 }

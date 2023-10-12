@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Northwind.Application.Common.Interfaces;
+using Northwind.Infrastructure.Persistence;
 using Northwind.Persistence;
 
 namespace Northwind.WebUI.IntegrationTests.Common;
 
-public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
+public class CustomWebApplicationFactory : WebApplicationFactory<IWebUiMarker>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -39,7 +40,7 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
                 // Create a scope to obtain a reference to the database
                 using var scope = sp.CreateScope();
                 var scopedServices = scope.ServiceProvider;
-                var logger = scopedServices.GetRequiredService<ILogger<CustomWebApplicationFactory<TStartup>>>();
+                var logger = scopedServices.GetRequiredService<ILogger<CustomWebApplicationFactory>>();
 
                 try
                 {
@@ -93,7 +94,7 @@ public class CustomWebApplicationFactory<TStartup> : WebApplicationFactory<TStar
             ClientId = "Northwind.IntegrationTests",
             ClientSecret = "secret",
 
-            Scope = "Northwind.WebUIAPI openid profile",
+            Scope = "Northwind.WebUI openid profile",
             UserName = userName,
             Password = password
         });

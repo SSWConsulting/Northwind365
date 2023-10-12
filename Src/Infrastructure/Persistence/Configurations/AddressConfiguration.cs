@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 using Northwind.Domain.Common;
 
-namespace Northwind.Persistence.Configurations;
+namespace Northwind.Infrastructure.Persistence.Configurations;
 
 internal static class AddressConfiguration
 {

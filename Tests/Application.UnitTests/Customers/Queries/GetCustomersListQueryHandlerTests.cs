@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using Northwind.Application.Customers.Queries.GetCustomersList;
 using Northwind.Application.UnitTests.Common;
-using Northwind.Persistence;
+using Northwind.Infrastructure.Persistence;
 using Shouldly;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace NorthwindTraders.Application.UnitTests.Infrastructure;

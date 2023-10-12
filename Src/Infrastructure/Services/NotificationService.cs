@@ -1,8 +1,7 @@
 ﻿using Northwind.Application.Common.Interfaces;
 using Northwind.Application.Notifications.Models;
-using System.Threading.Tasks;
 
-namespace Northwind.Infrastructure;
+namespace Northwind.Infrastructure.Services;
 
 public class NotificationService : INotificationService
 {

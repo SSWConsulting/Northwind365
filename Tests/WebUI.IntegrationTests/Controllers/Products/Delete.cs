@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-public class Delete : IClassFixture<CustomWebApplicationFactory<Program>>
+public class Delete : IClassFixture<CustomWebApplicationFactory>
 {
-    private readonly CustomWebApplicationFactory<Program> _factory;
+    private readonly CustomWebApplicationFactory _factory;
 
-    public Delete(CustomWebApplicationFactory<Program> factory)
+    public Delete(CustomWebApplicationFactory factory)
     {
         _factory = factory;
     }

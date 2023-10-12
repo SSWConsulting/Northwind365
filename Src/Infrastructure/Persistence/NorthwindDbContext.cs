@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
 using Northwind.Application.Common.Interfaces;
 using Northwind.Domain.Categories;
-using Northwind.Domain.Common;
 using Northwind.Domain.Common.Base;
 using Northwind.Domain.Customers;
 using Northwind.Domain.Employees;
@@ -11,7 +9,7 @@ using Northwind.Domain.Products;
 using Northwind.Domain.Shipping;
 using Northwind.Domain.Supplying;
 
-namespace Northwind.Persistence;
+namespace Northwind.Infrastructure.Persistence;
 
 public class NorthwindDbContext : DbContext, INorthwindDbContext
 {

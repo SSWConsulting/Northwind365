@@ -32,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Src\Persistence\Persistence.csproj"/>
     <ProjectReference Include="..\..\Src\WebUI\WebUI.csproj" />
   </ItemGroup>
 

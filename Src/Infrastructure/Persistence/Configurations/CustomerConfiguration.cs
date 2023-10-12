@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 using Northwind.Domain.Customers;
 
-namespace Northwind.Persistence.Configurations;
+namespace Northwind.Infrastructure.Persistence.Configurations;
 
 public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
 {
