@@ -70,7 +70,7 @@ app.UseAuthorization();
 // app.MapControllerRoute(
 //          "default",
 //          "{controller}/{action=Index}/{id?}");
-app.MapControllers();
+//app.MapControllers();
 app.MapRazorPages();
 
 app.MapCategoryEndpoints();
@@ -93,7 +93,3 @@ app.MapProductEndpoints();
 // });
 
 app.Run();
-
-public partial class Program
-{
-}
