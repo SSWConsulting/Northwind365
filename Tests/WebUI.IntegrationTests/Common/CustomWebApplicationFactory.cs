@@ -12,24 +12,18 @@ using Northwind.Application.Common.Interfaces;
 using Northwind.Infrastructure.Persistence;
 using Northwind.Persistence;
 using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace Northwind.WebUI.IntegrationTests.Common;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<IWebUiMarker>
 {
-    private readonly ITestOutputHelper _outputHelper;
-
-    public CustomWebApplicationFactory(ITestOutputHelper outputHelper)
-    {
-        _outputHelper = outputHelper;
-    }
-
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureLogging(x =>
         {
             x.ClearProviders();
-            x.Services.AddSingleton<ILoggerProvider>(new XUnitLoggerProvider(_outputHelper));
+            x.Services.AddSingleton<ILoggerProvider>(new XUnitLoggerProvider(new TestOutputHelper()));
         });
 
         builder
