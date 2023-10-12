@@ -12,20 +12,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Northwind.Application.Products.Commands.CreateProduct;
 
-public class CreateProductCommand : IRequest<int>
-{
-    public string ProductName { get; set; }
+public record CreateProductCommand(string ProductName, decimal? UnitPrice, int? SupplierId, int? CategoryId,
+    bool Discontinued) : IRequest<int>;
 
-    public decimal? UnitPrice { get; set; }
-
-    public int? SupplierId { get; set; }
-
-    public int? CategoryId { get; set; }
-
-    public bool Discontinued { get; set; }
-}
-
-[SuppressMessage("ReSharper", "UnusedType.Global")]
+// ReSharper disable once UnusedType.Global
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, int>
 {
     private readonly INorthwindDbContext _context;

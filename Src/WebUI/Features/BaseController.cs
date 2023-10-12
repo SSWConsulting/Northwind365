@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Northwind.WebUI.Controllers;
+namespace Northwind.WebUI.Features;
 
 [ApiController]
 [Route("api/[controller]/[action]")]

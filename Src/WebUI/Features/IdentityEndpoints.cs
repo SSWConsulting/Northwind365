@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using SSW.CleanArchitecture.WebApi.Extensions;
 
-namespace Northwind.WebUI.Controllers;
+namespace Northwind.WebUI.Features;
 
 public static class IdentityEndpoints
 {

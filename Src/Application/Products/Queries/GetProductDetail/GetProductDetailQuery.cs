@@ -12,12 +12,10 @@ using Northwind.Domain.Products;
 
 namespace Northwind.Application.Products.Queries.GetProductDetail;
 
-public class GetProductDetailQuery : IRequest<ProductDetailVm>
-{
-    public int Id { get; set; }
-}
+public record GetProductDetailQuery(int Id) : IRequest<ProductDetailVm>;
 
-public class GetProductDetailQueryHandler : MediatR.IRequestHandler<GetProductDetailQuery, ProductDetailVm>
+// ReSharper disable once UnusedType.Global
+public class GetProductDetailQueryHandler : IRequestHandler<GetProductDetailQuery, ProductDetailVm>
 {
     private readonly INorthwindDbContext _context;
     private readonly IMapper _mapper;

@@ -10,10 +10,7 @@ using Northwind.Domain.Customers;
 
 namespace Northwind.Application.Customers.Queries.GetCustomerDetail;
 
-public class GetCustomerDetailQuery : IRequest<CustomerDetailVm>
-{
-    public string Id { get; set; }
-}
+public record GetCustomerDetailQuery(string Id) : IRequest<CustomerDetailVm>;
 
 public class GetCustomerDetailQueryHandler : IRequestHandler<GetCustomerDetailQuery, CustomerDetailVm>
 {
@@ -29,7 +26,7 @@ public class GetCustomerDetailQueryHandler : IRequestHandler<GetCustomerDetailQu
     public async Task<CustomerDetailVm> Handle(GetCustomerDetailQuery request, CancellationToken cancellationToken)
     {
         var entity = await _context.Customers
-            .FindAsync(request.Id);
+            .FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
         if (entity == null)
         {

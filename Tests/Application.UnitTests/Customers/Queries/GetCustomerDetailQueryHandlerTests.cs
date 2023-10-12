@@ -24,11 +24,15 @@ public class GetCustomerDetailQueryHandlerTests
     [Fact]
     public async Task GetCustomerDetail()
     {
+        // Arrange
+        var customerId = "DANIEL";
         var sut = new GetCustomerDetailQueryHandler(_context, _mapper);
 
-        var result = await sut.Handle(new GetCustomerDetailQuery { Id = "JASON" }, CancellationToken.None);
+        // Act
+        var result = await sut.Handle(new GetCustomerDetailQuery(customerId), CancellationToken.None);
 
+        // Assert
         result.ShouldBeOfType<CustomerDetailVm>();
-        result.Id.ShouldBe("JASON");
+        result.Id.ShouldBe(customerId);
     }
 }

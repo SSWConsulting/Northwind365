@@ -1,41 +1,14 @@
 ﻿using MediatR;
-
 using Northwind.Application.Common.Interfaces;
-
 using System.Threading;
 using System.Threading.Tasks;
-
 using Northwind.Domain.Common;
 using Northwind.Domain.Customers;
 
 namespace Northwind.Application.Customers.Commands.CreateCustomer;
 
-public class CreateCustomerCommand : IRequest
-{
-    public string Id { get; set; }
-
-    public string Address { get; set; }
-
-    public string City { get; set; }
-
-    public string CompanyName { get; set; }
-
-    public string ContactName { get; set; }
-
-    public string ContactTitle { get; set; }
-
-    public string Country { get; set; }
-
-    public string Fax { get; set; }
-
-    public string Phone { get; set; }
-
-    public string PostalCode { get; set; }
-
-    public string Region { get; set; }
-
-
-}
+public record CreateCustomerCommand(string Id, string Address, string City, string CompanyName, string ContactName,
+    string ContactTitle, string Country, string Fax, string Phone, string PostalCode, string Region) : IRequest;
 
 public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand>
 {

@@ -2,7 +2,7 @@ using Northwind.Application;
 using Northwind.Infrastructure;
 using Northwind.Infrastructure.Identity;
 using Northwind.Persistence;
-using Northwind.WebUI.Controllers;
+using Northwind.WebUI.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 

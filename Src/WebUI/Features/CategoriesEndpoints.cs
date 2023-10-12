@@ -2,7 +2,7 @@
 using Northwind.Application.Categories.Queries.GetCategoriesList;
 using SSW.CleanArchitecture.WebApi.Extensions;
 
-namespace Northwind.WebUI.Controllers;
+namespace Northwind.WebUI.Features;
 
 public static class CategoryEndpoints
 {

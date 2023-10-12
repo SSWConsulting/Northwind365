@@ -9,10 +9,9 @@ using System.Threading.Tasks;
 
 namespace Northwind.Application.Products.Queries.GetProductsList;
 
-public class GetProductsListQuery : IRequest<ProductsListVm>
-{
-}
+public record GetProductsListQuery : IRequest<ProductsListVm>;
 
+// ReSharper disable once UnusedType.Global
 public class GetProductsListQueryHandler : IRequestHandler<GetProductsListQuery, ProductsListVm>
 {
     private readonly INorthwindDbContext _context;

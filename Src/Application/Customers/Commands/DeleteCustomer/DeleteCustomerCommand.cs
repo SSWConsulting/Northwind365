@@ -10,11 +10,9 @@ using Northwind.Domain.Customers;
 
 namespace Northwind.Application.Customers.Commands.DeleteCustomer;
 
-public class DeleteCustomerCommand : IRequest
-{
-    public string Id { get; set; }
-}
+public record DeleteCustomerCommand(string Id) : IRequest;
 
+// ReSharper disable once UnusedType.Global
 public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand>
 {
     private readonly INorthwindDbContext _context;
@@ -27,7 +25,7 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
     public async Task Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Customers
-            .FindAsync(request.Id);
+            .FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
         if (entity == null)
         {

@@ -7,7 +7,7 @@ using Northwind.Application.Customers.Queries.GetCustomerDetail;
 using Northwind.Application.Customers.Queries.GetCustomersList;
 using SSW.CleanArchitecture.WebApi.Extensions;
 
-namespace Northwind.WebUI.Controllers;
+namespace Northwind.WebUI.Features;
 
 public static class CustomerEndpoints
 {
@@ -37,7 +37,7 @@ public static class CustomerEndpoints
         //    return Ok(await Mediator.Send(new GetCustomerDetailQuery { Id = id }));
         //}
         group
-            .MapGet("/{id}", (string id, ISender sender, CancellationToken ct) => sender.Send(new GetCustomerDetailQuery { Id = id }, ct))
+            .MapGet("/{id}", (string id, ISender sender, CancellationToken ct) => sender.Send(new GetCustomerDetailQuery(id), ct))
             .WithName("GetCustomer")
             .ProducesGet<CustomersListVm>();
 
@@ -76,7 +76,7 @@ public static class CustomerEndpoints
         //    return NoContent();
         //}
         group
-            .MapDelete("/{id}", (string id, ISender sender, CancellationToken ct) => sender.Send(new DeleteCustomerCommand { Id = id }, ct))
+            .MapDelete("/{id}", (string id, ISender sender, CancellationToken ct) => sender.Send(new DeleteCustomerCommand(id), ct))
             .WithName("DeleteCustomer")
             .ProducesDelete();
     }
