@@ -66,6 +66,13 @@ public static class DependencyInjection
         services.AddDefaultIdentity<ApplicationUser>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
+        // TODO DM: Is this needed?
+        services.AddControllersWithViews()
+            .ConfigureApplicationPartManager(apm => {
+                apm.ApplicationParts
+                    .Remove(apm.ApplicationParts.Single(ap => ap.Name == "Microsoft.AspNetCore.ApiAuthorization.IdentityServer"));
+            });
+
         if (environment.IsEnvironment("Test") || environment.IsDevelopment())
         {
             services.AddIdentityServer(options =>
@@ -85,7 +92,7 @@ public static class DependencyInjection
                         ClientId = "Northwind.IntegrationTests",
                         AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
                         ClientSecrets = { new Secret("secret".Sha256()) },
-                        AllowedScopes = { "Northwind.WebUIAPI", "openid", "profile" }
+                        AllowedScopes = { "Northwind.WebUI", "openid", "profile" }
                     });
                 })
                 .AddTestUsers(new List<TestUser>
