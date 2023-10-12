@@ -3,7 +3,7 @@ using Northwind.Domain.Products;
 
 namespace Northwind.Domain.Categories;
 
-public record CategoryId(int Value);
+public readonly record struct CategoryId(int Value);
 
 public class Category : BaseEntity<CategoryId>
 {

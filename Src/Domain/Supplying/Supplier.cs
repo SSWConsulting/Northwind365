@@ -6,7 +6,7 @@ using Northwind.Domain.Products;
 
 namespace Northwind.Domain.Supplying;
 
-public record SupplierId(int Value);
+public readonly record struct SupplierId(int Value);
 
 public class Supplier : BaseEntity<SupplierId>
 {

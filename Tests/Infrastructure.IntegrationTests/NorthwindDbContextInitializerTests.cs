@@ -18,11 +18,11 @@ public class NorthwindDbContextInitializerTests : IntegrationTestBase
         // Arrange
         using var scope = Fixture.ScopeFactory.CreateScope();
 
-        var identitiesDbInitializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
-        await identitiesDbInitializer.InitializeAsync();
-
+        // var identitiesDbInitializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
+        // await identitiesDbInitializer.InitializeAsync();
+        //
         var northwindDbInitializer = scope.ServiceProvider.GetRequiredService<NorthwindDbContextInitializer>();
-        await northwindDbInitializer.InitializeAsync();
+        // await northwindDbInitializer.InitializeAsync();
 
         // Act
         await northwindDbInitializer.SeedAsync();

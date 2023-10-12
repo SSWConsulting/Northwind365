@@ -7,10 +7,11 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Infrastructure.Identity;
 using Northwind.Persistence;
+using Northwind.WebUI;
 
 namespace Northwind.Infrastructure.IntegrationTests.TestHelpers;
 
-internal class IntegrationTestWebApplicationFactory : WebApplicationFactory<Program>
+internal class IntegrationTestWebApplicationFactory : WebApplicationFactory<IWebUiMarker>
 {
     public DatabaseContainer Database { get; }
 

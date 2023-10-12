@@ -2,7 +2,7 @@
 
 namespace Northwind.Domain.Employees;
 
-public record TerritoryId(string Value);
+public readonly record struct TerritoryId(string Value);
 
 public class Territory : BaseEntity<TerritoryId>
 {
