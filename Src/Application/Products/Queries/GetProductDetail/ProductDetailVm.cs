@@ -29,6 +29,9 @@ public class ProductDetailVm : IMapFrom<Product>
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Product, ProductDetailVm>()
+            .ForMember(d => d.ProductId, opt => opt.MapFrom(s => s.Id.Value))
+            .ForMember(d => d.SupplierId, opt => opt.MapFrom(s => s.SupplierId.GetValueOrDefault().Value))
+            .ForMember(d => d.CategoryId, opt => opt.MapFrom(s => s.CategoryId.GetValueOrDefault().Value))
             .ForMember(d => d.EditEnabled, opt => opt.Ignore())
             .ForMember(d => d.DeleteEnabled, opt => opt.Ignore())
             .ForMember(d => d.SupplierCompanyName, opt => opt.MapFrom(s => s.Supplier != null ? s.Supplier.CompanyName : string.Empty))
