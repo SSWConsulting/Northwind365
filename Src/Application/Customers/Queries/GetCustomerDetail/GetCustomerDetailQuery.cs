@@ -26,7 +26,7 @@ public class GetCustomerDetailQueryHandler : IRequestHandler<GetCustomerDetailQu
     public async Task<CustomerDetailVm> Handle(GetCustomerDetailQuery request, CancellationToken cancellationToken)
     {
         var entity = await _context.Customers
-            .FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
+            .FindAsync(new object?[] { new CustomerId(request.Id) }, cancellationToken: cancellationToken);
 
         if (entity == null)
         {

@@ -16,10 +16,10 @@ public class NorthwindDbContext : DbContext, INorthwindDbContext
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTime _dateTime;
 
-    public NorthwindDbContext(DbContextOptions<NorthwindDbContext> options)
-        : base(options)
-    {
-    }
+    // public NorthwindDbContext(DbContextOptions<NorthwindDbContext> options)
+    //     : base(options)
+    // {
+    // }
 
     public NorthwindDbContext(
         DbContextOptions<NorthwindDbContext> options, 
@@ -31,27 +31,27 @@ public class NorthwindDbContext : DbContext, INorthwindDbContext
         _dateTime = dateTime;
     }
 
-    public DbSet<Category> Categories { get; set; }
+    public DbSet<Category> Categories { get; set; } = null!;
 
-    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Customer> Customers { get; set; } = null!;
 
-    public DbSet<Employee> Employees { get; set; }
+    public DbSet<Employee> Employees { get; set; } = null!;
 
-    public DbSet<EmployeeTerritory> EmployeeTerritories { get; set; }
+    public DbSet<EmployeeTerritory> EmployeeTerritories { get; set; } = null!;
 
-    public DbSet<OrderDetail> OrderDetails { get; set; }
+    public DbSet<OrderDetail> OrderDetails { get; set; } = null!;
 
-    public DbSet<Order> Orders { get; set; }
+    public DbSet<Order> Orders { get; set; } = null!;
 
-    public DbSet<Product> Products { get; set; }
+    public DbSet<Product> Products { get; set; } = null!;
 
-    public DbSet<Region> Region { get; set; }
+    public DbSet<Region> Region { get; set; } = null!;
 
-    public DbSet<Shipper> Shippers { get; set; }
+    public DbSet<Shipper> Shippers { get; set; } = null!;
 
-    public DbSet<Supplier> Suppliers { get; set; }
+    public DbSet<Supplier> Suppliers { get; set; } = null!;
 
-    public DbSet<Territory> Territories { get; set; }
+    public DbSet<Territory> Territories { get; set; } = null!;
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {

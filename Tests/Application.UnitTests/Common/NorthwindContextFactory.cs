@@ -1,5 +1,8 @@
+using AutoMapper.Configuration.Annotations;
 using Microsoft.EntityFrameworkCore;
+using Northwind.Application.Common.Interfaces;
 using Northwind.Infrastructure.Persistence;
+using NSubstitute;
 
 namespace Northwind.Application.UnitTests.Common;
 
@@ -11,7 +14,7 @@ public static class NorthwindContextFactory
             .UseInMemoryDatabase(Guid.NewGuid().ToString())
             .Options;
 
-        var context = new NorthwindDbContext(options);
+        var context = new NorthwindDbContext(options, Substitute.For<ICurrentUserService>(), Substitute.For<IDateTime>());
         context.Database.EnsureCreated();
 
         var customers = CustomerFactory.Generate(3);
