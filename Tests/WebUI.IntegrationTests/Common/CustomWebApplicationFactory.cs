@@ -11,13 +11,6 @@ namespace Northwind.WebUI.IntegrationTests.Common;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<IWebUiMarker>
 {
-    // private readonly ITestOutputHelper _testOutputHelper;
-    //
-    // public CustomWebApplicationFactory(ITestOutputHelper testOutputHelper)
-    // {
-    //     _testOutputHelper = testOutputHelper;
-    // }
-
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         // builder.ConfigureLogging(x =>

@@ -11,19 +11,15 @@ namespace Northwind.WebUI.IntegrationTests.Common;
 
 public class CustomWebApplicationFactoryV2 : WebApplicationFactory<IWebUiMarker>
 {
-    private readonly ITestOutputHelper _testOutputHelper;
-
-    public CustomWebApplicationFactoryV2(ITestOutputHelper testOutputHelper)
-    {
-        _testOutputHelper = testOutputHelper;
-    }
+    public ITestOutputHelper Output { get; set; }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureLogging(x =>
         {
             x.ClearProviders();
-            x.Services.AddSingleton<ILoggerProvider>(sp => new XUnitLoggerProvider(_testOutputHelper));
+            x.AddFilter(level => level >= LogLevel.Warning);
+            x.Services.AddSingleton<ILoggerProvider>(new XUnitLoggerProvider(Output));
         });
 
         builder

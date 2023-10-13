@@ -3,17 +3,20 @@ using Northwind.WebUI.IntegrationTests.Common;
 using System.Net;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
+// TODO DM: Make this standard for all tests
 [Collection(WebUICollection.Definition)]
 public class GetById
 {
     private readonly CustomWebApplicationFactoryV2 _factory;
 
-    public GetById(CustomWebApplicationFactoryV2 factory)
+    public GetById(CustomWebApplicationFactoryV2 factory, ITestOutputHelper output)
     {
         _factory = factory;
+        _factory.Output = output;
     }
 
     [Fact]
