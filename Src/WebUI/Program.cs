@@ -4,6 +4,7 @@ using Northwind.Infrastructure.Identity;
 using Northwind.Infrastructure.Persistence;
 using Northwind.Persistence;
 using Northwind.WebUI;
+using Northwind.WebUI.Common;
 using Northwind.WebUI.Features;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,9 +49,7 @@ else
     app.UseHsts();
 }
 
-// TODO: Replace this with 'app.UseExceptionFilter();'
-//app.UseCustomExceptionHandler();
-
+app.UseCustomExceptionHandler();
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
