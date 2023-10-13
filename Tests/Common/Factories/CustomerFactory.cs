@@ -1,6 +1,9 @@
 ﻿using Bogus;
+using Northwind.Domain.Categories;
 using Northwind.Domain.Common;
 using Northwind.Domain.Customers;
+using Northwind.Domain.Products;
+using Northwind.Domain.Supplying;
 
 namespace Common.Factories;
 

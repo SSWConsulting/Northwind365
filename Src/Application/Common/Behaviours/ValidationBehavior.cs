@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using ValidationException = Northwind.Application.Common.Exceptions.ValidationException;
 
 namespace Northwind.Application.Common.Behaviours;
@@ -12,13 +13,17 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
     where TRequest : IRequest<TResponse>
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
+    private readonly ILogger<ValidationBehavior<TRequest, TResponse>> _logger;
 
-    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
+    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators,
+        ILogger<ValidationBehavior<TRequest, TResponse>> logger)
     {
         _validators = validators;
+        _logger = logger;
     }
 
-    public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
         var context = new ValidationContext<TRequest>(request);
 
@@ -30,6 +35,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 
         if (failures.Count != 0)
         {
+            _logger.LogInformation("Failures {Failures}", failures);
             throw new ValidationException(failures);
         }
 

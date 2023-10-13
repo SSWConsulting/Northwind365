@@ -1,9 +1,16 @@
-﻿using Xunit;
+﻿using Northwind.WebUI.IntegrationTests.Controllers.Products;
+using Xunit;
 
 namespace Northwind.WebUI.IntegrationTests.Common;
 
 [CollectionDefinition(Definition)]
-public sealed class WebUICollection : ICollectionFixture<CustomWebApplicationFactoryV2>
+public sealed class WebUICollection : ICollectionFixture<CustomWebApplicationFactory>
 {
     public const string Definition = nameof(WebUICollection);
 }
+
+// [CollectionDefinition(Definition)]
+// public sealed class TestFixtureCollection : ICollectionFixture<TestFixture>
+// {
+//     public const string Definition = nameof(TestFixtureCollection);
+// }

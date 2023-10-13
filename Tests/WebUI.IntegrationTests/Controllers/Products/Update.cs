@@ -1,19 +1,21 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using Common.Factories;
 using Northwind.Application.Products.Commands.UpdateProduct;
-using Northwind.Domain.Supplying;
+using Northwind.Infrastructure.Persistence;
 using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-public class Update : IClassFixture<CustomWebApplicationFactory>
+[Collection(WebUICollection.Definition)]
+public class Update
 {
     private readonly CustomWebApplicationFactory _factory;
 
-    public Update(CustomWebApplicationFactory factory)
+    public Update(CustomWebApplicationFactory factory, ITestOutputHelper output)
     {
         _factory = factory;
+        _factory.Output = output;
     }
 
     [Fact]
@@ -21,9 +23,15 @@ public class Update : IClassFixture<CustomWebApplicationFactory>
     {
         var client = await _factory.GetAuthenticatedClientAsync();
 
+        var product = ProductFactory.Generate();
+        using var scope = _factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<NorthwindDbContext>();
+        db.Products.Add(product);
+        await db.SaveChangesAsync();
+
         var command = new UpdateProductCommand
         (
-            1,
+            product.Id.Value,
             "Chai",
             15.00m,
             1,

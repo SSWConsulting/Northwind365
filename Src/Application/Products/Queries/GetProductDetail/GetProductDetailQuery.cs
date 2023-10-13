@@ -29,8 +29,9 @@ public class GetProductDetailQueryHandler : IRequestHandler<GetProductDetailQuer
     public async Task<ProductDetailVm> Handle(GetProductDetailQuery request, CancellationToken cancellationToken)
     {
         var vm = await _context.Products
+            .Where(p => p.Id == new ProductId(request.Id))
             .ProjectTo<ProductDetailVm>(_mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync(p => p.ProductId == request.Id, cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (vm == null)
         {

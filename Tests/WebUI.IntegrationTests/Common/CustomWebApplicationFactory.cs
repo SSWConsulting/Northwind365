@@ -11,13 +11,16 @@ namespace Northwind.WebUI.IntegrationTests.Common;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<IWebUiMarker>
 {
+    public ITestOutputHelper Output { get; set; }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        // builder.ConfigureLogging(x =>
-        // {
-        //     x.ClearProviders();
-        //     x.Services.AddSingleton<ILoggerProvider>(sp => new XUnitLoggerProvider(_testOutputHelper));
-        // });
+        builder.ConfigureLogging(x =>
+        {
+            x.ClearProviders();
+            x.AddFilter(level => level >= LogLevel.Information);
+            x.Services.AddSingleton<ILoggerProvider>(new XUnitLoggerProvider(Output));
+        });
 
         builder
             .ConfigureServices(services =>

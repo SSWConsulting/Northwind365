@@ -11,9 +11,9 @@ namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 [Collection(WebUICollection.Definition)]
 public class GetById
 {
-    private readonly CustomWebApplicationFactoryV2 _factory;
+    private readonly CustomWebApplicationFactory _factory;
 
-    public GetById(CustomWebApplicationFactoryV2 factory, ITestOutputHelper output)
+    public GetById(CustomWebApplicationFactory factory, ITestOutputHelper output)
     {
         _factory = factory;
         _factory.Output = output;

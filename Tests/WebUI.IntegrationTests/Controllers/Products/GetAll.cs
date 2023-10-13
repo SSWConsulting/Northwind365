@@ -2,16 +2,19 @@ using System.Threading.Tasks;
 using Northwind.Application.Products.Queries.GetProductsList;
 using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
+[Collection(WebUICollection.Definition)]
 public class GetAll : IClassFixture<CustomWebApplicationFactory>
 {
     private readonly CustomWebApplicationFactory _factory;
 
-    public GetAll(CustomWebApplicationFactory factory)
+    public GetAll(CustomWebApplicationFactory factory, ITestOutputHelper output)
     {
         _factory = factory;
+        _factory.Output = output;
     }
 
     [Fact]
