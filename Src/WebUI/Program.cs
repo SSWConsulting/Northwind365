@@ -3,6 +3,7 @@ using Northwind.Infrastructure;
 using Northwind.Infrastructure.Identity;
 using Northwind.Infrastructure.Persistence;
 using Northwind.Persistence;
+using Northwind.WebUI;
 using Northwind.WebUI.Features;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +26,7 @@ if (app.Environment.IsDevelopment())
     {
 
         var identityInitializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
-        //await identityInitializer.EnsureDeleted();
+        await identityInitializer.EnsureDeleted();
         await identityInitializer.InitializeAsync();
 
         // Initialise and seed database

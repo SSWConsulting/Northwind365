@@ -12,7 +12,7 @@ using Northwind.Persistence;
 
 namespace Northwind.WebUI.IntegrationTests.Common;
 
-public class Utilities
+public static class Utilities
 {
     public static StringContent GetRequestContent(object obj)
     {

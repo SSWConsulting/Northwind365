@@ -1,9 +1,8 @@
 ﻿using Bogus;
-
 using Northwind.Domain.Common;
 using Northwind.Domain.Customers;
 
-namespace Northwind.Application.UnitTests.Common;
+namespace Common.Factories;
 
 public static class CustomerFactory
 {

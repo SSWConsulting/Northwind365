@@ -1,4 +1,5 @@
 using AutoMapper.Configuration.Annotations;
+using Common.Factories;
 using Microsoft.EntityFrameworkCore;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Infrastructure.Persistence;

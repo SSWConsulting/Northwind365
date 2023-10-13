@@ -1,17 +1,9 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using IdentityModel.Client;
+﻿using IdentityModel.Client;
 using Meziantou.Extensions.Logging.Xunit;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Infrastructure.Persistence;
-using Northwind.Persistence;
-using Xunit.Abstractions;
 using Xunit.Sdk;
 
 namespace Northwind.WebUI.IntegrationTests.Common;
@@ -103,7 +95,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<IWebUiMarker>
             ClientId = "Northwind.IntegrationTests",
             ClientSecret = "secret",
 
-            Scope = "Northwind.WebUI openid profile",
+            Scope = "Northwind.WebUIAPI openid profile",
             UserName = userName,
             Password = password
         });

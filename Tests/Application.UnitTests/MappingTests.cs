@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.Factories;
 using Northwind.Application.Categories.Queries.GetCategoriesList;
 using Northwind.Application.Customers.Queries.GetCustomerDetail;
 using Northwind.Application.Customers.Queries.GetCustomersList;

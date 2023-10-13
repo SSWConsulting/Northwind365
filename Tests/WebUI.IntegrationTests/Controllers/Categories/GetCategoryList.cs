@@ -18,7 +18,7 @@ public class GetCategoryList : IClassFixture<CustomWebApplicationFactory>
     {
         var client = await _factory.GetAuthenticatedClientAsync();
 
-        var response = await client.GetAsync("/api/categories/getall");
+        var response = await client.GetAsync("/api/categories");
 
         response.EnsureSuccessStatusCode();
     }

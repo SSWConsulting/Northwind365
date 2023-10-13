@@ -23,6 +23,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\Src\WebUI\WebUI.csproj" />
+        <ProjectReference Include="..\Common\Common.csproj" />
     </ItemGroup>
 
 </Project>

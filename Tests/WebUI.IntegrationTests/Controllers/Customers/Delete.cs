@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using Common.Factories;
+using Northwind.Application.Common.Interfaces;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Northwind.WebUI.IntegrationTests.Common;
@@ -18,24 +20,33 @@ public class Delete : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task GivenId_ReturnsSuccessStatusCode()
     {
+        // Arrange
+        var customer = CustomerFactory.Generate();
+        var dbContext = _factory.Services.GetRequiredService<INorthwindDbContext>();
+        dbContext.Customers.Add(customer);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
         var client = await _factory.GetAuthenticatedClientAsync();
+        var validId = customer.Id.Value;
 
-        var validId = "ALFKI";
+        // Act
+        var response = await client.DeleteAsync($"/api/customers/{validId}");
 
-        var response = await client.DeleteAsync($"/api/customers/delete/{validId}");
-
+        // Assert
         response.EnsureSuccessStatusCode();
     }
 
     [Fact]
     public async Task GivenInvalidId_ReturnsNotFoundStatusCode()
     {
+        // Arrange
         var client = await _factory.GetAuthenticatedClientAsync();
 
         var invalidId = "AAAAA";
 
-        var response = await client.DeleteAsync($"/api/customers/delete/{invalidId}");
+        // Act
+        var response = await client.DeleteAsync($"/api/customers/{invalidId}");
 
+        // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoFixture;
 using AutoMapper;
+using Common.Factories;
 using Northwind.Application.Customers.Queries.GetCustomerDetail;
 using Northwind.Application.UnitTests.Common;
 using Northwind.Domain.Customers;
