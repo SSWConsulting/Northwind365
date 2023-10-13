@@ -68,23 +68,44 @@ public static class DependencyInjection
 
         // TODO DM: Is this needed?
         services.AddControllersWithViews()
-            .ConfigureApplicationPartManager(apm => {
+            .ConfigureApplicationPartManager(apm =>
+            {
                 apm.ApplicationParts
-                    .Remove(apm.ApplicationParts.Single(ap => ap.Name == "Microsoft.AspNetCore.ApiAuthorization.IdentityServer"));
+                    .Remove(apm.ApplicationParts.Single(ap =>
+                        ap.Name == "Microsoft.AspNetCore.ApiAuthorization.IdentityServer"));
             });
+
+        var identityServerBuilder = services.AddIdentityServer(options =>
+            {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
+
+                // see https://docs.duendesoftware.com/identityserver/v5/fundamentals/resources/
+                options.EmitStaticAudienceClaim = true;
+            })
+            .AddConfigurationStore(options =>
+            {
+                options.ConfigureDbContext = b =>
+                    b.UseSqlServer(connectionString,
+                        dbOpts => dbOpts.MigrationsAssembly(typeof(IInfrastructureMarker).Assembly.FullName));
+            })
+            // this is something you will want in production to reduce load on and requests to the DB
+            //.AddConfigurationStoreCache()
+            //
+            // this adds the operational data from DB (codes, tokens, consents)
+            .AddOperationalStore(options =>
+            {
+                options.ConfigureDbContext = b =>
+                    b.UseSqlServer(connectionString,
+                        dbOpts => dbOpts.MigrationsAssembly(typeof(IInfrastructureMarker).Assembly.FullName));
+            })
+            .AddServerSideSessions();
 
         if (environment.IsEnvironment("Test") || environment.IsDevelopment())
         {
-            services.AddIdentityServer(options =>
-                {
-                    options.Events.RaiseErrorEvents = true;
-                    options.Events.RaiseInformationEvents = true;
-                    options.Events.RaiseFailureEvents = true;
-                    options.Events.RaiseSuccessEvents = true;
-
-                    // see https://docs.duendesoftware.com/identityserver/v5/fundamentals/resources/
-                    options.EmitStaticAudienceClaim = true;
-                })
+            identityServerBuilder
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
                 {
                     options.Clients.Add(new Client
@@ -104,30 +125,11 @@ public static class DependencyInjection
                         Password = "Northwind1!",
                         Claims = new List<Claim> { new Claim(JwtClaimTypes.Email, "jason@northwind") }
                     }
-                })
-                .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = b =>
-                        b.UseSqlServer(connectionString,
-                            dbOpts => dbOpts.MigrationsAssembly(typeof(NorthwindDbContext).Assembly.FullName));
-                })
-                // this is something you will want in production to reduce load on and requests to the DB
-                //.AddConfigurationStoreCache()
-                //
-                // this adds the operational data from DB (codes, tokens, consents)
-                .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = b =>
-                        b.UseSqlServer(connectionString,
-                            dbOpts => dbOpts.MigrationsAssembly(typeof(NorthwindDbContext).Assembly.FullName));
-                })
-                .AddServerSideSessions()
-                ;
-            ;
+                });
         }
         else
         {
-            services.AddIdentityServer()
+            identityServerBuilder
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
         }
 

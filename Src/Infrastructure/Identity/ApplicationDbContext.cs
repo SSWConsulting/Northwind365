@@ -27,7 +27,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IPersist
     private readonly IOptions<OperationalStoreOptions> _operationalStoreOptions;
 
     public ApplicationDbContext(
-        DbContextOptions options,
+        DbContextOptions<ApplicationDbContext> options,
         IOptions<OperationalStoreOptions> operationalStoreOptions)
         : base(options) {
         _operationalStoreOptions = operationalStoreOptions;

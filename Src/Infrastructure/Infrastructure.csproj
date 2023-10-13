@@ -30,9 +30,8 @@
     <ProjectReference Include="..\Application\Application.csproj"/>
   </ItemGroup>
 
-<!--  <ItemGroup>-->
-<!--    <Folder Include="Migrations\"/>-->
-<!--    <Folder Include="Properties\"/>-->
-<!--  </ItemGroup>-->
+  <ItemGroup>
+    <Folder Include="Identity\Migrations\" />
+  </ItemGroup>
 
 </Project>
