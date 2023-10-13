@@ -8,9 +8,3 @@ public sealed class WebUICollection : ICollectionFixture<CustomWebApplicationFac
 {
     public const string Definition = nameof(WebUICollection);
 }
-
-// [CollectionDefinition(Definition)]
-// public sealed class TestFixtureCollection : ICollectionFixture<TestFixture>
-// {
-//     public const string Definition = nameof(TestFixtureCollection);
-// }

@@ -2,6 +2,7 @@
 using Northwind.Application.Products.Commands.UpdateProduct;
 using Northwind.Infrastructure.Persistence;
 using Northwind.WebUI.IntegrationTests.Common;
+using System.Net;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -21,13 +22,10 @@ public class Update
     [Fact]
     public async Task GivenUpdateProductCommand_ReturnsSuccessStatusCode()
     {
+        // Arrange
         var client = await _factory.GetAuthenticatedClientAsync();
-
         var product = ProductFactory.Generate();
-        using var scope = _factory.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<NorthwindDbContext>();
-        db.Products.Add(product);
-        await db.SaveChangesAsync();
+        await _factory.AddEntityAsync(product);
 
         var command = new UpdateProductCommand
         (
@@ -41,31 +39,33 @@ public class Update
 
         var content = Utilities.GetRequestContent(command);
 
+        // Act
         var response = await client.PutAsync($"/api/products", content);
 
+        // Assert
         response.EnsureSuccessStatusCode();
     }
 
-    // TODO: Add back in
-    // [Fact]
-    // public async Task GivenUpdateProductCommandWithInvalidId_ReturnsNotFoundStatusCode()
-    // {
-    //     var client = await _factory.GetAuthenticatedClientAsync();
-    //
-    //     var invalidCommand = new UpdateProductCommand
-    //     {
-    //         ProductId = 0,
-    //         ProductName = "Original Frankfurter grüne Soße",
-    //         SupplierId = 1,
-    //         CategoryId = 2,
-    //         UnitPrice = 15.00m,
-    //         Discontinued = false
-    //     };
-    //
-    //     var content = Utilities.GetRequestContent(invalidCommand);
-    //
-    //     var response = await client.PutAsync($"/api/products/update", content);
-    //
-    //     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    // }
+    [Fact]
+    public async Task GivenUpdateProductCommandWithInvalidId_ReturnsNotFoundStatusCode()
+    {
+        // Arrange
+        var client = await _factory.GetAuthenticatedClientAsync();
+        var invalidCommand = new UpdateProductCommand
+        (
+            0,
+            "Original Frankfurter grüne Soße",
+            15.00m,
+            1,
+            2,
+            false
+        );
+        var content = Utilities.GetRequestContent(invalidCommand);
+
+        // Act
+        var response = await client.PutAsync($"/api/products", content);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
 }

@@ -24,10 +24,7 @@ public class Delete
         // Arrange
         var client = await _factory.GetAuthenticatedClientAsync();
         var product = ProductFactory.Generate();
-        using var scope = _factory.Services.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<NorthwindDbContext>();
-        db.Products.Add(product);
-        await db.SaveChangesAsync();
+        await _factory.AddEntityAsync(product);
 
         // Act
         var response = await client.DeleteAsync($"/api/products/{product.Id.Value}");
@@ -51,18 +48,3 @@ public class Delete
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 }
-
-// public class TestFixture
-// {
-//     private readonly IServiceScope _scope;
-//     public NorthwindDbContext NorthwindDb { get; }
-//     public CustomWebApplicationFactory Factory { get; }
-//
-//     public TestFixture(CustomWebApplicationFactory factory)
-//     {
-//         Factory = factory;
-//
-//         _scope = Factory.Services.CreateScope();
-//         NorthwindDb = _scope.ServiceProvider.GetRequiredService<NorthwindDbContext>();
-//     }
-// }

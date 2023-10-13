@@ -65,6 +65,13 @@ public class CustomWebApplicationFactory : WebApplicationFactory<IWebUiMarker>
             .UseEnvironment("Test");
     }
 
+    public async Task AddEntityAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class
+    {
+        await using var dbContext = Services.GetRequiredService<NorthwindDbContext>();
+        dbContext.Set<T>().Add(entity);
+        await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
     public HttpClient GetAnonymousClient()
     {
         return CreateClient();

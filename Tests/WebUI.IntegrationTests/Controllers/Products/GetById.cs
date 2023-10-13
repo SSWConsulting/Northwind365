@@ -1,13 +1,11 @@
 using Northwind.Application.Products.Queries.GetProductDetail;
 using Northwind.WebUI.IntegrationTests.Common;
 using System.Net;
-using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-// TODO DM: Make this standard for all tests
 [Collection(WebUICollection.Definition)]
 public class GetById
 {

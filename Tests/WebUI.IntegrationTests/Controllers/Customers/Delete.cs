@@ -1,20 +1,21 @@
 ﻿using Common.Factories;
 using Northwind.Application.Common.Interfaces;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Northwind.WebUI.IntegrationTests.Common;
+using System.Net;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Customers;
 
-public class Delete : IClassFixture<CustomWebApplicationFactory>
+[Collection(WebUICollection.Definition)]
+public class Delete
 {
     private readonly CustomWebApplicationFactory _factory;
 
-    public Delete(CustomWebApplicationFactory factory)
+    public Delete(CustomWebApplicationFactory factory, ITestOutputHelper output)
     {
         _factory = factory;
+        _factory.Output = output;
     }
 
     [Fact]
@@ -22,9 +23,7 @@ public class Delete : IClassFixture<CustomWebApplicationFactory>
     {
         // Arrange
         var customer = CustomerFactory.Generate();
-        var dbContext = _factory.Services.GetRequiredService<INorthwindDbContext>();
-        dbContext.Customers.Add(customer);
-        await dbContext.SaveChangesAsync(CancellationToken.None);
+        await _factory.AddEntityAsync(customer);
 
         var client = await _factory.GetAuthenticatedClientAsync();
         var validId = customer.Id.Value;

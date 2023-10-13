@@ -1,16 +1,19 @@
 ﻿using System.Threading.Tasks;
 using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Categories;
 
-public class GetCategoryList : IClassFixture<CustomWebApplicationFactory>
+[Collection(WebUICollection.Definition)]
+public class GetCategoryList
 {
     private readonly CustomWebApplicationFactory _factory;
 
-    public GetCategoryList(CustomWebApplicationFactory factory)
+    public GetCategoryList(CustomWebApplicationFactory factory, ITestOutputHelper output)
     {
         _factory = factory;
+        _factory.Output = output;
     }
 
     [Fact]

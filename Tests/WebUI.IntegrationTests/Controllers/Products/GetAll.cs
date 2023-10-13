@@ -7,7 +7,7 @@ using Xunit.Abstractions;
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
 [Collection(WebUICollection.Definition)]
-public class GetAll : IClassFixture<CustomWebApplicationFactory>
+public class GetAll
 {
     private readonly CustomWebApplicationFactory _factory;
 
