@@ -33,7 +33,7 @@ public class Update : IClassFixture<CustomWebApplicationFactory>
 
         var content = Utilities.GetRequestContent(command);
 
-        var response = await client.PutAsync($"/api/products/update", content);
+        var response = await client.PutAsync($"/api/products", content);
 
         response.EnsureSuccessStatusCode();
     }

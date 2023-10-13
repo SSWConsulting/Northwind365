@@ -25,6 +25,7 @@ public class Delete : IClassFixture<CustomWebApplicationFactory>
         var dbContext = _factory.Services.GetRequiredService<INorthwindDbContext>();
         dbContext.Customers.Add(customer);
         await dbContext.SaveChangesAsync(CancellationToken.None);
+
         var client = await _factory.GetAuthenticatedClientAsync();
         var validId = customer.Id.Value;
 

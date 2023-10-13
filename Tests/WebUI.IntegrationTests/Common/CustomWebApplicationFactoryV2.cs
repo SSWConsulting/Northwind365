@@ -9,22 +9,22 @@ using Xunit.Sdk;
 
 namespace Northwind.WebUI.IntegrationTests.Common;
 
-public class CustomWebApplicationFactory : WebApplicationFactory<IWebUiMarker>
+public class CustomWebApplicationFactoryV2 : WebApplicationFactory<IWebUiMarker>
 {
-    // private readonly ITestOutputHelper _testOutputHelper;
-    //
-    // public CustomWebApplicationFactory(ITestOutputHelper testOutputHelper)
-    // {
-    //     _testOutputHelper = testOutputHelper;
-    // }
+    private readonly ITestOutputHelper _testOutputHelper;
+
+    public CustomWebApplicationFactoryV2(ITestOutputHelper testOutputHelper)
+    {
+        _testOutputHelper = testOutputHelper;
+    }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        // builder.ConfigureLogging(x =>
-        // {
-        //     x.ClearProviders();
-        //     x.Services.AddSingleton<ILoggerProvider>(sp => new XUnitLoggerProvider(_testOutputHelper));
-        // });
+        builder.ConfigureLogging(x =>
+        {
+            x.ClearProviders();
+            x.Services.AddSingleton<ILoggerProvider>(sp => new XUnitLoggerProvider(_testOutputHelper));
+        });
 
         builder
             .ConfigureServices(services =>

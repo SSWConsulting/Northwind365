@@ -93,7 +93,7 @@ public static class ProductEndpoints
         //    return NoContent();
         //}
         group
-            .MapPut("/{id}",
+            .MapDelete("/{id}",
                 (int id, ISender sender, CancellationToken ct) => sender.Send(new DeleteProductCommand(id), ct))
             .WithName("DeleteProduct")
             .ProducesDelete();

@@ -19,7 +19,7 @@ public class GetAll : IClassFixture<CustomWebApplicationFactory>
     {
         var client = await _factory.GetAuthenticatedClientAsync();
 
-        var response = await client.GetAsync("/api/customers/getall");
+        var response = await client.GetAsync("/api/customers");
 
         response.EnsureSuccessStatusCode();
 

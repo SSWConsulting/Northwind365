@@ -6,11 +6,12 @@ using Xunit;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-public class GetById : IClassFixture<CustomWebApplicationFactory>
+[Collection(WebUICollection.Definition)]
+public class GetById
 {
-    private readonly CustomWebApplicationFactory _factory;
+    private readonly CustomWebApplicationFactoryV2 _factory;
 
-    public GetById(CustomWebApplicationFactory factory)
+    public GetById(CustomWebApplicationFactoryV2 factory)
     {
         _factory = factory;
     }
@@ -22,7 +23,7 @@ public class GetById : IClassFixture<CustomWebApplicationFactory>
 
         var id = 1;
 
-        var response = await client.GetAsync($"/api/products/get/{id}");
+        var response = await client.GetAsync($"/api/products/{id}");
 
         response.EnsureSuccessStatusCode();
 
@@ -38,7 +39,7 @@ public class GetById : IClassFixture<CustomWebApplicationFactory>
 
         var invalidId = 0;
 
-        var response = await client.GetAsync($"/api/products/get/{invalidId}");
+        var response = await client.GetAsync($"/api/products/{invalidId}");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }

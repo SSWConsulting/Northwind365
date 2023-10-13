@@ -22,7 +22,7 @@ public class Delete : IClassFixture<CustomWebApplicationFactory>
 
         var validId = 1;
 
-        var response = await client.DeleteAsync($"/api/products/delete/{validId}");
+        var response = await client.DeleteAsync($"/api/products/{validId}");
 
         response.EnsureSuccessStatusCode();
     }
@@ -34,7 +34,7 @@ public class Delete : IClassFixture<CustomWebApplicationFactory>
 
         var invalidId = 0;
 
-        var response = await client.DeleteAsync($"/api/products/delete/{invalidId}");
+        var response = await client.DeleteAsync($"/api/products/{invalidId}");
 
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }

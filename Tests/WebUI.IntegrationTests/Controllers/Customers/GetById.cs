@@ -1,3 +1,5 @@
+using Common.Factories;
+using Northwind.Application.Common.Interfaces;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,28 +21,36 @@ public class GetById : IClassFixture<CustomWebApplicationFactory>
     [Fact]
     public async Task GivenId_ReturnsCustomerViewModel()
     {
+        // Arrange
         var client = await _factory.GetAuthenticatedClientAsync();
+        var customer = CustomerFactory.Generate();
+        var dbContext = _factory.Services.GetRequiredService<INorthwindDbContext>();
+        dbContext.Customers.Add(customer);
+        await dbContext.SaveChangesAsync(CancellationToken.None);
 
-        var id = "ALFKI";
+        // Act
+        var response = await client.GetAsync($"/api/customers/{customer.Id.Value}");
 
-        var response = await client.GetAsync($"/api/customers/get/{id}");
-
+        // Assert
         response.EnsureSuccessStatusCode();
 
-        var customer = await Utilities.GetResponseContent<CustomerDetailVm>(response);
+        var customerResp = await Utilities.GetResponseContent<CustomerDetailVm>(response);
 
-        Assert.Equal(id, customer.Id);
+        Assert.Equal(customer.Id.Value, customerResp.Id);
     }
 
     [Fact]
     public async Task GivenInvalidId_ReturnsNotFoundStatusCode()
     {
+        // Arrange
         var client = await _factory.GetAuthenticatedClientAsync();
         
         var invalidId = "AAAAA";
 
-        var response = await client.GetAsync($"/api/customers/get/{invalidId}");
+        // Act
+        var response = await client.GetAsync($"/api/customers/{invalidId}");
 
+        // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 }
