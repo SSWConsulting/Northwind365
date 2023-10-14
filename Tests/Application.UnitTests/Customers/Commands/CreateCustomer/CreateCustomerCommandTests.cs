@@ -1,9 +1,9 @@
 ﻿using AutoFixture;
 using MediatR;
-using Moq;
 using Northwind.Application.Customers.Commands.CreateCustomer;
 using Northwind.Application.UnitTests.Common;
 using Northwind.Domain.Customers;
+using NSubstitute;
 using Xunit;
 
 namespace Northwind.Application.UnitTests.Customers.Commands.CreateCustomer;
@@ -14,8 +14,8 @@ public class CreateCustomerCommandTests : CommandTestBase
     public void Handle_GivenValidRequest_ShouldRaiseCustomerCreatedNotification()
     {
         // Arrange
-        var mediatorMock = new Mock<IMediator>();
-        var sut = new CreateCustomerCommandHandler(_context, mediatorMock.Object);
+        var mediatorMock = Substitute.For<IMediator>();
+        var sut = new CreateCustomerCommandHandler(_context, mediatorMock);
         var newCustomerId = new CustomerId("123");
 
         var fixture = new Fixture();
@@ -29,8 +29,7 @@ public class CreateCustomerCommandTests : CommandTestBase
         var result = sut.Handle(command, CancellationToken.None);
 
         // Assert
-        mediatorMock.Verify(
-            m => m.Publish(It.Is<CustomerCreated>(cc => cc.CustomerId == newCustomerId), It.IsAny<CancellationToken>()),
-            Times.Once);
+        mediatorMock.Received()
+            .Publish(Arg.Is<CustomerCreated>(cc => cc.CustomerId == newCustomerId), Arg.Any<CancellationToken>());
     }
 }

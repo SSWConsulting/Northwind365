@@ -21,13 +21,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IPersist
         _operationalStoreOptions = operationalStoreOptions;
     }
 
-    public DbSet<PersistedGrant> PersistedGrants { get; set; }
+    public DbSet<PersistedGrant> PersistedGrants { get; set; } = null!;
 
-    public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; }
+    public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; } = null!;
 
-    public DbSet<Key> Keys { get; set; }
+    public DbSet<Key> Keys { get; set; } = null!;
 
-    public DbSet<ServerSideSession> ServerSideSessions { get; set; }
+    public DbSet<ServerSideSession> ServerSideSessions { get; set; } = null!;
 
     Task<int> IPersistedGrantDbContext.SaveChangesAsync() => base.SaveChangesAsync();
 
