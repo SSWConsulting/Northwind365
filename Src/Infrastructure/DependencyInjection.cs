@@ -113,7 +113,7 @@ public static class DependencyInjection
                         ClientId = "Northwind.IntegrationTests",
                         AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
                         ClientSecrets = { new Secret("secret".Sha256()) },
-                        AllowedScopes = { "Northwind.WebUI", "openid", "profile" }
+                        AllowedScopes = { "Northwind.WebUIAPI", "openid", "profile" }
                     });
                 })
                 .AddTestUsers(new List<TestUser>

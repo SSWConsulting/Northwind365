@@ -23,7 +23,7 @@ public class Create
 
         var command = new CreateCustomerCommand
         (
-            "123",
+            "456",
             "Obere Str. 57",
             "Berlin",
             "Alfreds Futterkiste",
@@ -38,7 +38,7 @@ public class Create
 
         var content = Utilities.GetRequestContent(command);
 
-        var response = await client.PostAsync($"/api/customers/create", content);
+        var response = await client.PostAsync($"/api/customers", content);
 
         response.EnsureSuccessStatusCode();
     }

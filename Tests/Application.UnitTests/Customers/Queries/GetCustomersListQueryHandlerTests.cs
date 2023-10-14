@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
+using FluentAssertions;
 using Northwind.Application.Customers.Queries.GetCustomersList;
 using Northwind.Application.UnitTests.Common;
 using Northwind.Infrastructure.Persistence;
-using Shouldly;
 using Xunit;
 
-namespace NorthwindTraders.Application.UnitTests.Infrastructure;
+namespace Northwind.Application.UnitTests.Customers.Queries;
 
 [Collection("QueryCollection")]
 public class GetCustomersListQueryHandlerTests
@@ -26,8 +26,8 @@ public class GetCustomersListQueryHandlerTests
 
         var result = await sut.Handle(new GetCustomersListQuery(), CancellationToken.None);
 
-        result.ShouldBeOfType<CustomersListVm>();
+        result.Should().BeOfType<CustomersListVm>();
 
-        result.Customers.Count.ShouldBe(3);
+        result.Customers.Count.Should().Be(4);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Common.Factories;
+using FluentAssertions;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -45,7 +46,7 @@ public class Update
 
         var content = Utilities.GetRequestContent(command);
 
-        var response = await client.PutAsync($"/api/customers/update/{command.Id}", content);
+        var response = await client.PutAsync($"/api/customers/{command.Id}", content);
 
         response.EnsureSuccessStatusCode();
     }
@@ -57,7 +58,7 @@ public class Update
 
         var invalidCommand = new UpdateCustomerCommand
         (
-            "123",
+            "XXX",
             "Obere Str. 57",
             "Berlin",
             "Alfreds Futterkiste",
@@ -72,8 +73,8 @@ public class Update
 
         var content = Utilities.GetRequestContent(invalidCommand);
 
-        var response = await client.PutAsync($"/api/customers/update/{invalidCommand.Id}", content);
+        var response = await client.PutAsync($"/api/customers/{invalidCommand.Id}", content);
 
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }

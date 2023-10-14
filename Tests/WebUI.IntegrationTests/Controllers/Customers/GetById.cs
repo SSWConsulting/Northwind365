@@ -1,4 +1,5 @@
 using Common.Factories;
+using FluentAssertions;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Application.Customers.Queries.GetCustomerDetail;
 using Northwind.WebUI.IntegrationTests.Common;
@@ -35,7 +36,7 @@ public class GetById
 
         var customerResp = await Utilities.GetResponseContent<CustomerDetailVm>(response);
 
-        Assert.Equal(customer.Id.Value, customerResp.Id);
+        customerResp.Id.Should().Be(customer.Id.Value);
     }
 
     [Fact]
@@ -50,6 +51,6 @@ public class GetById
         var response = await client.GetAsync($"/api/customers/{invalidId}");
 
         // Assert
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }

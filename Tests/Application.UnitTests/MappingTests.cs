@@ -1,17 +1,13 @@
 ﻿using AutoMapper;
 using Common.Factories;
+using FluentAssertions;
 using Northwind.Application.Categories.Queries.GetCategoriesList;
 using Northwind.Application.Customers.Queries.GetCustomerDetail;
 using Northwind.Application.Customers.Queries.GetCustomersList;
-using Northwind.Application.Products.Queries.GetProductsList;
 using Northwind.Application.Products.Queries.GetProductDetail;
 using Northwind.Application.Products.Queries.GetProductsFile;
-using Northwind.Application.UnitTests.Common;
+using Northwind.Application.Products.Queries.GetProductsList;
 using Northwind.Domain.Categories;
-using Northwind.Domain.Customers;
-using Northwind.Domain.Products;
-
-using Shouldly;
 using Xunit;
 
 namespace Northwind.Application.UnitTests;
@@ -40,8 +36,8 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
 
         var result = _mapper.Map<CategoryLookupDto>(entity);
 
-        result.ShouldNotBeNull();
-        result.ShouldBeOfType<CategoryLookupDto>();
+        result.Should().NotBeNull();
+        result.Should().BeOfType<CategoryLookupDto>();
     }
 
     [Fact]
@@ -51,8 +47,8 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
 
         var result = _mapper.Map<CustomerLookupDto>(entity);
 
-        result.ShouldNotBeNull();
-        result.ShouldBeOfType<CustomerLookupDto>();
+        result.Should().NotBeNull();
+        result.Should().BeOfType<CustomerLookupDto>();
     }
 
     [Fact]
@@ -62,8 +58,8 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
 
         var result = _mapper.Map<ProductDetailVm>(entity);
 
-        result.ShouldNotBeNull();
-        result.ShouldBeOfType<ProductDetailVm>();
+        result.Should().NotBeNull();
+        result.Should().BeOfType<ProductDetailVm>();
     }
 
     [Fact]
@@ -73,8 +69,8 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
 
         var result = _mapper.Map<ProductDto>(entity);
 
-        result.ShouldNotBeNull();
-        result.ShouldBeOfType<ProductDto>();
+        result.Should().NotBeNull();
+        result.Should().BeOfType<ProductDto>();
     }
 
     [Fact]
@@ -84,8 +80,8 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
 
         var result = _mapper.Map<ProductRecordDto>(entity);
 
-        result.ShouldNotBeNull();
-        result.ShouldBeOfType<ProductRecordDto>();
+        result.Should().NotBeNull();
+        result.Should().BeOfType<ProductRecordDto>();
     }
 
     [Fact]
@@ -95,7 +91,7 @@ public class MappingTests : IClassFixture<MappingTestsFixture>
 
         var result = _mapper.Map<CustomerDetailVm>(entity);
 
-        result.ShouldNotBeNull();
-        result.ShouldBeOfType<CustomerDetailVm>();
+        result.Should().NotBeNull();
+        result.Should().BeOfType<CustomerDetailVm>();
     }
 }

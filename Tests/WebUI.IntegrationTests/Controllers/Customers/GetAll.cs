@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Northwind.Application.Customers.Queries.GetCustomersList;
 using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
@@ -27,7 +28,7 @@ public class GetAll
 
         var vm = await Utilities.GetResponseContent<CustomersListVm>(response);
 
-        Assert.IsType<CustomersListVm>(vm);
-        Assert.NotEmpty(vm.Customers);
+        vm.Should().BeOfType<CustomersListVm>();
+        vm.Customers.Should().NotBeEmpty();
     }
 }

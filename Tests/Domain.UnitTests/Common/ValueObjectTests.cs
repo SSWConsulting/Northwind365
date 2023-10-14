@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using Northwind.Domain.Common;
+﻿using FluentAssertions;
 using Northwind.Domain.Common.Base;
-
 using Xunit;
 
 namespace Northwind.Domain.UnitTests.Common;
@@ -14,7 +12,7 @@ public class ValueObjectTests
         var point1 = new Point(1, 2);
         var point2 = new Point(2, 1);
 
-        Assert.False(point1.Equals(point2));
+        point1.Should().NotBe(point2);
     }
 
     [Fact]
@@ -23,7 +21,7 @@ public class ValueObjectTests
         var point1 = new Point(1, 2);
         var point2 = new Point(1, 2);
 
-        Assert.True(point1.Equals(point2));
+        point1.Should().Be(point2);
     }
 
     private class Point : ValueObject

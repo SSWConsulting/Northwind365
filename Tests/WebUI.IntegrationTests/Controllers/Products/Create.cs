@@ -1,4 +1,5 @@
-﻿using Northwind.Application.Products.Commands.CreateProduct;
+﻿using FluentAssertions;
+using Northwind.Application.Products.Commands.CreateProduct;
 using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
 using Xunit.Abstractions;
@@ -38,6 +39,6 @@ public class Create
 
         var productId = await Utilities.GetResponseContent<int>(response);
 
-        Assert.NotEqual(0, productId);
+        productId.Should().NotBe(0);
     }
 }
