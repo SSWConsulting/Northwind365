@@ -2,34 +2,22 @@
 using Duende.IdentityServer.EntityFramework.Extensions;
 using Duende.IdentityServer.EntityFramework.Interfaces;
 using Duende.IdentityServer.EntityFramework.Options;
-
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace Northwind.Infrastructure.Identity;
 
-// public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
-// {
-//     public ApplicationDbContext(
-//         DbContextOptions<ApplicationDbContext> options,
-//         IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
-//     {
-//     }
-//
-//
-// }
-
 // NOTE: Workaround as per https://github.com/dotnet/aspnetcore/issues/46025#issuecomment-1379085253
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IPersistedGrantDbContext {
-
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IPersistedGrantDbContext
+{
     private readonly IOptions<OperationalStoreOptions> _operationalStoreOptions;
 
     public ApplicationDbContext(
         DbContextOptions<ApplicationDbContext> options,
         IOptions<OperationalStoreOptions> operationalStoreOptions)
-        : base(options) {
+        : base(options)
+    {
         _operationalStoreOptions = operationalStoreOptions;
     }
 
@@ -43,7 +31,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IPersist
 
     Task<int> IPersistedGrantDbContext.SaveChangesAsync() => base.SaveChangesAsync();
 
-    protected override void OnModelCreating(ModelBuilder builder) {
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
         base.OnModelCreating(builder);
         builder.ConfigurePersistedGrantContext(_operationalStoreOptions.Value);
     }
