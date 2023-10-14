@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Northwind.Application.Products.Queries.GetProductDetail;
 using Northwind.WebUI.IntegrationTests.Common;
 using System.Net;
@@ -30,7 +31,7 @@ public class GetById
 
         var product = await Utilities.GetResponseContent<ProductDetailVm>(response);
 
-        Assert.Equal(id, product.ProductId);
+        product.ProductId.Should().Be(id);
     }
 
     [Fact]
@@ -42,6 +43,6 @@ public class GetById
 
         var response = await client.GetAsync($"/api/products/{invalidId}");
 
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }

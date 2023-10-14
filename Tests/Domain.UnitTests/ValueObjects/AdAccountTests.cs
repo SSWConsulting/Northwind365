@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Northwind.Domain.Common;
 using Northwind.Domain.Exceptions;
 
@@ -10,46 +11,48 @@ public class AdAccountTests
     [Fact]
     public void ShouldHaveCorrectDomainAndName()
     {
-        var account = AdAccount.For("SSW\\Jason");
+        var account = AdAccount.For("SSW\\Daniel");
 
-        Assert.Equal("SSW", account.Domain);
-        Assert.Equal("Jason", account.Name);
+        account.Domain.Should().Be("SSW");
+        account.Name.Should().Be("Daniel");
     }
 
     [Fact]
     public void ToStringReturnsCorrectFormat()
     {
-        const string value = "SSW\\Jason";
+        const string value = "SSW\\Daniel";
 
         var account = AdAccount.For(value);
 
-        Assert.Equal(value, account.ToString());
+        account.ToString().Should().Be(value);
     }
 
     [Fact]
     public void ImplicitConversionToStringResultsInCorrectString()
     {
-        const string value = "SSW\\Jason";
+        const string value = "SSW\\Daniel";
 
         var account = AdAccount.For(value);
 
         string result = account;
 
-        Assert.Equal(value, result);
+        result.Should().Be(value);
     }
 
     [Fact]
     public void ExplicitConversionFromStringSetsDomainAndName()
     {
-        var account = (AdAccount) "SSW\\Jason";
+        var account = (AdAccount) "SSW\\Daniel";
 
-        Assert.Equal("SSW", account.Domain);
-        Assert.Equal("Jason", account.Name);
+        account.Domain.Should().Be("SSW");
+        account.Name.Should().Be("Daniel");
     }
 
     [Fact]
     public void ShouldThrowAdAccountInvalidExceptionForInvalidAdAccount()
     {
-        Assert.Throws<AdAccountInvalidException>(() => (AdAccount) "SSWJason");
+        FluentActions
+            .Invoking(() => AdAccount.For("SSWDaniel"))
+            .Should().Throw<AdAccountInvalidException>();
     }
 }

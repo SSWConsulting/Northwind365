@@ -65,11 +65,38 @@ public class CustomWebApplicationFactory : WebApplicationFactory<IWebUiMarker>
             .UseEnvironment("Test");
     }
 
+    private IServiceScope? _scope;
+
+    private IServiceScope Scope
+    {
+        get
+        {
+            if (_scope is not null)
+                return _scope;
+
+            _scope = Services.CreateScope();
+            return _scope;
+        }
+    }
+
+    private NorthwindDbContext? _dbContext;
+
+    private NorthwindDbContext DbContext
+    {
+        get
+        {
+            if (_dbContext is not null)
+                return _dbContext;
+
+            _dbContext = Scope.ServiceProvider.GetRequiredService<NorthwindDbContext>();
+            return _dbContext;
+        }
+    }
+
     public async Task AddEntityAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class
     {
-        await using var dbContext = Services.GetRequiredService<NorthwindDbContext>();
-        dbContext.Set<T>().Add(entity);
-        await dbContext.SaveChangesAsync(cancellationToken);
+        DbContext.Set<T>().Add(entity);
+        await DbContext.SaveChangesAsync(cancellationToken);
     }
 
     public HttpClient GetAnonymousClient()
@@ -118,5 +145,11 @@ public class CustomWebApplicationFactory : WebApplicationFactory<IWebUiMarker>
         }
 
         return response.AccessToken;
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        _scope?.Dispose();
+        base.Dispose(disposing);
     }
 }

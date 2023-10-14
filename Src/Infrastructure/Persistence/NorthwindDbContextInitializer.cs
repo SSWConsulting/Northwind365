@@ -21,19 +21,19 @@ public class NorthwindDbContextInitializer
     private readonly NorthwindDbContext _dbContext;
     private readonly IUserManager _userManager;
 
-    public const int NumCategories = 10;
-    public const int NumTerritoriesPerRegion = 10;
-    public const int NumCustomers = 100;
-    public const int NumEmployees = 100;
+    public const int NumCategories = 5;
+    public const int NumRegions = 4;
+    public const int NumTerritoriesPerRegion = 5;
+    public const int NumCustomers = 10;
+    public const int NumEmployees = 50;
     public const int NumShippers = 3;
-    public const int NumSuppliers = 30;
-    public const int NumProducts = 100;
-    public const int NumOrders = 1000;
+    public const int NumSuppliers = 5;
+    public const int NumProducts = 20;
+    public const int NumOrders = 50;
     public const int MinEmployeeTerritories = 2;
     public const int MaxEmployeeTerritories = 10;
     public const int MinOrderDetails = 1;
     public const int MaxOrderDetails = 10;
-    public const int NumRegions = 4;
 
     public NorthwindDbContextInitializer(ILogger<NorthwindDbContextInitializer> logger, NorthwindDbContext dbContext,
         IUserManager userManager)

@@ -1,3 +1,4 @@
+using FluentAssertions;
 using System.Threading.Tasks;
 using Northwind.Application.Products.Queries.GetProductsList;
 using Northwind.WebUI.IntegrationTests.Common;
@@ -28,7 +29,7 @@ public class GetAll
 
         var vm = await Utilities.GetResponseContent<ProductsListVm>(response);
 
-        Assert.IsType<ProductsListVm>(vm);
-        Assert.NotEmpty(vm.Products);
+        vm.Should().BeOfType<ProductsListVm>();
+        vm.Products.Should().NotBeEmpty();
     }
 }

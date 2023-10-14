@@ -13,15 +13,9 @@ public static class CategoryEndpoints
         // TODO: Add back
         //.RequireAuthorization();
 
-        //    [HttpGet]
-        //    public async Task<ActionResult<IList<CategoryLookupDto>>> GetAll()
-        //    {
-        //        return Ok(await Mediator.Send(new GetCategoriesListQuery()));
-        //    }
         group
             .MapGet("/", (ISender sender, CancellationToken ct) => sender.Send(new GetCategoriesListQuery(), ct))
             .WithName("GetCategoriesList")
             .ProducesGet<CategoryLookupDto[]>();
-        //.RequireAuthorization();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Common.Factories;
+using FluentAssertions;
 using Northwind.Application.Common.Interfaces;
 using Northwind.WebUI.IntegrationTests.Common;
 using System.Net;
@@ -47,6 +48,6 @@ public class Delete
         var response = await client.DeleteAsync($"/api/customers/{invalidId}");
 
         // Assert
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }

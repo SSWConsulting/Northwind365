@@ -18,25 +18,12 @@ public static class ProductEndpoints
         // TODO: Add back
         //.RequireAuthorization();
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public async Task<ActionResult<ProductsListVm>> GetAll()
-        //{
-        //    return Ok(await Mediator.Send(new GetProductsListQuery()));
-        //}
         group
             .MapGet("/", (ISender sender, CancellationToken ct) => sender.Send(new GetProductsListQuery(), ct))
             .WithName("GetProductsList")
             .ProducesGet<ProductsListVm>()
             .AllowAnonymous();
 
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public async Task<FileResult> Download()
-        //{
-        //    var vm = await Mediator.Send(new GetProductsFileQuery());
-        //    return File(vm.Content, vm.ContentType, vm.FileName);
-        //}
         group
             .MapGet("/Download", async (ISender sender, CancellationToken ct) =>
             {
@@ -47,51 +34,24 @@ public static class ProductEndpoints
             .ProducesGet<ProductsListVm>()
             .AllowAnonymous();
 
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<ProductDetailVm>> Get(int id)
-        //{
-        //    return Ok(await Mediator.Send(new GetProductDetailQuery { Id = id }));
-        //}
         group
             .MapGet("/{id}",
                 (int id, ISender sender, CancellationToken ct) => sender.Send(new GetProductDetailQuery(id), ct))
             .WithName("GetProductDetail")
             .ProducesGet<ProductDetailVm>();
 
-        //[HttpPost]
-        //public async Task<ActionResult<int>> Create([FromBody] CreateProductCommand command)
-        //{
-        //    var productId = await Mediator.Send(command);
-        //    return Ok(productId);
-        //}
         group
             .MapPost("/",
                 (CreateProductCommand command, ISender sender, CancellationToken ct) => sender.Send(command, ct))
             .WithName("CreateProduct")
             .ProducesPost<int>();
 
-        //[HttpPut]
-        //[ProducesResponseType(StatusCodes.Status204NoContent)]
-        //[ProducesDefaultResponseType]
-        //public async Task<IActionResult> Update([FromBody] UpdateProductCommand command)
-        //{
-        //    await Mediator.Send(command);
-        //    return NoContent();
-        //}
         group
             .MapPut("/",
                 (UpdateProductCommand command, ISender sender, CancellationToken ct) => sender.Send(command, ct))
             .WithName("UpdateProduct")
             .ProducesPut();
 
-        //[HttpDelete("{id}")]
-        //[ProducesResponseType(StatusCodes.Status204NoContent)]
-        //[ProducesDefaultResponseType]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    await Mediator.Send(new DeleteProductCommand { Id = id });
-        //    return NoContent();
-        //}
         group
             .MapDelete("/{id}",
                 (int id, ISender sender, CancellationToken ct) => sender.Send(new DeleteProductCommand(id), ct))

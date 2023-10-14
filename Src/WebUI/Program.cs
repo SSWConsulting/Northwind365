@@ -27,7 +27,7 @@ if (app.Environment.IsDevelopment())
     {
 
         var identityInitializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
-        await identityInitializer.EnsureDeleted();
+        //await identityInitializer.EnsureDeleted();
         await identityInitializer.InitializeAsync();
 
         // Initialise and seed database

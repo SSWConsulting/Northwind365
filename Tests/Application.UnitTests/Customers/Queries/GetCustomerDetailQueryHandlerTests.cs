@@ -1,11 +1,9 @@
-﻿using AutoFixture;
-using AutoMapper;
+﻿using AutoMapper;
 using Common.Factories;
+using FluentAssertions;
 using Northwind.Application.Customers.Queries.GetCustomerDetail;
 using Northwind.Application.UnitTests.Common;
-using Northwind.Domain.Customers;
 using Northwind.Infrastructure.Persistence;
-using Shouldly;
 using Xunit;
 
 namespace Northwind.Application.UnitTests.Customers.Queries;
@@ -37,7 +35,7 @@ public class GetCustomerDetailQueryHandlerTests
         var result = await sut.Handle(query, CancellationToken.None);
 
         // Assert
-        result.ShouldBeOfType<CustomerDetailVm>();
-        result.Id.ShouldBe(customer.Id.Value);
+        result.Should().BeOfType<CustomerDetailVm>();
+        result.Id.Should().Be(customer.Id.Value);
     }
 }

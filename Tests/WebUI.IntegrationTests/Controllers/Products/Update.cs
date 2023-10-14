@@ -1,4 +1,5 @@
 ﻿using Common.Factories;
+using FluentAssertions;
 using Northwind.Application.Products.Commands.UpdateProduct;
 using Northwind.Infrastructure.Persistence;
 using Northwind.WebUI.IntegrationTests.Common;
@@ -66,6 +67,6 @@ public class Update
         var response = await client.PutAsync($"/api/products", content);
 
         // Assert
-        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }
