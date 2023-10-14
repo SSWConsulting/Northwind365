@@ -1,24 +1,25 @@
 ﻿using Northwind.Application.Products.Commands.CreateProduct;
 using Northwind.WebUI.IntegrationTests.Common;
-using System.Threading.Tasks;
-using Northwind.Domain.Supplying;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-public class Create : IClassFixture<CustomWebApplicationFactory>
+[Collection(WebUICollection.Definition)]
+public class Create
 {
-    private readonly CustomWebApplicationFactory _factory;
+    private readonly CustomWebApplicationFactory _fixture;
 
-    public Create(CustomWebApplicationFactory factory)
+    public Create(CustomWebApplicationFactory fixture, ITestOutputHelper output)
     {
-        _factory = factory;
+        _fixture = fixture;
+        _fixture.Output = output;
     }
 
     [Fact]
     public async Task GivenCreateProductCommand_ReturnsNewProductId()
     {
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await _fixture.GetAuthenticatedClientAsync();
 
         var command = new CreateProductCommand
         (

@@ -1,22 +1,27 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using IdentityModel.Client;
-using Microsoft.AspNetCore.Hosting;
+﻿using IdentityModel.Client;
+using Meziantou.Extensions.Logging.Xunit;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Infrastructure.Persistence;
-using Northwind.Persistence;
+using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace Northwind.WebUI.IntegrationTests.Common;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<IWebUiMarker>
 {
+    public ITestOutputHelper Output { get; set; }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.ConfigureLogging(x =>
+        {
+            x.ClearProviders();
+            x.AddFilter(level => level >= LogLevel.Information);
+            x.Services.AddSingleton<ILoggerProvider>(new XUnitLoggerProvider(Output));
+        });
+
         builder
             .ConfigureServices(services =>
             {
@@ -48,14 +53,23 @@ public class CustomWebApplicationFactory : WebApplicationFactory<IWebUiMarker>
                     var initializer = scope.ServiceProvider.GetRequiredService<NorthwindDbContextInitializer>();
                     initializer.InitializeAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                     // TODO: Consider adding profiles to specify different amounts of data to seed
-                    initializer.SeedAsync().ConfigureAwait(false).GetAwaiter().GetResult();;
+                    initializer.SeedAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+                    ;
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex, "An error occurred seeding the database with test messages. Error: {Message}", ex.Message);
+                    logger.LogError(ex, "An error occurred seeding the database with test messages. Error: {Message}",
+                        ex.Message);
                 }
             })
             .UseEnvironment("Test");
+    }
+
+    public async Task AddEntityAsync<T>(T entity, CancellationToken cancellationToken = default) where T : class
+    {
+        await using var dbContext = Services.GetRequiredService<NorthwindDbContext>();
+        dbContext.Set<T>().Add(entity);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public HttpClient GetAnonymousClient()
@@ -93,8 +107,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<IWebUiMarker>
             Address = disco.TokenEndpoint,
             ClientId = "Northwind.IntegrationTests",
             ClientSecret = "secret",
-
-            Scope = "Northwind.WebUI openid profile",
+            Scope = "Northwind.WebUIAPI openid profile",
             UserName = userName,
             Password = password
         });

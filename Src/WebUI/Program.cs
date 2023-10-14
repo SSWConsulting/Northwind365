@@ -3,6 +3,8 @@ using Northwind.Infrastructure;
 using Northwind.Infrastructure.Identity;
 using Northwind.Infrastructure.Persistence;
 using Northwind.Persistence;
+using Northwind.WebUI;
+using Northwind.WebUI.Common;
 using Northwind.WebUI.Features;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddWebUI();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
-builder.Services.AddPersistence(builder.Configuration);
 
 var app = builder.Build();
 
@@ -26,7 +27,7 @@ if (app.Environment.IsDevelopment())
     {
 
         var identityInitializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
-        //await identityInitializer.EnsureDeleted();
+        await identityInitializer.EnsureDeleted();
         await identityInitializer.InitializeAsync();
 
         // Initialise and seed database
@@ -48,9 +49,7 @@ else
     app.UseHsts();
 }
 
-// TODO: Replace this with 'app.UseExceptionFilter();'
-//app.UseCustomExceptionHandler();
-
+app.UseCustomExceptionHandler();
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -64,7 +63,6 @@ app.UseSwaggerUi3(settings => settings.Path = "/api");
 app.UseRouting();
 
 app.UseAuthentication();
-// TODO: Fix and add back in
 app.UseIdentityServer();
 app.UseAuthorization();
 
@@ -72,7 +70,7 @@ app.UseAuthorization();
 // app.MapControllerRoute(
 //          "default",
 //          "{controller}/{action=Index}/{id?}");
-// app.MapControllers();
+//app.MapControllers();
 app.MapRazorPages();
 
 app.MapCategoryEndpoints();
@@ -95,7 +93,3 @@ app.MapProductEndpoints();
 // });
 
 app.Run();
-
-public partial class Program
-{
-}

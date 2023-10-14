@@ -20,7 +20,14 @@ public class CustomerDetailVm : IMapFrom<Customer>
 
     public void Mapping(Profile profile)
     {
-        profile.CreateMap<Customer, CustomerDetailVm>();
+        profile.CreateMap<Customer, CustomerDetailVm>()
+            .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id.Value))
+            .ForMember(d => d.Address, opt => opt.MapFrom(s => s.Address.Line1))
+            .ForMember(d => d.City, opt => opt.MapFrom(s => s.Address.City))
+            .ForMember(d => d.Country, opt => opt.MapFrom(s => s.Address.Country))
+            .ForMember(d => d.PostalCode, opt => opt.MapFrom(s => s.Address.PostalCode))
+            .ForMember(d => d.Region, opt => opt.MapFrom(s => s.Address.Region))
+            ;
     }
 
     /*

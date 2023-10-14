@@ -1,7 +1,7 @@
 ﻿using Bogus;
 using Northwind.Domain.Products;
 
-namespace Northwind.Application.UnitTests.Common;
+namespace Common.Factories;
 
 public static class ProductFactory
 {

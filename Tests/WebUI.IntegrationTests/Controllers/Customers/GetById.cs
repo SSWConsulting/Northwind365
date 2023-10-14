@@ -1,46 +1,55 @@
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
+using Common.Factories;
+using Northwind.Application.Common.Interfaces;
 using Northwind.Application.Customers.Queries.GetCustomerDetail;
 using Northwind.WebUI.IntegrationTests.Common;
+using System.Net;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Customers;
 
-public class GetById : IClassFixture<CustomWebApplicationFactory>
+[Collection(WebUICollection.Definition)]
+public class GetById
 {
     private readonly CustomWebApplicationFactory _factory;
 
-    public GetById(CustomWebApplicationFactory factory)
+    public GetById(CustomWebApplicationFactory factory, ITestOutputHelper output)
     {
         _factory = factory;
+        _factory.Output = output;
     }
 
     [Fact]
     public async Task GivenId_ReturnsCustomerViewModel()
     {
+        // Arrange
         var client = await _factory.GetAuthenticatedClientAsync();
+        var customer = CustomerFactory.Generate();
+        await _factory.AddEntityAsync(customer);
 
-        var id = "ALFKI";
+        // Act
+        var response = await client.GetAsync($"/api/customers/{customer.Id.Value}");
 
-        var response = await client.GetAsync($"/api/customers/get/{id}");
-
+        // Assert
         response.EnsureSuccessStatusCode();
 
-        var customer = await Utilities.GetResponseContent<CustomerDetailVm>(response);
+        var customerResp = await Utilities.GetResponseContent<CustomerDetailVm>(response);
 
-        Assert.Equal(id, customer.Id);
+        Assert.Equal(customer.Id.Value, customerResp.Id);
     }
 
     [Fact]
     public async Task GivenInvalidId_ReturnsNotFoundStatusCode()
     {
+        // Arrange
         var client = await _factory.GetAuthenticatedClientAsync();
         
         var invalidId = "AAAAA";
 
-        var response = await client.GetAsync($"/api/customers/get/{invalidId}");
+        // Act
+        var response = await client.GetAsync($"/api/customers/{invalidId}");
 
+        // Assert
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 }

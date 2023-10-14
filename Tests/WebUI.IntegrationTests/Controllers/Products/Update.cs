@@ -1,29 +1,35 @@
-﻿using System.Net;
-using System.Threading.Tasks;
+﻿using Common.Factories;
 using Northwind.Application.Products.Commands.UpdateProduct;
-using Northwind.Domain.Supplying;
+using Northwind.Infrastructure.Persistence;
 using Northwind.WebUI.IntegrationTests.Common;
+using System.Net;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-public class Update : IClassFixture<CustomWebApplicationFactory>
+[Collection(WebUICollection.Definition)]
+public class Update
 {
     private readonly CustomWebApplicationFactory _factory;
 
-    public Update(CustomWebApplicationFactory factory)
+    public Update(CustomWebApplicationFactory factory, ITestOutputHelper output)
     {
         _factory = factory;
+        _factory.Output = output;
     }
 
     [Fact]
     public async Task GivenUpdateProductCommand_ReturnsSuccessStatusCode()
     {
+        // Arrange
         var client = await _factory.GetAuthenticatedClientAsync();
+        var product = ProductFactory.Generate();
+        await _factory.AddEntityAsync(product);
 
         var command = new UpdateProductCommand
         (
-            1,
+            product.Id.Value,
             "Chai",
             15.00m,
             1,
@@ -33,31 +39,33 @@ public class Update : IClassFixture<CustomWebApplicationFactory>
 
         var content = Utilities.GetRequestContent(command);
 
-        var response = await client.PutAsync($"/api/products/update", content);
+        // Act
+        var response = await client.PutAsync($"/api/products", content);
 
+        // Assert
         response.EnsureSuccessStatusCode();
     }
 
-    // TODO: Add back in
-    // [Fact]
-    // public async Task GivenUpdateProductCommandWithInvalidId_ReturnsNotFoundStatusCode()
-    // {
-    //     var client = await _factory.GetAuthenticatedClientAsync();
-    //
-    //     var invalidCommand = new UpdateProductCommand
-    //     {
-    //         ProductId = 0,
-    //         ProductName = "Original Frankfurter grüne Soße",
-    //         SupplierId = 1,
-    //         CategoryId = 2,
-    //         UnitPrice = 15.00m,
-    //         Discontinued = false
-    //     };
-    //
-    //     var content = Utilities.GetRequestContent(invalidCommand);
-    //
-    //     var response = await client.PutAsync($"/api/products/update", content);
-    //
-    //     Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-    // }
+    [Fact]
+    public async Task GivenUpdateProductCommandWithInvalidId_ReturnsNotFoundStatusCode()
+    {
+        // Arrange
+        var client = await _factory.GetAuthenticatedClientAsync();
+        var invalidCommand = new UpdateProductCommand
+        (
+            0,
+            "Original Frankfurter grüne Soße",
+            15.00m,
+            1,
+            2,
+            false
+        );
+        var content = Utilities.GetRequestContent(invalidCommand);
+
+        // Act
+        var response = await client.PutAsync($"/api/products", content);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
 }

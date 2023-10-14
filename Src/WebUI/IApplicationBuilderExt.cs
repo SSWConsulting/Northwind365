@@ -1,5 +1,7 @@
 ﻿using System.Text;
 
+namespace Northwind.WebUI;
+
 public static class IApplicationBuilderExt
 {
     public static void UseRegisteredServicesPage(this IApplicationBuilder app, IServiceProvider provider)

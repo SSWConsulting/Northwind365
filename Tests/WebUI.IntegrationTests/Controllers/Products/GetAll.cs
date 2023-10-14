@@ -2,16 +2,19 @@ using System.Threading.Tasks;
 using Northwind.Application.Products.Queries.GetProductsList;
 using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-public class GetAll : IClassFixture<CustomWebApplicationFactory>
+[Collection(WebUICollection.Definition)]
+public class GetAll
 {
     private readonly CustomWebApplicationFactory _factory;
 
-    public GetAll(CustomWebApplicationFactory factory)
+    public GetAll(CustomWebApplicationFactory factory, ITestOutputHelper output)
     {
         _factory = factory;
+        _factory.Output = output;
     }
 
     [Fact]
@@ -19,7 +22,7 @@ public class GetAll : IClassFixture<CustomWebApplicationFactory>
     {
         var client = await _factory.GetAuthenticatedClientAsync();
 
-        var response = await client.GetAsync("/api/products/getall");
+        var response = await client.GetAsync("/api/products");
 
         response.EnsureSuccessStatusCode();
 

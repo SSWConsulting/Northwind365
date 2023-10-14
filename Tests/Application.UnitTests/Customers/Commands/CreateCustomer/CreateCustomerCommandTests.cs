@@ -17,8 +17,13 @@ public class CreateCustomerCommandTests : CommandTestBase
         var mediatorMock = new Mock<IMediator>();
         var sut = new CreateCustomerCommandHandler(_context, mediatorMock.Object);
         var newCustomerId = new CustomerId("123");
+
         var fixture = new Fixture();
-        var command = fixture.Create<CreateCustomerCommand>() with { Id = newCustomerId.Value };
+        var command = fixture.Build<CreateCustomerCommand>()
+            .With(x => x.ContactName, "ContactName")
+            .With(x => x.ContactTitle, "ContactTitle")
+            .With(x => x.Id, newCustomerId.Value)
+            .Create();
 
         // Act
         var result = sut.Handle(command, CancellationToken.None);

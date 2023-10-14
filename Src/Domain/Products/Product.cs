@@ -14,7 +14,7 @@ public class Product : BaseEntity<ProductId>
     public string ProductName { get; private set; } = null!;
     public SupplierId? SupplierId { get; private set; }
     public CategoryId? CategoryId { get; private set; }
-    public string QuantityPerUnit { get; private set; } = null!;
+    public string? QuantityPerUnit { get; private set; }
     public decimal? UnitPrice { get; private set; }
     public short? UnitsInStock { get; private set; }
     public short? UnitsOnOrder { get; private set; }
