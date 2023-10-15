@@ -17,15 +17,106 @@ public class Create : IntegrationTestBase
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var supplier = Context.Suppliers.First();
-        var category = Context.Categories.First();
+        var supplier = Context.Suppliers.First().Id.Value;
+        var category = Context.Categories.First().Id.Value;
 
         var command = new CreateProductCommand
         (
             "Coffee",
             19.00m,
-            supplier.Id.Value,
-            category.Id.Value,
+            supplier,
+            category,
+            false
+        );
+
+        var content = Utilities.GetRequestContent(command);
+
+        // Act
+        var response = await client.PostAsync($"/api/products", content);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+
+        var productId = await Utilities.GetResponseContent<int>(response);
+
+        productId.Should().NotBe(0);
+    }
+
+    [Fact]
+    public async Task CreateProductCommand_WithNoSupplier_CreatesProduct()
+    {
+        // Arrange
+        var client = await GetAuthenticatedClientAsync();
+        int? supplier = null;
+        var category = Context.Categories.First().Id.Value;
+
+        var command = new CreateProductCommand
+        (
+            "Coffee",
+            19.00m,
+            supplier,
+            category,
+            false
+        );
+
+        var content = Utilities.GetRequestContent(command);
+
+        // Act
+        var response = await client.PostAsync($"/api/products", content);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+
+        var productId = await Utilities.GetResponseContent<int>(response);
+
+        productId.Should().NotBe(0);
+    }
+
+    [Fact]
+    public async Task CreateProductCommand_WithNoCategory_CreatesProduct()
+    {
+        // Arrange
+        var client = await GetAuthenticatedClientAsync();
+        var supplier = Context.Suppliers.First().Id.Value;
+        int? category = null;
+
+        var command = new CreateProductCommand
+        (
+            "Coffee",
+            19.00m,
+            supplier,
+            category,
+            false
+        );
+
+        var content = Utilities.GetRequestContent(command);
+
+        // Act
+        var response = await client.PostAsync($"/api/products", content);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+
+        var productId = await Utilities.GetResponseContent<int>(response);
+
+        productId.Should().NotBe(0);
+    }
+
+    [Fact]
+    public async Task CreateProductCommand_WithNoUnitPrice_CreatesProduct()
+    {
+        // Arrange
+        var client = await GetAuthenticatedClientAsync();
+        var supplier = Context.Suppliers.First().Id.Value;
+        var category = Context.Categories.First().Id.Value;
+        decimal? unitPrice = null;
+
+        var command = new CreateProductCommand
+        (
+            "Coffee",
+            unitPrice,
+            supplier,
+            category,
             false
         );
 
