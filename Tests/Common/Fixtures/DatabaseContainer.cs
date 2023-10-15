@@ -1,6 +1,6 @@
 using Testcontainers.SqlEdge;
 
-namespace Northwind.WebUI.IntegrationTests.Common;
+namespace Common.Fixtures;
 
 public class DatabaseContainer
 {

@@ -1,4 +1,5 @@
 using Common.Factories;
+using Common.Fixtures;
 using FluentAssertions;
 using Northwind.Application.Customers.Queries.GetCustomersList;
 using Northwind.WebUI.IntegrationTests.Common;

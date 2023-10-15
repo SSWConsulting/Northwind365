@@ -1,8 +1,9 @@
+using Microsoft.Extensions.DependencyInjection;
 using Respawn;
 using Respawn.Graph;
 using Xunit;
 
-namespace Northwind.WebUI.IntegrationTests.Common;
+namespace Common.Fixtures;
 
 public class TestingDatabaseFixture : IAsyncLifetime
 {
@@ -46,10 +47,10 @@ public class TestingDatabaseFixture : IAsyncLifetime
     }
 }
 
-[CollectionDefinition(TestingDatabaseFixture.DatabaseCollectionDefinition)]
-public class TestingDatabaseFixtureCollection : ICollectionFixture<TestingDatabaseFixture>
-{
-    // This class has no code, and is never created. Its purpose is simply
-    // to be the place to apply [CollectionDefinition] and all the
-    // ICollectionFixture<> interfaces.
-}
+// [CollectionDefinition(TestingDatabaseFixture.DatabaseCollectionDefinition)]
+// public class TestingDatabaseFixtureCollection : ICollectionFixture<TestingDatabaseFixture>
+// {
+//     // This class has no code, and is never created. Its purpose is simply
+//     // to be the place to apply [CollectionDefinition] and all the
+//     // ICollectionFixture<> interfaces.
+// }

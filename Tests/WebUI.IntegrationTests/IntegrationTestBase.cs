@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Common.Fixtures;
+using MediatR;
 using Northwind.Infrastructure.Persistence;
 using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
@@ -48,4 +49,12 @@ public abstract class IntegrationTestBase : IAsyncLifetime
     {
         return await Fixture.Factory.GetAuthenticatedClientAsync();
     }
+}
+
+[CollectionDefinition(TestingDatabaseFixture.DatabaseCollectionDefinition)]
+public class TestingDatabaseFixtureCollection : ICollectionFixture<TestingDatabaseFixture>
+{
+    // This class has no code, and is never created. Its purpose is simply
+    // to be the place to apply [CollectionDefinition] and all the
+    // ICollectionFixture<> interfaces.
 }

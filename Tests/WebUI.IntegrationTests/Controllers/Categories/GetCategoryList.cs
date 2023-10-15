@@ -1,4 +1,5 @@
-﻿using Northwind.WebUI.IntegrationTests.Common;
+﻿using Common.Fixtures;
+using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
 using Xunit.Abstractions;
 

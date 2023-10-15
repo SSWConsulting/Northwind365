@@ -1,4 +1,5 @@
 using Common.Factories;
+using Common.Fixtures;
 using FluentAssertions;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Application.Customers.Queries.GetCustomerDetail;

@@ -8,10 +8,17 @@
 
     <ItemGroup>
       <PackageReference Include="Bogus" Version="34.0.2" />
+      <PackageReference Include="Meziantou.Extensions.Logging.Xunit" Version="1.0.6" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.5" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+      <PackageReference Include="Respawn" Version="6.0.0" />
+      <PackageReference Include="Testcontainers.SqlEdge" Version="3.0.0" />
+      <PackageReference Include="xunit.extensibility.core" Version="2.4.2" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\Src\Domain\Domain.csproj" />
+      <ProjectReference Include="..\..\Src\WebUI\WebUI.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Common.Fixtures;
+using FluentAssertions;
 using Northwind.Application.Products.Commands.CreateProduct;
 using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;

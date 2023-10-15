@@ -1,4 +1,5 @@
 ﻿using Common.Factories;
+using Common.Fixtures;
 using FluentAssertions;
 using System.Net;
 using System.Net.Http;

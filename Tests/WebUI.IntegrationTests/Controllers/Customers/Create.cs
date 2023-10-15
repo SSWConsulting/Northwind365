@@ -1,4 +1,5 @@
-﻿using Northwind.Application.Customers.Commands.CreateCustomer;
+﻿using Common.Fixtures;
+using Northwind.Application.Customers.Commands.CreateCustomer;
 using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
 using Xunit.Abstractions;

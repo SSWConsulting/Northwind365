@@ -1,14 +1,18 @@
 using IdentityModel.Client;
 using Meziantou.Extensions.Logging.Xunit;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using Northwind.Infrastructure.Identity;
 using Northwind.Infrastructure.Persistence;
+using Northwind.WebUI;
 using Xunit.Abstractions;
 
-namespace Northwind.WebUI.IntegrationTests.Common;
+namespace Common.Fixtures;
 
 public class WebUITestFactory : WebApplicationFactory<IWebUiMarker>
 {
