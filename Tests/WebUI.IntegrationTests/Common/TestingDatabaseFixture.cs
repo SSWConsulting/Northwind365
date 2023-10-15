@@ -1,4 +1,5 @@
 using Respawn;
+using Respawn.Graph;
 using Xunit;
 
 namespace Northwind.WebUI.IntegrationTests.Common;
@@ -26,7 +27,12 @@ public class TestingDatabaseFixture : IAsyncLifetime
         ScopeFactory = Factory.Services.GetRequiredService<IServiceScopeFactory>();
         using var scope = ScopeFactory.CreateScope();
 
-        _checkpoint = await Respawner.CreateAsync(ConnectionString);
+        _checkpoint = await Respawner.CreateAsync(ConnectionString,
+            new RespawnerOptions
+            {
+                // These tables shouldn't be modified from any tests
+                TablesToIgnore = new Table[] { "Categories", "Region", "Suppliers", "Shippers", "Territories", },
+            });
     }
 
     public async Task ResetState()

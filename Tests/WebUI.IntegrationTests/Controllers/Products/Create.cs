@@ -9,8 +9,6 @@ namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 //[Collection(WebUICollection.Definition)]
 public class Create : IntegrationTestBase
 {
-    //private readonly CustomWebApplicationFactory _fixture;
-
     public Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
     }
@@ -18,21 +16,26 @@ public class Create : IntegrationTestBase
     [Fact]
     public async Task GivenCreateProductCommand_ReturnsNewProductId()
     {
+        // Arrange
         var client = await GetAuthenticatedClientAsync();
+        var supplier = Context.Suppliers.First();
+        var category = Context.Categories.First();
 
         var command = new CreateProductCommand
         (
             "Coffee",
             19.00m,
-            1,
-            1,
+            supplier.Id.Value,
+            category.Id.Value,
             false
         );
 
         var content = Utilities.GetRequestContent(command);
 
+        // Act
         var response = await client.PostAsync($"/api/products", content);
 
+        // Assert
         response.EnsureSuccessStatusCode();
 
         var productId = await Utilities.GetResponseContent<int>(response);

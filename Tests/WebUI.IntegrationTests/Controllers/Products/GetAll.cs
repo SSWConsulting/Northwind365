@@ -1,3 +1,4 @@
+using Common.Factories;
 using FluentAssertions;
 using System.Threading.Tasks;
 using Northwind.Application.Products.Queries.GetProductsList;
@@ -18,6 +19,8 @@ public class GetAll : IntegrationTestBase
     public async Task ReturnsProductsListViewModel()
     {
         var client = await GetAuthenticatedClientAsync();
+        var product = ProductFactory.Generate();
+        await AddEntityAsync(product);
 
         var response = await client.GetAsync("/api/products");
 

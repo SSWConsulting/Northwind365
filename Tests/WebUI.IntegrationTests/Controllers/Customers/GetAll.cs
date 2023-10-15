@@ -1,3 +1,4 @@
+using Common.Factories;
 using FluentAssertions;
 using Northwind.Application.Customers.Queries.GetCustomersList;
 using Northwind.WebUI.IntegrationTests.Common;
@@ -16,15 +17,21 @@ public class GetAll : IntegrationTestBase
     [Fact]
     public async Task ReturnsCustomersListViewModel()
     {
+        // Arrange
         var client = await GetAuthenticatedClientAsync();
+        var customer = CustomerFactory.Generate();
+        await AddEntityAsync(customer);
 
+        // Act
         var response = await client.GetAsync("/api/customers");
 
+        // Assert
         response.EnsureSuccessStatusCode();
 
         var vm = await Utilities.GetResponseContent<CustomersListVm>(response);
 
         vm.Should().BeOfType<CustomersListVm>();
         vm.Customers.Should().NotBeEmpty();
+        vm.Customers.Should().HaveCount(1);
     }
 }
