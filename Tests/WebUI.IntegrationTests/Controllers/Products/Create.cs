@@ -6,21 +6,19 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-[Collection(WebUICollection.Definition)]
-public class Create
+//[Collection(WebUICollection.Definition)]
+public class Create : IntegrationTestBase
 {
-    private readonly CustomWebApplicationFactory _fixture;
+    //private readonly CustomWebApplicationFactory _fixture;
 
-    public Create(CustomWebApplicationFactory fixture, ITestOutputHelper output)
+    public Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
-        _fixture = fixture;
-        _fixture.Output = output;
     }
 
     [Fact]
     public async Task GivenCreateProductCommand_ReturnsNewProductId()
     {
-        var client = await _fixture.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
 
         var command = new CreateProductCommand
         (

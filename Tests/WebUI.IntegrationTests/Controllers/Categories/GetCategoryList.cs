@@ -1,25 +1,20 @@
-﻿using System.Threading.Tasks;
-using Northwind.WebUI.IntegrationTests.Common;
+﻿using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Categories;
 
-[Collection(WebUICollection.Definition)]
-public class GetCategoryList
+//[Collection(WebUICollection.Definition)]
+public class GetCategoryList : IntegrationTestBase
 {
-    private readonly CustomWebApplicationFactory _factory;
-
-    public GetCategoryList(CustomWebApplicationFactory factory, ITestOutputHelper output)
+    public GetCategoryList(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
-        _factory = factory;
-        _factory.Output = output;
     }
 
     [Fact]
     public async Task ReturnsSuccessResult()
     {
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
 
         var response = await client.GetAsync("/api/categories");
 

@@ -7,21 +7,17 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-[Collection(WebUICollection.Definition)]
-public class GetAll
+//[Collection(WebUICollection.Definition)]
+public class GetAll : IntegrationTestBase
 {
-    private readonly CustomWebApplicationFactory _factory;
-
-    public GetAll(CustomWebApplicationFactory factory, ITestOutputHelper output)
+    public GetAll(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
-        _factory = factory;
-        _factory.Output = output;
     }
 
     [Fact]
     public async Task ReturnsProductsListViewModel()
     {
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
 
         var response = await client.GetAsync("/api/products");
 

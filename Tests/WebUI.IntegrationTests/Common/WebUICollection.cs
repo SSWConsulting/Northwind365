@@ -1,5 +1,4 @@
-﻿using Northwind.WebUI.IntegrationTests.Controllers.Products;
-using Xunit;
+﻿using Xunit;
 
 namespace Northwind.WebUI.IntegrationTests.Common;
 

@@ -7,21 +7,17 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-[Collection(WebUICollection.Definition)]
-public class GetById
+//[Collection(WebUICollection.Definition)]
+public class GetById : IntegrationTestBase
 {
-    private readonly CustomWebApplicationFactory _factory;
-
-    public GetById(CustomWebApplicationFactory factory, ITestOutputHelper output)
+    public GetById(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
-        _factory = factory;
-        _factory.Output = output;
     }
 
     [Fact]
     public async Task GivenId_ReturnsProductViewModel()
     {
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
 
         var id = 1;
 
@@ -37,7 +33,7 @@ public class GetById
     [Fact]
     public async Task GivenInvalidId_ReturnsNotFoundStatusCode()
     {
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
 
         var invalidId = 0;
 

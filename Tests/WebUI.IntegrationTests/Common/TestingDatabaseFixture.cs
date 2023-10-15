@@ -1,44 +1,42 @@
-using Duende.IdentityServer.EntityFramework.Entities;
-using Microsoft.Extensions.DependencyInjection;
-using Northwind.Persistence;
 using Respawn;
+using Xunit;
 
-namespace Northwind.Infrastructure.IntegrationTests.TestHelpers;
+namespace Northwind.WebUI.IntegrationTests.Common;
 
 public class TestingDatabaseFixture : IAsyncLifetime
 {
     public const string DatabaseCollectionDefinition = "Database collection";
 
-    private readonly InfrastructureTestFactory _factory;
     private Respawner _checkpoint = default!;
 
+    public WebUITestFactory Factory { get; }
     public IServiceScopeFactory ScopeFactory { get; private set; } = default!;
 
-    private string ConnectionString => _factory.Database.ConnectionString!;
+    private string ConnectionString => Factory.Database.ConnectionString!;
 
     // ReSharper disable once ConvertConstructorToMemberInitializers
     public TestingDatabaseFixture()
     {
-        _factory = new InfrastructureTestFactory();
+        Factory = new WebUITestFactory();
     }
 
     public async Task InitializeAsync()
     {
-        await _factory.Database.InitializeAsync();
-        ScopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
+        await Factory.Database.InitializeAsync();
+        ScopeFactory = Factory.Services.GetRequiredService<IServiceScopeFactory>();
         using var scope = ScopeFactory.CreateScope();
 
         _checkpoint = await Respawner.CreateAsync(ConnectionString);
     }
 
-    public async Task DisposeAsync()
-    {
-        await _factory.Database.DisposeAsync();
-    }
-
     public async Task ResetState()
     {
         await _checkpoint.ResetAsync(ConnectionString);
+    }
+
+    public async Task DisposeAsync()
+    {
+        await Factory.Database.DisposeAsync();
     }
 }
 
