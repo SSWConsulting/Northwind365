@@ -7,7 +7,6 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-//[Collection(WebUICollection.Definition)]
 public class Delete : IntegrationTestBase
 {
     public Delete(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)

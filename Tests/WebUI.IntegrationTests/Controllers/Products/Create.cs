@@ -6,7 +6,6 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-//[Collection(WebUICollection.Definition)]
 public class Create : IntegrationTestBase
 {
     public Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)

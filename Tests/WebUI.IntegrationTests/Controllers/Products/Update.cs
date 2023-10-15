@@ -1,7 +1,6 @@
 ﻿using Common.Factories;
 using FluentAssertions;
 using Northwind.Application.Products.Commands.UpdateProduct;
-using Northwind.Infrastructure.Persistence;
 using Northwind.WebUI.IntegrationTests.Common;
 using System.Net;
 using Xunit;
@@ -9,32 +8,29 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-[Collection(WebUICollection.Definition)]
-public class Update
+public class Update : IntegrationTestBase
 {
-    private readonly CustomWebApplicationFactory _factory;
-
-    public Update(CustomWebApplicationFactory factory, ITestOutputHelper output)
+    public Update(TestingDatabaseFixture fixture, ITestOutputHelper output): base(fixture, output)
     {
-        _factory = factory;
-        _factory.Output = output;
     }
 
     [Fact]
     public async Task GivenUpdateProductCommand_ReturnsSuccessStatusCode()
     {
         // Arrange
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
         var product = ProductFactory.Generate();
-        await _factory.AddEntityAsync(product);
+        await AddEntityAsync(product);
+        var supplier = Context.Suppliers.First();
+        var category = Context.Categories.First();
 
         var command = new UpdateProductCommand
         (
             product.Id.Value,
             "Chai",
             15.00m,
-            1,
-            1,
+            supplier.Id.Value,
+            category.Id.Value,
             false
         );
 
@@ -51,14 +47,16 @@ public class Update
     public async Task GivenUpdateProductCommandWithInvalidId_ReturnsNotFoundStatusCode()
     {
         // Arrange
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
+        var supplier = Context.Suppliers.First();
+        var category = Context.Categories.First();
         var invalidCommand = new UpdateProductCommand
         (
             0,
             "Original Frankfurter grüne Soße",
             15.00m,
-            1,
-            2,
+            supplier.Id.Value,
+            category.Id.Value,
             false
         );
         var content = Utilities.GetRequestContent(invalidCommand);

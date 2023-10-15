@@ -8,7 +8,6 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-//[Collection(WebUICollection.Definition)]
 public class GetById : IntegrationTestBase
 {
     public GetById(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)

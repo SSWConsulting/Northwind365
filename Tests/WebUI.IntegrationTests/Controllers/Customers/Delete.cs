@@ -8,7 +8,6 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Customers;
 
-//[Collection(WebUICollection.Definition)]
 public class Delete : IntegrationTestBase
 {
     public Delete(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
@@ -38,7 +37,7 @@ public class Delete : IntegrationTestBase
         // Arrange
         var client = await GetAuthenticatedClientAsync();
 
-        var invalidId = "AAAAA";
+        var invalidId = "XXX";
 
         // Act
         var response = await client.DeleteAsync($"/api/customers/{invalidId}");

@@ -9,7 +9,6 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Customers;
 
-//[Collection(WebUICollection.Definition)]
 public class GetById : IntegrationTestBase
 {
 
@@ -42,7 +41,7 @@ public class GetById : IntegrationTestBase
         // Arrange
         var client = await GetAuthenticatedClientAsync();
         
-        var invalidId = "AAAAA";
+        var invalidId = "XXX";
 
         // Act
         var response = await client.GetAsync($"/api/customers/{invalidId}");
