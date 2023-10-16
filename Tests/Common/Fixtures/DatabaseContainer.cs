@@ -6,10 +6,11 @@ public class DatabaseContainer
 {
     private readonly SqlEdgeContainer? _container;
 
+    // ReSharper disable once ConvertConstructorToMemberInitializers
     public DatabaseContainer()
     {
         _container = new SqlEdgeBuilder()
-            .WithName("Northwind365-IntegrationTests-DbContainer")
+            .WithName($"Northwind365-{Guid.NewGuid()}")
             .WithPassword("sqledge!Strong")
             .WithAutoRemove(true)
             .Build();
