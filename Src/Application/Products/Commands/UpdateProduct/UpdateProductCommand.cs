@@ -1,5 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Ardalis.Specification.EntityFrameworkCore;
+using System.Diagnostics.CodeAnalysis;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Northwind.Application.Common.Exceptions;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Application.Common.Mappings;
@@ -22,7 +24,10 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
 
     public async Task Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Products.FindAsync(new object?[] { new ProductId(request.ProductId) }, cancellationToken: cancellationToken);
+        var productId = new ProductId(request.ProductId);
+        var entity = await _context.Products
+            .WithSpecification(new ProductByIdSpec(productId))
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (entity == null)
             throw new NotFoundException(nameof(Product), request.ProductId);

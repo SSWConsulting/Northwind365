@@ -1,15 +1,16 @@
-﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Ardalis.Specification.EntityFrameworkCore;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Northwind.Application.Common.Exceptions;
 using Northwind.Application.Common.Interfaces;
+using Northwind.Domain.Orders;
 using Northwind.Domain.Products;
 
 namespace Northwind.Application.Products.Commands.DeleteProduct;
 
 public record DeleteProductCommand(int Id) : IRequest;
 
+// ReSharper disable once UnusedType.Global
 public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
 {
     private readonly INorthwindDbContext _context;
@@ -21,15 +22,19 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
 
     public async Task Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Products.FindAsync(new object?[] { new ProductId(request.Id) },
-            cancellationToken: cancellationToken);
+        var productId = new ProductId(request.Id);
+        var entity = await _context.Products
+            .WithSpecification(new ProductByIdSpec(productId))
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (entity == null)
         {
             throw new NotFoundException(nameof(Product), request.Id);
         }
 
-        var hasOrders = _context.OrderDetails.Any(od => od.ProductId == entity.Id);
+        var hasOrders = await _context.OrderDetails
+            .WithSpecification(new OrderDetailByProductIdSpec(productId))
+            .AnyAsync(cancellationToken);
         if (hasOrders)
         {
             // TODO: Add functional test for this behaviour.

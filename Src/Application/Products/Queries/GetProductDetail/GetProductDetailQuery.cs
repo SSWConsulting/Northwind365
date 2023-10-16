@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Ardalis.Specification.EntityFrameworkCore;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +29,9 @@ public class GetProductDetailQueryHandler : IRequestHandler<GetProductDetailQuer
 
     public async Task<ProductDetailVm> Handle(GetProductDetailQuery request, CancellationToken cancellationToken)
     {
+        var productId = new ProductId(request.Id);
         var vm = await _context.Products
-            .Where(p => p.Id == new ProductId(request.Id))
+            .WithSpecification(new ProductByIdSpec(productId))
             .ProjectTo<ProductDetailVm>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(cancellationToken);
 

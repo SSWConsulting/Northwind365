@@ -1,14 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-
-using MediatR;
-
-using Microsoft.Extensions.DependencyInjection;
-
+﻿using MediatR;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Application.Common.Mappings;
 using Northwind.Domain.Products;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Northwind.Application.Products.Commands.CreateProduct;
 

@@ -1,11 +1,9 @@
-﻿using AutoMapper;
+﻿using Ardalis.Specification.EntityFrameworkCore;
+using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Northwind.Application.Common.Exceptions;
 using Northwind.Application.Common.Interfaces;
-
-using System.Threading;
-using System.Threading.Tasks;
-
 using Northwind.Domain.Customers;
 
 namespace Northwind.Application.Customers.Queries.GetCustomerDetail;
@@ -25,8 +23,10 @@ public class GetCustomerDetailQueryHandler : IRequestHandler<GetCustomerDetailQu
 
     public async Task<CustomerDetailVm> Handle(GetCustomerDetailQuery request, CancellationToken cancellationToken)
     {
+        var customerId = new CustomerId(request.Id);
         var entity = await _context.Customers
-            .FindAsync(new object?[] { new CustomerId(request.Id) }, cancellationToken: cancellationToken);
+            .WithSpecification(new CustomerByIdSpec(customerId))
+            .SingleOrDefaultAsync(cancellationToken);
 
         if (entity == null)
         {
