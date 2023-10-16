@@ -1,25 +1,21 @@
-﻿using Northwind.Application.Customers.Commands.CreateCustomer;
+﻿using Common.Fixtures;
+using Northwind.Application.Customers.Commands.CreateCustomer;
 using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Customers;
 
-[Collection(WebUICollection.Definition)]
-public class Create
+public class Create : IntegrationTestBase
 {
-    private readonly CustomWebApplicationFactory _factory;
-
-    public Create(CustomWebApplicationFactory factory, ITestOutputHelper output)
+    public Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
-        _factory = factory;
-        _factory.Output = output;
     }
 
     [Fact]
     public async Task GivenCreateCustomerCommand_ReturnsSuccessStatusCode()
     {
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
 
         var command = new CreateCustomerCommand
         (

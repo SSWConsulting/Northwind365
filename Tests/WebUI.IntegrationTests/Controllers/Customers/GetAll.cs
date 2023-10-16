@@ -1,3 +1,5 @@
+using Common.Factories;
+using Common.Fixtures;
 using FluentAssertions;
 using Northwind.Application.Customers.Queries.GetCustomersList;
 using Northwind.WebUI.IntegrationTests.Common;
@@ -6,29 +8,30 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Customers;
 
-[Collection(WebUICollection.Definition)]
-public class GetAll
+public class GetAll : IntegrationTestBase
 {
-    private readonly CustomWebApplicationFactory _factory;
-
-    public GetAll(CustomWebApplicationFactory factory, ITestOutputHelper output)
+    public GetAll(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
-        _factory = factory;
-        _factory.Output = output;
     }
 
     [Fact]
     public async Task ReturnsCustomersListViewModel()
     {
-        var client = await _factory.GetAuthenticatedClientAsync();
+        // Arrange
+        var client = await GetAuthenticatedClientAsync();
+        var customer = CustomerFactory.Generate();
+        await AddEntityAsync(customer);
 
+        // Act
         var response = await client.GetAsync("/api/customers");
 
+        // Assert
         response.EnsureSuccessStatusCode();
 
         var vm = await Utilities.GetResponseContent<CustomersListVm>(response);
 
         vm.Should().BeOfType<CustomersListVm>();
         vm.Customers.Should().NotBeEmpty();
+        vm.Customers.Should().HaveCount(1);
     }
 }

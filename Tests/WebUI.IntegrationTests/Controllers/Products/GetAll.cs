@@ -1,5 +1,6 @@
+using Common.Factories;
+using Common.Fixtures;
 using FluentAssertions;
-using System.Threading.Tasks;
 using Northwind.Application.Products.Queries.GetProductsList;
 using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
@@ -7,21 +8,18 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-[Collection(WebUICollection.Definition)]
-public class GetAll
+public class GetAll : IntegrationTestBase
 {
-    private readonly CustomWebApplicationFactory _factory;
-
-    public GetAll(CustomWebApplicationFactory factory, ITestOutputHelper output)
+    public GetAll(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
-        _factory = factory;
-        _factory.Output = output;
     }
 
     [Fact]
     public async Task ReturnsProductsListViewModel()
     {
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
+        var product = ProductFactory.Generate();
+        await AddEntityAsync(product);
 
         var response = await client.GetAsync("/api/products");
 

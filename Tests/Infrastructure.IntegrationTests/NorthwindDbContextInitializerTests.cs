@@ -1,8 +1,7 @@
+using Common.Fixtures;
 using Microsoft.Extensions.DependencyInjection;
-using Northwind.Infrastructure.Identity;
-using Northwind.Infrastructure.IntegrationTests.TestHelpers;
+using Northwind.Infrastructure.IntegrationTests.Common;
 using Northwind.Infrastructure.Persistence;
-using Northwind.Persistence;
 using static Northwind.Infrastructure.Persistence.NorthwindDbContextInitializer;
 
 namespace Northwind.Infrastructure.IntegrationTests;
@@ -19,11 +18,11 @@ public class NorthwindDbContextInitializerTests : IntegrationTestBase
         // Arrange
         using var scope = Fixture.ScopeFactory.CreateScope();
 
-        var identitiesDbInitializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
-        await identitiesDbInitializer.InitializeAsync();
+        // var identitiesDbInitializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
+        // await identitiesDbInitializer.InitializeAsync();
 
         var northwindDbInitializer = scope.ServiceProvider.GetRequiredService<NorthwindDbContextInitializer>();
-        await northwindDbInitializer.InitializeAsync();
+        //await northwindDbInitializer.InitializeAsync();
 
         // Act
         await northwindDbInitializer.SeedAsync();

@@ -1,3 +1,5 @@
+using Common.Factories;
+using Common.Fixtures;
 using FluentAssertions;
 using Northwind.Application.Products.Queries.GetProductDetail;
 using Northwind.WebUI.IntegrationTests.Common;
@@ -7,37 +9,33 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-[Collection(WebUICollection.Definition)]
-public class GetById
+public class GetById : IntegrationTestBase
 {
-    private readonly CustomWebApplicationFactory _factory;
-
-    public GetById(CustomWebApplicationFactory factory, ITestOutputHelper output)
+    public GetById(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
-        _factory = factory;
-        _factory.Output = output;
     }
 
     [Fact]
     public async Task GivenId_ReturnsProductViewModel()
     {
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
+        var product = ProductFactory.Generate();
+        await AddEntityAsync(product);
 
-        var id = 1;
-
-        var response = await client.GetAsync($"/api/products/{id}");
+        var response = await client.GetAsync($"/api/products/{product.Id.Value}");
 
         response.EnsureSuccessStatusCode();
 
-        var product = await Utilities.GetResponseContent<ProductDetailVm>(response);
+        var vm = await Utilities.GetResponseContent<ProductDetailVm>(response);
 
-        product.ProductId.Should().Be(id);
+        vm.Should().NotBeNull();
+        vm.ProductId.Should().Be(product.Id.Value);
     }
 
     [Fact]
     public async Task GivenInvalidId_ReturnsNotFoundStatusCode()
     {
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
 
         var invalidId = 0;
 

@@ -1,4 +1,5 @@
 using Common.Factories;
+using Common.Fixtures;
 using FluentAssertions;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Application.Customers.Queries.GetCustomerDetail;
@@ -9,24 +10,20 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Customers;
 
-[Collection(WebUICollection.Definition)]
-public class GetById
+public class GetById : IntegrationTestBase
 {
-    private readonly CustomWebApplicationFactory _factory;
 
-    public GetById(CustomWebApplicationFactory factory, ITestOutputHelper output)
+    public GetById(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
-        _factory = factory;
-        _factory.Output = output;
     }
 
     [Fact]
     public async Task GivenId_ReturnsCustomerViewModel()
     {
         // Arrange
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
         var customer = CustomerFactory.Generate();
-        await _factory.AddEntityAsync(customer);
+        await AddEntityAsync(customer);
 
         // Act
         var response = await client.GetAsync($"/api/customers/{customer.Id.Value}");
@@ -43,9 +40,9 @@ public class GetById
     public async Task GivenInvalidId_ReturnsNotFoundStatusCode()
     {
         // Arrange
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
         
-        var invalidId = "AAAAA";
+        var invalidId = "XXX";
 
         // Act
         var response = await client.GetAsync($"/api/customers/{invalidId}");

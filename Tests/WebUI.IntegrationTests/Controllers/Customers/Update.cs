@@ -1,4 +1,5 @@
 ﻿using Common.Factories;
+using Common.Fixtures;
 using FluentAssertions;
 using System.Net;
 using System.Net.Http;
@@ -10,24 +11,20 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Customers;
 
-[Collection(WebUICollection.Definition)]
-public class Update
+//[Collection(WebUICollection.Definition)]
+public class Update : IntegrationTestBase
 {
-    private readonly CustomWebApplicationFactory _factory;
-
-    public Update(CustomWebApplicationFactory factory, ITestOutputHelper output)
+    public Update(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
-        _factory = factory;
-        _factory.Output = output;
     }
 
     [Fact]
     public async Task GivenUpdateCustomerCommand_ReturnsSuccessStatusCode()
     {
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
 
         var customer = CustomerFactory.Generate();
-        await _factory.AddEntityAsync(customer);
+        await AddEntityAsync(customer);
 
         var command = new UpdateCustomerCommand
         (
@@ -54,7 +51,7 @@ public class Update
     [Fact]
     public async Task GivenUpdateCustomerCommandWithInvalidId_ReturnsNotFoundStatusCode()
     {
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
 
         var invalidCommand = new UpdateCustomerCommand
         (

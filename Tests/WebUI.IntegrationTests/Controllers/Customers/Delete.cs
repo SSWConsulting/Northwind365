@@ -1,4 +1,5 @@
 ﻿using Common.Factories;
+using Common.Fixtures;
 using FluentAssertions;
 using Northwind.Application.Common.Interfaces;
 using Northwind.WebUI.IntegrationTests.Common;
@@ -8,15 +9,10 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Customers;
 
-[Collection(WebUICollection.Definition)]
-public class Delete
+public class Delete : IntegrationTestBase
 {
-    private readonly CustomWebApplicationFactory _factory;
-
-    public Delete(CustomWebApplicationFactory factory, ITestOutputHelper output)
+    public Delete(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
     {
-        _factory = factory;
-        _factory.Output = output;
     }
 
     [Fact]
@@ -24,9 +20,9 @@ public class Delete
     {
         // Arrange
         var customer = CustomerFactory.Generate();
-        await _factory.AddEntityAsync(customer);
+        await AddEntityAsync(customer);
 
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
         var validId = customer.Id.Value;
 
         // Act
@@ -40,9 +36,9 @@ public class Delete
     public async Task GivenInvalidId_ReturnsNotFoundStatusCode()
     {
         // Arrange
-        var client = await _factory.GetAuthenticatedClientAsync();
+        var client = await GetAuthenticatedClientAsync();
 
-        var invalidId = "AAAAA";
+        var invalidId = "XXX";
 
         // Act
         var response = await client.DeleteAsync($"/api/customers/{invalidId}");
