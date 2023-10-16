@@ -6,6 +6,7 @@ public class DatabaseContainer
 {
     private readonly SqlEdgeContainer? _container;
 
+    // ReSharper disable once ConvertConstructorToMemberInitializers
     public DatabaseContainer()
     {
         _container = new SqlEdgeBuilder()
