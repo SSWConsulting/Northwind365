@@ -47,7 +47,7 @@ public static class DependencyInjection
         services.AddDbContext<NorthwindDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("NorthwindDatabase")));
 
-        services.AddScoped<INorthwindDbContext>(provider => provider.GetService<NorthwindDbContext>());
+        services.AddScoped<INorthwindDbContext>(provider => provider.GetRequiredService<NorthwindDbContext>());
         services.AddScoped<NorthwindDbContextInitializer>();
     }
 

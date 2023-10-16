@@ -3,16 +3,13 @@ using Northwind.Application.Common.Interfaces;
 using Northwind.Application.Notifications.Models;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Northwind.Domain.Customers;
 
 namespace Northwind.Application.Customers.Commands.CreateCustomer;
 
-public class CustomerCreated : INotification
-{
-    public CustomerId CustomerId { get; set; }
-}
+public record CustomerCreated(CustomerId CustomerId) : INotification;
 
+// ReSharper disable once UnusedType.Global
 public class CustomerCreatedHandler : INotificationHandler<CustomerCreated>
 {
     private readonly INotificationService _notification;
@@ -24,6 +21,6 @@ public class CustomerCreatedHandler : INotificationHandler<CustomerCreated>
 
     public async Task Handle(CustomerCreated notification, CancellationToken cancellationToken)
     {
-        await _notification.SendAsync(new MessageDto());
+        await _notification.SendAsync(new MessageDto("From", "To", "Subject", "Body"));
     }
 }

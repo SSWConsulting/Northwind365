@@ -6,17 +6,17 @@ namespace Northwind.Application.Customers.Queries.GetCustomerDetail;
 
 public class CustomerDetailVm : IMapFrom<Customer>
 {
-    public string Id { get; set; }
-    public string Address { get; set; }
-    public string City { get; set; }
-    public string CompanyName { get; set; }
-    public string ContactName { get; set; }
-    public string ContactTitle { get; set; }
-    public string Country { get; set; }
-    public string Fax { get; set; }
-    public string Phone { get; set; }
-    public string PostalCode { get; set; }
-    public string Region { get; set; }
+    public required string Id { get; init; }
+    public required string Address { get; init; }
+    public required string City { get; init; }
+    public required string CompanyName { get; init; }
+    public required string ContactName { get; init; }
+    public required string ContactTitle { get; init; }
+    public required string Country { get; init; }
+    public required string Fax { get; init; }
+    public required string Phone { get; init; }
+    public required string PostalCode { get; init; }
+    public required string Region { get; init; }
 
     public void Mapping(Profile profile)
     {

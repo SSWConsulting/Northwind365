@@ -6,13 +6,13 @@ namespace Northwind.Application.Products.Queries.GetProductsFile;
 
 public class ProductRecordDto : IMapFrom<Product>
 {
-    public string Category { get; set; }
+    public required string Category { get; init; }
 
-    public string Name { get; set; }
+    public required string Name { get; init; }
 
-    public decimal? UnitPrice { get; set; }
+    public decimal? UnitPrice { get; init; }
 
-    public bool Discontinued { get; set; }
+    public bool Discontinued { get; init; }
 
     public void Mapping(Profile profile)
     {

@@ -6,21 +6,21 @@ namespace Northwind.Application.Products.Queries.GetProductsList;
 
 public class ProductDto : IMapFrom<Product>
 {
-    public int ProductId { get; set; }
+    public int ProductId { get; init; }
 
-    public string ProductName { get; set; }
+    public required string ProductName { get; init; }
 
-    public decimal? UnitPrice { get; set; }
+    public decimal? UnitPrice { get; init; }
 
-    public int? SupplierId { get; set; }
+    public int? SupplierId { get; init; }
 
-    public string SupplierCompanyName { get; set; }
+    public required string SupplierCompanyName { get; init; }
 
-    public int? CategoryId { get; set; }
+    public int? CategoryId { get; init; }
 
-    public string CategoryName { get; set; }
+    public required string CategoryName { get; init; }
 
-    public bool Discontinued { get; set; }
+    public bool Discontinued { get; init; }
 
     public void Mapping(Profile profile)
     {

@@ -18,7 +18,7 @@ public class WebUiTestFactory : WebApplicationFactory<IWebUiMarker>
 {
     public DatabaseContainer Database { get; }
 
-    public ITestOutputHelper Output { get; set; }
+    public ITestOutputHelper Output { get; set; } = null!;
 
     // ReSharper disable once ConvertConstructorToMemberInitializers
     public WebUiTestFactory()
@@ -38,9 +38,6 @@ public class WebUiTestFactory : WebApplicationFactory<IWebUiMarker>
         builder.ConfigureTestServices(services => services
             .ReplaceDbContext<ApplicationDbContext>(Database)
             .ReplaceDbContext<NorthwindDbContext>(Database));
-
-        // TODO: Is this needed?
-        //builder.UseEnvironment("Test");
     }
 
     public HttpClient GetAnonymousClient()
@@ -58,13 +55,15 @@ public class WebUiTestFactory : WebApplicationFactory<IWebUiMarker>
         var client = CreateClient();
 
         var token = await GetAccessTokenAsync(client, userName, password);
+        if (token is null)
+            throw new NullReferenceException("Not able to generate access token");
 
         client.SetBearerToken(token);
 
         return client;
     }
 
-    private async Task<string> GetAccessTokenAsync(HttpClient client, string userName, string password)
+    private async Task<string?> GetAccessTokenAsync(HttpClient client, string userName, string password)
     {
         var disco = await client.GetDiscoveryDocumentAsync();
 

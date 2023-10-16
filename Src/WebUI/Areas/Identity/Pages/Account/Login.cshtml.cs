@@ -33,31 +33,26 @@ public class LoginModel : PageModel
         _logger = logger;
     }
 
-    [BindProperty]
-    public InputModel Input { get; set; }
+    [BindProperty] public required InputModel Input { get; set; }
 
-    public IList<AuthenticationScheme> ExternalLogins { get; set; }
+    public IList<AuthenticationScheme> ExternalLogins { get; set; } = null!;
 
-    public string ReturnUrl { get; set; }
+    public string? ReturnUrl { get; set; }
 
-    [TempData]
-    public string ErrorMessage { get; set; }
+    [TempData] public string? ErrorMessage { get; set; }
 
     public class InputModel
     {
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Required] [EmailAddress] public required string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public required string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }
+        [Display(Name = "Remember me?")] public bool RememberMe { get; set; }
     }
 
-    public async Task OnGetAsync(string returnUrl = null)
+    public async Task OnGetAsync(string? returnUrl = null)
     {
         if (!string.IsNullOrEmpty(ErrorMessage))
         {
@@ -74,7 +69,7 @@ public class LoginModel : PageModel
         ReturnUrl = returnUrl;
     }
 
-    public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+    public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
 
@@ -82,19 +77,22 @@ public class LoginModel : PageModel
         {
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-            var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
+            var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe,
+                lockoutOnFailure: true);
             if (result.Succeeded)
             {
                 _logger.LogInformation("User logged in.");
                 return LocalRedirect(returnUrl);
             }
+
             if (result.RequiresTwoFactor)
             {
                 return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, Input.RememberMe });
             }
+
             if (result.IsLockedOut)
             {
-                _logger.LogWarning("User account locked out.");
+                _logger.LogWarning("User account locked out");
                 return RedirectToPage("./Lockout");
             }
             else
@@ -120,18 +118,24 @@ public class LoginModel : PageModel
         {
             ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
         }
+        else
+        {
+            var userId = await _userManager.GetUserIdAsync(user);
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmEmail",
+                pageHandler: null,
+                values: new { userId, code },
+                protocol: Request.Scheme);
 
-        var userId = await _userManager.GetUserIdAsync(user);
-        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        var callbackUrl = Url.Page(
-            "/Account/ConfirmEmail",
-            pageHandler: null,
-            values: new { userId, code },
-            protocol: Request.Scheme);
-        await _emailSender.SendEmailAsync(
-            Input.Email,
-            "Confirm your email",
-            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            if (callbackUrl is not null)
+            {
+                await _emailSender.SendEmailAsync(
+                    Input.Email,
+                    "Confirm your email",
+                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            }
+        }
 
         ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
         return Page();

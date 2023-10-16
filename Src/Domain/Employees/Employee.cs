@@ -65,7 +65,7 @@ public class Employee : BaseEntity<EmployeeId>
         return employee;
     }
 
-    public void UpdateUserId(string userId)
+    public void UpdateUserId(string? userId)
     {
         UserId = Guard.Against.NullOrWhiteSpace(userId);
     }

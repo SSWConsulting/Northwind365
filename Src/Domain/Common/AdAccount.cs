@@ -27,9 +27,9 @@ public class AdAccount : ValueObject
         return account;
     }
 
-    public string Domain { get; private set; }
+    public string Domain { get; private set; } = null!;
 
-    public string Name { get; private set; }
+    public string Name { get; private set; } = null!;
 
     public static implicit operator string(AdAccount account)
     {

@@ -6,8 +6,8 @@ namespace Northwind.Application.Customers.Queries.GetCustomersList;
 
 public class CustomerLookupDto : IMapFrom<Customer>
 {
-    public string Id { get; set; }
-    public string Name { get; set; }
+    public required string Id { get; init; }
+    public required string Name { get; init; }
 
     public void Mapping(Profile profile)
     {

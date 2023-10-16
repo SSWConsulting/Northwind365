@@ -12,7 +12,7 @@ public class OrderDetail : AuditableEntity
     public short Quantity { get; private set; }
     public float Discount { get; private set; }
 
-    public Order Order { get; private set; }
+    public Order? Order { get; private set; }
     public Product Product { get; private set; } = null!;
 
     private OrderDetail() { }
