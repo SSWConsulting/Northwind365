@@ -34,10 +34,10 @@
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="7.0.12" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0"/>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.10" />
-    <PackageReference Include="NSwag.AspNetCore" Version="13.18.2"/>
+    <PackageReference Include="NSwag.AspNetCore" Version="13.20.0" />
     <!--<PackageReference Include="NSwag.Core" Version="13.18.2" />-->
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0"/>
-    <PackageReference Include="NSwag.MSBuild" Version="13.18.2">
+    <PackageReference Include="NSwag.MSBuild" Version="13.20.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
