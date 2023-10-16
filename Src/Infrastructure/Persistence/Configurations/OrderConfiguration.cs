@@ -24,10 +24,10 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
          builder.Property(e => e.EmployeeId)
              .HasColumnName("EmployeeID")
              // TODO: Test this with null FK values
-             .HasConversion(x => x.Value.Value, x => new EmployeeId(x));
+             .HasConversion(x => x!.Value.Value, x => new EmployeeId(x));
 
         builder.Property(e => e.ShipVia)
-            .HasConversion(e => e.Value.Value, e => new ShipperId(e));
+            .HasConversion(e => e!.Value.Value, e => new ShipperId(e));
 
         builder.Property(e => e.Freight)
             .HasColumnType("money")

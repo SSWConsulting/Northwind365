@@ -6,8 +6,8 @@ namespace Northwind.Application.Categories.Queries.GetCategoriesList;
 
 public class CategoryLookupDto : IMapFrom<Category>
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
+    public required int Id { get; init; }
+    public required string Name { get; init; }
 
     public void Mapping(Profile profile)
     {

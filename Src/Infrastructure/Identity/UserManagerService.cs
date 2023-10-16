@@ -13,7 +13,7 @@ public class UserManagerService : IUserManager
         _userManager = userManager;
     }
 
-    public async Task<string> CreateUserAsync(string userName, string password)
+    public async Task<string?> CreateUserAsync(string userName, string password)
     {
         var user = new ApplicationUser
         {

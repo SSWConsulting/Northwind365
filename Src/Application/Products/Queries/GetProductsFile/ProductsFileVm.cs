@@ -2,7 +2,7 @@
 
 public class ProductsFileVm
 {
-    public string FileName { get; set; }
-    public string ContentType { get; set; }
-    public byte[] Content { get; set; }
+    public required string FileName { get; init; }
+    public required string ContentType { get; init; }
+    public required byte[] Content { get; init; }
 }

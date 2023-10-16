@@ -1,14 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System.Net.Http;
-using System.Net.Mime;
 using System.Text;
-using System.Threading.Tasks;
-
-using Northwind.Domain.Categories;
-using Northwind.Domain.Customers;
-using Northwind.Domain.Products;
-using Northwind.Domain.Supplying;
-using Northwind.Persistence;
 
 namespace Northwind.WebUI.IntegrationTests.Common;
 
@@ -24,6 +15,8 @@ public static class Utilities
         var stringResponse = await response.Content.ReadAsStringAsync();
 
         var result = JsonConvert.DeserializeObject<T>(stringResponse);
+        if (result is null)
+            throw new NullReferenceException("Not able to deserialize response");
 
         return result;
     }

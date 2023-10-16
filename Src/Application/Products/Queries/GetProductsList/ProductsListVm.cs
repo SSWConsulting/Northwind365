@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace Northwind.Application.Products.Queries.GetProductsList;
+﻿namespace Northwind.Application.Products.Queries.GetProductsList;
 
 public class ProductsListVm
 {
-    public IList<ProductDto> Products { get; set; }
+    public required IList<ProductDto> Products { get; init; }
 
     public bool CreateEnabled { get; set; }
 }
