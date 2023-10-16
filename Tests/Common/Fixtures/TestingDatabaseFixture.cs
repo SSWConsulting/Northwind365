@@ -11,7 +11,7 @@ public class TestingDatabaseFixture : IAsyncLifetime
 
     private Respawner _checkpoint = default!;
 
-    public WebUITestFactory Factory { get; }
+    public WebUiTestFactory Factory { get; }
     public IServiceScopeFactory ScopeFactory { get; private set; } = default!;
 
     private string ConnectionString => Factory.Database.ConnectionString!;
@@ -19,7 +19,7 @@ public class TestingDatabaseFixture : IAsyncLifetime
     // ReSharper disable once ConvertConstructorToMemberInitializers
     public TestingDatabaseFixture()
     {
-        Factory = new WebUITestFactory();
+        Factory = new WebUiTestFactory();
     }
 
     public async Task InitializeAsync()

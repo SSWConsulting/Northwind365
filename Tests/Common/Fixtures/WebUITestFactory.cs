@@ -14,14 +14,14 @@ using Xunit.Abstractions;
 
 namespace Common.Fixtures;
 
-public class WebUITestFactory : WebApplicationFactory<IWebUiMarker>
+public class WebUiTestFactory : WebApplicationFactory<IWebUiMarker>
 {
     public DatabaseContainer Database { get; }
 
     public ITestOutputHelper Output { get; set; }
 
     // ReSharper disable once ConvertConstructorToMemberInitializers
-    public WebUITestFactory()
+    public WebUiTestFactory()
     {
         Database = new DatabaseContainer();
     }

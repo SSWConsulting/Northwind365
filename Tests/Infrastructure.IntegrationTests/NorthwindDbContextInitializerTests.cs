@@ -1,8 +1,7 @@
+using Common.Fixtures;
 using Microsoft.Extensions.DependencyInjection;
-using Northwind.Infrastructure.Identity;
-using Northwind.Infrastructure.IntegrationTests.TestHelpers;
+using Northwind.Infrastructure.IntegrationTests.Common;
 using Northwind.Infrastructure.Persistence;
-using Northwind.Persistence;
 using static Northwind.Infrastructure.Persistence.NorthwindDbContextInitializer;
 
 namespace Northwind.Infrastructure.IntegrationTests;
