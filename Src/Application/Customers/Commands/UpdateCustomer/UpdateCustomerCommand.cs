@@ -1,16 +1,10 @@
-﻿using MediatR;
-
+﻿using Ardalis.Specification.EntityFrameworkCore;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-
 using Northwind.Application.Common.Exceptions;
 using Northwind.Application.Common.Interfaces;
-
-using System.Threading;
-using System.Threading.Tasks;
-
 using Northwind.Domain.Common;
 using Northwind.Domain.Customers;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Northwind.Application.Customers.Commands.UpdateCustomer;
 
@@ -29,8 +23,10 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
 
     public async Task Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
     {
+        var customerId = new CustomerId(request.Id);
         var entity = await _context.Customers
-            .SingleOrDefaultAsync(c => c.Id == new CustomerId(request.Id), cancellationToken);
+            .WithSpecification(new CustomerByIdSpec(customerId))
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (entity == null)
         {
