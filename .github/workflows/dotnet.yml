@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  DOTNET_VERSION: '8.0.x'
+
 jobs:
   build:
     name: "Build & Test"
@@ -26,7 +29,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
-      - name: Setup .NET
+      - name: Setup .NET SDK ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
 
       - name: Restore dependencies

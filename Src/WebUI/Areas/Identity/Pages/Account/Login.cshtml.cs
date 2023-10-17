@@ -4,13 +4,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 using Northwind.Infrastructure.Identity;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 
 namespace Northwind.WebUI.Areas.Identity.Pages.Account;
 
@@ -25,11 +21,12 @@ public class LoginModel : PageModel
     public LoginModel(SignInManager<ApplicationUser> signInManager,
         ILogger<LoginModel> logger,
         UserManager<ApplicationUser> userManager,
-        IEmailSender emailSender)
+        IEmailSender emailSender
+        )
     {
         _userManager = userManager;
         _signInManager = signInManager;
-        _emailSender = emailSender;
+        //_emailSender = emailSender;
         _logger = logger;
     }
 

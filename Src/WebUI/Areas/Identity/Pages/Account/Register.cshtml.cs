@@ -24,7 +24,8 @@ public class RegisterModel : PageModel
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         ILogger<RegisterModel> logger,
-        IEmailSender emailSender)
+        IEmailSender emailSender
+        )
     {
         _userManager = userManager;
         _signInManager = signInManager;

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Northwind.Application</RootNamespace>
     <AssemblyName>Northwind.Application</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -8,12 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="11.0.0"/>
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0"/>
-    <PackageReference Include="FluentValidation" Version="11.5.2"/>
-    <PackageReference Include="MediatR" Version="12.0.1"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.12"/>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1"/>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="FluentValidation" Version="11.7.1" />
+    <PackageReference Include="MediatR" Version="12.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-rc.2.23480.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0-rc.2.23479.6" />
     <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="7.0.0"/>
   </ItemGroup>
 
