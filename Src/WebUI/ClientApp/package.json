@@ -1,5 +1,5 @@
 {
-  "name": "dotnet8angularspa",
+  "name": "northwind-365",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -11,6 +11,8 @@
     "build:ssr": "ng run DotNet8AngularSpa:server:dev",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
+    "lint": "ng lint",
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -40,6 +42,7 @@
     "@types/jasminewd2": "~2.0.10",
     "@types/node": "^18.16.3",
     "jasmine-core": "~4.6.0",
+    "jasmine-spec-reporter": "~4.2.1",
     "karma": "~6.4.2",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
