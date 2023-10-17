@@ -1,52 +1,34 @@
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AppRoutingModule } from './app.routing.module';
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { ProductsComponent } from './products/products.component';
-import { CustomersComponent } from './customers/customers.component';
-import { NavTopMenuComponent } from './nav-top-menu/nav-top-menu.component';
-import { NavSideMenuComponent } from './nav-side-menu/nav-side-menu.component';
-import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
-
-import { Client, API_BASE_URL } from './northwind-traders-api';
-
-import { CamelCaseToText } from '../pipes/camel-case-to-text';
-
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { AppIconsModule } from './app.icons.module';
-import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
-import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
-import { environment } from "../environments/environment";
+import { CounterComponent } from './counter/counter.component';
+import { FetchDataComponent } from './fetch-data/fetch-data.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavTopMenuComponent,
-    NavSideMenuComponent,
+    NavMenuComponent,
     HomeComponent,
-    ProductsComponent,
-    CustomersComponent,
-    CustomerDetailComponent,
-    CamelCaseToText
+    CounterComponent,
+    FetchDataComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    AppIconsModule,
-    AppRoutingModule,
-    ApiAuthorizationModule,
-    ModalModule.forRoot()
+    RouterModule.forRoot([
+      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'counter', component: CounterComponent },
+      { path: 'fetch-data', component: FetchDataComponent },
+    ])
   ],
-  providers: [
-      { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
-      { provide: API_BASE_URL, useValue: environment.apiBaseUrl },
-      Client,
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

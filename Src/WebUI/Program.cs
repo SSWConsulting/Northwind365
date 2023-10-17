@@ -53,7 +53,7 @@ app.UseCustomExceptionHandler();
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseSpaStaticFiles();
+//app.UseSpaStaticFiles();
 
 app.UseOpenApi();
 
@@ -77,6 +77,8 @@ app.MapCategoryEndpoints();
 app.MapCustomerEndpoints();
 app.MapIdentityEndpoints();
 app.MapProductEndpoints();
+
+app.MapFallbackToFile("index.html");
 
 // TODO: Fix and add back in
 // app.UseSpa(spa =>
