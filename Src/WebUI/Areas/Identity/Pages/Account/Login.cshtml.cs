@@ -21,11 +21,12 @@ public class LoginModel : PageModel
     public LoginModel(SignInManager<ApplicationUser> signInManager,
         ILogger<LoginModel> logger,
         UserManager<ApplicationUser> userManager,
-        IEmailSender emailSender)
+        IEmailSender emailSender
+        )
     {
         _userManager = userManager;
         _signInManager = signInManager;
-        _emailSender = emailSender;
+        //_emailSender = emailSender;
         _logger = logger;
     }
 
