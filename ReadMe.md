@@ -60,7 +60,7 @@ dotnet run
 
 6. Launch [https://localhost:44427/](https://localhost:44427/) in your browser to view the Web UI
 
-7Launch [https://localhost:44376/api](http://localhost:44376/api) in your browser to view the API
+7. Launch [https://localhost:44376/api](http://localhost:44376/api) in your browser to view the API
 
 ## Technologies
 
