@@ -52,28 +52,22 @@ Follow these steps to get your development environment set up:
 dotnet build
 ```
 
-4. Next, within the `\Src\WebUI\ClientApp` directory, launch the front end by running:
-
-```bash
-npm start
-```
-
 5. Once the front end has started, within the `\Src\WebUI` directory, launch the back end by running:
 
 ```bash
 dotnet run
 ```
 
-5. Launch [https://localhost:44376/](http://localhost:44376/) in your browser to view the Web UI
+6. Launch [https://localhost:44427/](https://localhost:44427/) in your browser to view the Web UI
 
-6. Launch [https://localhost:44376/api](http://localhost:44376/api) in your browser to view the API
+7. Launch [https://localhost:44376/api](http://localhost:44376/api) in your browser to view the API
 
 ## Technologies
 
-* .NET 7
-* ASP.NET Core 7
-* Entity Framework Core 7
-* Angular 8
+* .NET 8
+* ASP.NET Core 8
+* Entity Framework Core 8
+* Angular 15
 
 ### Other Packages
 

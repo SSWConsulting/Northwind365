@@ -53,7 +53,6 @@ app.UseCustomExceptionHandler();
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseSpaStaticFiles();
 
 app.UseOpenApi();
 
@@ -78,18 +77,6 @@ app.MapCustomerEndpoints();
 app.MapIdentityEndpoints();
 app.MapProductEndpoints();
 
-// TODO: Fix and add back in
-// app.UseSpa(spa =>
-// {
-//     // To learn more about options for serving an Angular SPA from ASP.NET Core,
-//     // see https://go.microsoft.com/fwlink/?linkid=864501
-//
-//     spa.Options.SourcePath = "ClientApp";
-//
-//     if (app.Environment.IsDevelopment())
-//     {
-//         spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
-//     }
-// });
+app.MapFallbackToFile("index.html");
 
 app.Run();

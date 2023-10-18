@@ -31,7 +31,7 @@ export enum AuthenticationResultStatus {
 }
 
 export interface IUser {
-  name: string;
+  name?: string;
 }
 
 // Private interfaces
@@ -56,6 +56,10 @@ export class AuthorizeService {
   private popUpDisabled = true;
   private userManager: UserManager;
   private userSubject: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
+
+  // constructor() {
+  //   this.userManager = new UserManager();
+  // }
 
   public isAuthenticated(): Observable<boolean> {
     return this.getUser().pipe(map(u => !!u));
@@ -203,6 +207,8 @@ export class AuthorizeService {
       console.log('There was an error signing out', signInResponseError);
       return this.error('Sign out callback authentication error.');
     }
+
+    throw new Error('Invalid state');
   }
 
   private createArguments(mode: LoginMode, state?: any): any {
