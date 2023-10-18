@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "DotNet8AngularSpa": {
+    "Northwind365": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "DotNet8AngularSpa:build:production"
+              "browserTarget": "Northwind365:build:production"
             },
             "development": {
-              "browserTarget": "DotNet8AngularSpa:build:development",
+              "browserTarget": "Northwind365:build:development",
               "proxyConfig": "proxy.conf.js"
             }
           },
@@ -84,7 +84,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "DotNet8AngularSpa:build"
+            "browserTarget": "Northwind365:build"
           }
         },
         "test": {
@@ -132,5 +132,5 @@
       }
     }
   },
-  "defaultProject": "DotNet8AngularSpa"
+  "defaultProject": "Northwind365"
 }

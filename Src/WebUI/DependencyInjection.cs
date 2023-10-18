@@ -1,9 +1,10 @@
-﻿using Northwind.Application.Common.Interfaces;
-using Northwind.Persistence;
-using Northwind.WebUI.Services;
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using Northwind.Application.Common.Interfaces;
 using Northwind.Infrastructure.Persistence;
+using Northwind.WebUI.Services;
+
+namespace Northwind.WebUI;
 
 public static class DependencyInjection
 {
@@ -31,7 +32,16 @@ public static class DependencyInjection
         // Customise default API behaviour
         services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
-        // In production, the Angular files will be served from this directory
-        //services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/dist");
+        // services.AddCors(options =>
+        // {
+        //     options.AddPolicy(name: "_myAllowSpecificOrigins",
+        //         policy =>
+        //         {
+        //             // TODO: Add Production URLs
+        //             policy.WithOrigins("https://localhost:44427")
+        //                 .AllowAnyHeader()
+        //                 .AllowAnyMethod();
+        //         });
+        // });
     }
 }

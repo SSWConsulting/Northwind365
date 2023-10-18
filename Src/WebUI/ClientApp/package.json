@@ -1,5 +1,5 @@
 {
-  "name": "northwind-365",
+  "name": "northwind365",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -8,7 +8,7 @@
     "start:windows": "ng serve --port 44427 --ssl --ssl-cert \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.pem\" --ssl-key \"%APPDATA%\\ASP.NET\\https\\%npm_package_name%.key\"",
     "start:default": "ng serve --port 44427 --ssl --ssl-cert \"$HOME/.aspnet/https/${npm_package_name}.pem\" --ssl-key \"$HOME/.aspnet/https/${npm_package_name}.key\"",
     "build": "ng build",
-    "build:ssr": "ng run northwind-365:server:dev",
+    "build:ssr": "ng run Northwind365:server:dev",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
