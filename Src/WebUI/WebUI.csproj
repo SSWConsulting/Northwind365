@@ -71,20 +71,6 @@
     <EmbeddedResource Remove="ClientApp\.angular\**"/>
   </ItemGroup>
 
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="ClientAppOld\angular.json" />
-    <_ContentIncludedByDefault Remove="ClientAppOld\e2e\tsconfig.e2e.json" />
-    <_ContentIncludedByDefault Remove="ClientAppOld\nswag.json" />
-    <_ContentIncludedByDefault Remove="ClientAppOld\package-lock.json" />
-    <_ContentIncludedByDefault Remove="ClientAppOld\package.json" />
-    <_ContentIncludedByDefault Remove="ClientAppOld\src\tsconfig.app.json" />
-    <_ContentIncludedByDefault Remove="ClientAppOld\src\tsconfig.server.json" />
-    <_ContentIncludedByDefault Remove="ClientAppOld\src\tsconfig.spec.json" />
-    <_ContentIncludedByDefault Remove="ClientAppOld\src\tslint.json" />
-    <_ContentIncludedByDefault Remove="ClientAppOld\tsconfig.json" />
-    <_ContentIncludedByDefault Remove="ClientAppOld\tslint.json" />
-  </ItemGroup>
-
 <!--  <Target Name="NSwag" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">-->
 <!--    <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References"/>-->
 <!--    <Exec Command="nswag run /variables:Configuration=$(Configuration) /runtime:Net80"/>-->

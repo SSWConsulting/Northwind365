@@ -31,17 +31,5 @@ public static class DependencyInjection
 
         // Customise default API behaviour
         services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
-
-        // services.AddCors(options =>
-        // {
-        //     options.AddPolicy(name: "_myAllowSpecificOrigins",
-        //         policy =>
-        //         {
-        //             // TODO: Add Production URLs
-        //             policy.WithOrigins("https://localhost:44427")
-        //                 .AllowAnyHeader()
-        //                 .AllowAnyMethod();
-        //         });
-        // });
     }
 }
