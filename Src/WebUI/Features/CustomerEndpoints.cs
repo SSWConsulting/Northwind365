@@ -14,9 +14,8 @@ public static class CustomerEndpoints
     public static void MapCustomerEndpoints(this WebApplication app)
     {
         var group = app
-            .MapApiGroup("customers");
-        // TODO: Add back
-        //.RequireAuthorization();
+            .MapApiGroup("customers")
+            .RequireAuthorization();
 
         group
             .MapGet("/", (ISender sender, CancellationToken ct) => sender.Send(new GetCustomersListQuery(), ct))

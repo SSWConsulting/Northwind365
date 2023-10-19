@@ -9,9 +9,8 @@ public static class CategoryEndpoints
     public static void MapCategoryEndpoints(this WebApplication app)
     {
         var group = app
-            .MapApiGroup("categories");
-        // TODO: Add back
-        //.RequireAuthorization();
+            .MapApiGroup("categories")
+            .RequireAuthorization();
 
         group
             .MapGet("/", (ISender sender, CancellationToken ct) => sender.Send(new GetCategoriesListQuery(), ct))
