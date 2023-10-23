@@ -12,7 +12,7 @@ using Northwind.Infrastructure.Identity;
 namespace Northwind.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231012235852_Initial")]
+    [Migration("20231023011714_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Northwind.Infrastructure.Identity.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.12")
+                .HasAnnotation("ProductVersion", "8.0.0-rc.2.23480.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
