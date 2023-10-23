@@ -10,7 +10,8 @@ const PROXY_CONFIG = [
       "/_configuration",
       "/.well-known",
       "/connect",
-      "/Identity"
+      "/Identity",
+      "/Account"
    ],
     proxyTimeout: 10000,
     target: target,
