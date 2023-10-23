@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.AspNetCore.Mvc;
 using SSW.CleanArchitecture.WebApi.Extensions;
 
 namespace Northwind.WebUI.Features;
@@ -12,7 +13,7 @@ public static class IdentityEndpoints
                     .WithTags("identity");
 
         group
-            .MapGet("/{clientId}", (string clientId, IClientRequestParametersProvider clientRequestParametersProvider, IHttpContextAccessor contextAccessor) =>
+            .MapGet("/{clientId}", (string clientId, [FromServices]IClientRequestParametersProvider clientRequestParametersProvider, [FromServices]IHttpContextAccessor contextAccessor) =>
                 clientRequestParametersProvider.GetClientParameters(contextAccessor.HttpContext, clientId))
             .WithName("GetClientRequestParameters")
             .ProducesGet<IDictionary<string, string>>();
