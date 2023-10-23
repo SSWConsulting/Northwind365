@@ -61,7 +61,7 @@ app.UseSwaggerUi3(settings => settings.Path = "/api");
 
 app.UseRouting();
 
-app.UseAuthentication();
+//app.UseAuthentication();
 app.UseIdentityServer();
 app.UseAuthorization();
 
