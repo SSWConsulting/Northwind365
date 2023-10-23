@@ -3,6 +3,7 @@ import { AuthorizeService, AuthenticationResultStatus } from '../authorize.servi
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { LoginActions, QueryParameterNames, ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
+import { LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
 
 // The main responsibility of this component is to handle the user's login process.
 // This is the starting point for the login process. Any component that needs to authenticate
@@ -19,13 +20,19 @@ export class LoginComponent implements OnInit {
   constructor(
     private authorizeService: AuthorizeService,
     private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private oidcSecurityService: OidcSecurityService,
+  ) { }
 
   async ngOnInit() {
     const action = this.activatedRoute.snapshot.url[1];
     switch (action.path) {
       case LoginActions.Login:
-        await this.login(this.getReturnUrl());
+        // await this.login(this.getReturnUrl());
+        this.oidcSecurityService.authorize(undefined, {
+          redirectUrl: `${window.location.origin}/${ApplicationPaths.LoginCallback}`
+          //?returnUrl=${this.getReturnUrl()}`,
+        });
         break;
       case LoginActions.LoginCallback:
         await this.processLoginCallback();
@@ -71,19 +78,29 @@ export class LoginComponent implements OnInit {
   }
 
   private async processLoginCallback(): Promise<void> {
-    const url = window.location.href;
-    const result = await this.authorizeService.completeSignIn(url);
-    switch (result.status) {
-      case AuthenticationResultStatus.Redirect:
-        // There should not be any redirects as completeSignIn never redirects.
-        throw new Error('Should not redirect.');
-      case AuthenticationResultStatus.Success:
-        await this.navigateToReturnUrl(this.getReturnUrl(result.state));
-        break;
-      case AuthenticationResultStatus.Fail:
-        this.message.next(result.message);
-        break;
-    }
+    this.oidcSecurityService
+      .checkAuth()
+      .subscribe((loginResponse: LoginResponse) => {
+        const { isAuthenticated, userData, accessToken, idToken, configId } =
+          loginResponse;
+
+        console.log(loginResponse);
+
+        this.router.navigate(['/', 'customers']);
+      });
+    // const url = window.location.href;
+    // const result = await this.authorizeService.completeSignIn(url);
+    // switch (result.status) {
+    //   case AuthenticationResultStatus.Redirect:
+    //     // There should not be any redirects as completeSignIn never redirects.
+    //     throw new Error('Should not redirect.');
+    //   case AuthenticationResultStatus.Success:
+    //     await this.navigateToReturnUrl(this.getReturnUrl(result.state));
+    //     break;
+    //   case AuthenticationResultStatus.Fail:
+    //     this.message.next(result.message);
+    //     break;
+    // }
   }
 
   private redirectToRegister(): any {

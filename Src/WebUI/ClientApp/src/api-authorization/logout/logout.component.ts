@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { LogoutActions, ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 // The main responsibility of this component is to handle the user's logout process.
 // This is the starting point for the logout process, which is usually initiated when a
@@ -19,29 +20,35 @@ export class LogoutComponent implements OnInit {
   constructor(
     private authorizeService: AuthorizeService,
     private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+    private router: Router,
+    private oidcSecurityService: OidcSecurityService,
+  ) { }
 
-  async ngOnInit() {
-    const action = this.activatedRoute.snapshot.url[1];
-    switch (action.path) {
-      case LogoutActions.Logout:
-        if (!!window.history.state.local) {
-          await this.logout(this.getReturnUrl());
-        } else {
-          // This prevents regular links to <app>/authentication/logout from triggering a logout
-          this.message.next('The logout was not initiated from within the page.');
-        }
+  ngOnInit() {
+    this.oidcSecurityService
+      .logoff()
+      .subscribe((result) => console.log(result));
+  // async ngOnInit() {
+    // const action = this.activatedRoute.snapshot.url[1];
+    // switch (action.path) {
+    //   case LogoutActions.Logout:
+    //     if (!!window.history.state.local) {
+    //       await this.logout(this.getReturnUrl());
+    //     } else {
+    //       // This prevents regular links to <app>/authentication/logout from triggering a logout
+    //       this.message.next('The logout was not initiated from within the page.');
+    //     }
 
-        break;
-      case LogoutActions.LogoutCallback:
-        await this.processLogoutCallback();
-        break;
-      case LogoutActions.LoggedOut:
-        this.message.next('You successfully logged out!');
-        break;
-      default:
-        throw new Error(`Invalid action '${action}'`);
-    }
+    //     break;
+    //   case LogoutActions.LogoutCallback:
+    //     await this.processLogoutCallback();
+    //     break;
+    //   case LogoutActions.LoggedOut:
+    //     this.message.next('You successfully logged out!');
+    //     break;
+    //   default:
+    //     throw new Error(`Invalid action '${action}'`);
+    // }
   }
 
   private async logout(returnUrl: string): Promise<void> {

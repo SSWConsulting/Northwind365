@@ -46,6 +46,15 @@ interface IAuthenticationState {
   userState?: any;
 }
 
+export interface OidcApiConfiguration {
+  authority: string;
+  client_id: string;
+  redirect_uri: string;
+  post_logout_redirect_uri: string;
+  response_type: string;
+  scope: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -56,6 +65,11 @@ export class AuthorizeService {
   private popUpDisabled = true;
   private userManager: UserManager;
   private userSubject: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
+
+  public async getOidcConfigFromApi(): Promise<OidcApiConfiguration> {
+    const response = await fetch(ApplicationPaths.ApiAuthorizationClientConfigurationUrl);
+    return (await response.json()) as OidcApiConfiguration;
+  }
 
   // constructor() {
   //   this.userManager = new UserManager();

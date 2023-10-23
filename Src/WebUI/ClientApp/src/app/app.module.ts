@@ -21,6 +21,18 @@ import { AppIconsModule } from './app.icons.module';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { environment } from "../environments/environment";
+import { OidcApiConfiguration } from 'src/api-authorization/authorize.service';
+import { AuthModule } from 'angular-auth-oidc-client';
+import { ApplicationName } from 'src/api-authorization/api-authorization.constants';
+
+const hardcodedOidcConfig: OidcApiConfiguration = {
+  "authority": "https://localhost:44427",
+  "client_id": "Northwind.WebUI",
+  "redirect_uri": "https://localhost:44427/authentication/login-callback",
+  "post_logout_redirect_uri": "https://localhost:44427/authentication/logout-callback",
+  "response_type": "code",
+  "scope": "Northwind.WebUIAPI openid profile"
+}
 
 @NgModule({
   declarations: [
@@ -40,6 +52,20 @@ import { environment } from "../environments/environment";
     AppIconsModule,
     AppRoutingModule,
     ApiAuthorizationModule,
+    AuthModule.forRoot({
+      config: {
+        authority: hardcodedOidcConfig.authority,
+        // TODO: move this elsewhere?
+        redirectUrl: hardcodedOidcConfig.redirect_uri,
+        postLogoutRedirectUri: hardcodedOidcConfig.post_logout_redirect_uri,
+        clientId: ApplicationName,
+        scope: hardcodedOidcConfig.scope,
+        responseType: hardcodedOidcConfig.response_type,
+        silentRenew: true,
+        useRefreshToken: true,
+        // logLevel: LogLevel.Debug,
+      },
+    }),
     ModalModule.forRoot()
   ],
   providers: [
