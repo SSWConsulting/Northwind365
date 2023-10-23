@@ -53,7 +53,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IPersist
 
     public DbSet<Key> Keys { get; set; } = null!;
 
-    // public DbSet<ServerSideSession> ServerSideSessions { get; set; } = null!;
+    public DbSet<ServerSideSession> ServerSideSessions { get; set; } = null!;
 
     Task<int> IPersistedGrantDbContext.SaveChangesAsync() => base.SaveChangesAsync();
 

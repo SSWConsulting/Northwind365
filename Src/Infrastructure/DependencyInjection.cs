@@ -112,40 +112,41 @@ public static class DependencyInjection
             //.AddServerSideSessions();
             ;
 
-        List<Client> clients = new List<Client>
-        {
-            new Client
-            {
-                ClientId = "Northwind.IntegrationTests",
-                AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
-                ClientSecrets = { new Secret("secret".Sha256()) },
-                AllowedScopes = { "Northwind.WebUIAPI", "openid", "profile" }
-            },
-            new Client
-            {
-                ClientId = "test-client",
-                ClientName = "Test Client for debugging",
-                RequirePkce = false,
-                RequireClientSecret = false,
-                AlwaysIncludeUserClaimsInIdToken = true,
-                AlwaysSendClientClaims = true,
-                AllowedGrantTypes = { GrantType.AuthorizationCode },
-                AllowOfflineAccess = true,
-                AllowedScopes = { "Northwind.WebUIAPI", "openid", "profile", "offline_access" },
-                RedirectUris = new[] { "https://localhost:3000/callback.html" },
-                AllowedCorsOrigins = new[] { "https://localhost:3000" }
-            }
-        };
+
 
         if (environment.IsEnvironment("Test") || environment.IsDevelopment())
         {
             services.AddTransient<IEmailSender, DebugEmailService>();
 
+            var clients = new List<Client>
+            {
+                new()
+                {
+                    ClientId = "Northwind.IntegrationTests",
+                    AllowedGrantTypes = { GrantType.ResourceOwnerPassword },
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    AllowedScopes = { "Northwind.WebUIAPI", "openid", "profile" }
+                },
+                new()
+                {
+                    ClientId = "test-client",
+                    ClientName = "Test Client for debugging",
+                    RequirePkce = false,
+                    RequireClientSecret = false,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AlwaysSendClientClaims = true,
+                    AllowedGrantTypes = { GrantType.AuthorizationCode },
+                    AllowOfflineAccess = true,
+                    AllowedScopes = { "Northwind.WebUIAPI", "openid", "profile", "offline_access" },
+                    RedirectUris = new[] { "https://localhost:3000/callback" },
+                    AllowedCorsOrigins = new[] { "https://localhost:3000" }
+                }
+            };
+
             identityServerBuilder
                 .AddInMemoryClients(clients)
 
                 //.AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
-                // .AddAspNetIdentity<ApplicationUser>(options =>
                 // {
                 //     options.Clients.Add(new Client
                 //     {
@@ -172,7 +173,7 @@ public static class DependencyInjection
                 // })
                 .AddTestUsers(new List<TestUser>
                 {
-                    new TestUser
+                    new()
                     {
                         SubjectId = "f26da293-02fb-4c90-be75-e4aa51e0bb17",
                         Username = "jason@northwind",
@@ -191,49 +192,3 @@ public static class DependencyInjection
             .AddIdentityServerJwt();
     }
 }
-
-public class DebugEmailService : IEmailSender
-{
-    public Task SendEmailAsync(string email, string subject, string htmlMessage)
-    {
-        Console.WriteLine($"MOCK EMAIL:{subject}");
-        Console.WriteLine(htmlMessage);
-
-        return Task.CompletedTask;
-    }
-}
-
-// public class DebugEmailService : IEmailSender<ApplicationUser>
-// {
-//     public Task SendEmailAsync(string email, string subject, string htmlMessage)
-//     {
-//         Console.WriteLine($"MOCK EMAIL:{subject}");
-//         Console.WriteLine(htmlMessage);
-//
-//         return Task.CompletedTask;
-//     }
-//
-//     public Task SendConfirmationLinkAsync(ApplicationUser user, string email, string confirmationLink)
-//     {
-//         Console.WriteLine($"MOCK EMAIL:{email}");
-//         Console.WriteLine(confirmationLink);
-//
-//         return Task.CompletedTask;
-//     }
-//
-//     public Task SendPasswordResetLinkAsync(ApplicationUser user, string email, string resetLink)
-//     {
-//         Console.WriteLine($"MOCK EMAIL:{email}");
-//         Console.WriteLine(resetLink);
-//
-//         return Task.CompletedTask;
-//     }
-//
-//     public Task SendPasswordResetCodeAsync(ApplicationUser user, string email, string resetCode)
-//     {
-//         Console.WriteLine($"MOCK EMAIL:{email}");
-//         Console.WriteLine(resetCode);
-//
-//         return Task.CompletedTask;
-//     }
-// }
