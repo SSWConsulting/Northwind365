@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, catchError, map, of } from "rxjs";
+import { BehaviorSubject, Observable, catchError, map, of, tap } from "rxjs";
 import { UserService } from "./user.service";
 import { API_BASE_URL } from 'src/app/northwind-traders-api';
 import { HttpClient } from "@angular/common/http";
@@ -20,28 +20,31 @@ export class Authorizev2Service {
     loggedInStateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     handleLogin(loginModel: NetCore8LoginModel): Observable<AuthenticationResult> {
-
         let data = {
-            email: loginModel.email,
-            password: loginModel.password
+          email: loginModel.email,
+          password: loginModel.password
         };
-      
+        
         return this.httpClient.post<NetCore8LoginResponse>(`${this.baseUrl}/login`, data).pipe(
-            catchError((error) => {
-                console.log(error);
-                return of(AuthenticationResult.Failure);
-            }),
-            map((response: NetCore8LoginResponse) => {
-                console.log(response);
-                this.setAccessToken(response.accessToken);
-                this.setRefreshToken(response.refreshToken);
-                this.setLoggedInState(true);
-                this.userService.setUserName('Dan');
-                
-                return AuthenticationResult.Success;
-            })
+          tap(response => {
+            if (!response.accessToken || !response.refreshToken) {
+              throw new Error('Invalid login response');
+            }
+          }),
+          map(response => {
+            this.setAccessToken(response.accessToken);
+            this.setRefreshToken(response.refreshToken);
+            this.setLoggedInState(true);
+            this.userService.setUserName('Dan');
+            
+            return AuthenticationResult.Success;
+          }),
+          catchError(error => {
+            console.log(error);
+            return of(AuthenticationResult.Failure);
+          })
         );
-    }
+      }
 
     getAccessToken() {
         return this.accessToken;
@@ -97,14 +100,17 @@ export class Authorizev2Service {
             password: registerModel.password
         };
       
-        return this.httpClient.post(`${this.baseUrl}/register`, data).pipe(
+        return this.httpClient.post(`${this.baseUrl}/register`, data, {observe: 'response'}).pipe(
+            map((response) => {
+                if (response.status == 200) {
+                    return AuthenticationResult.Success;
+                } else {
+                    return AuthenticationResult.Failure;
+                }
+            }),
             catchError((error) => {
                 console.log(error);
                 return of(AuthenticationResult.Failure);
-            }),
-            map((response: NetCore8LoginResponse) => {
-                console.log(response);
-                return AuthenticationResult.Success;
             })
         );
     }

@@ -18,12 +18,12 @@ export class RegisterComponent {
     let username = (<HTMLInputElement>document.getElementById("username")).value;
     let password = (<HTMLInputElement>document.getElementById("password")).value;
 
-    let loginModel: NetCore8LoginModel = {
+    let registerModel: NetCore8LoginModel = {
       email: username,
       password: password
     };
 
-    this.authService.handleLogin(loginModel).subscribe((result: AuthenticationResult) => {
+    this.authService.registerUser(registerModel).subscribe((result: AuthenticationResult) => {
       console.log(result);
 
       if (result == AuthenticationResult.Success) {
