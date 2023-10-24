@@ -15,6 +15,8 @@ builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
 
+app.MapIdentityApi<ApplicationUser>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -61,8 +63,8 @@ app.UseSwaggerUi3(settings => settings.Path = "/api");
 
 app.UseRouting();
 
-//app.UseAuthentication();
-app.UseIdentityServer();
+app.UseAuthentication();
+//app.UseIdentityServer();
 app.UseAuthorization();
 
 // TODO: Are controllers needed?
@@ -74,7 +76,7 @@ app.MapRazorPages();
 
 app.MapCategoryEndpoints();
 app.MapCustomerEndpoints();
-app.MapIdentityEndpoints();
+//app.MapIdentityEndpoints();
 app.MapProductEndpoints();
 
 app.MapFallbackToFile("index.html");
