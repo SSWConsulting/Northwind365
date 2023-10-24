@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Client, CustomersListVm } from '../northwind-traders-api';
+import { Client, CustomerDetailVm, CustomersListVm } from '../northwind-traders-api';
 import { CustomerDetailComponent } from '../customer-detail/customer-detail.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 

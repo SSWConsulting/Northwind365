@@ -29,7 +29,7 @@ export interface IClient {
     getCategoriesList(): Observable<CategoryLookupDto[]>;
     getCustomersList(): Observable<CustomersListVm>;
     createCustomer(command: CreateCustomerCommand): Observable<void>;
-    getCustomer(id: string): Observable<CustomersListVm>;
+    getCustomer(id: string): Observable<CustomerDetailVm>;
     updateCustomer(id: string, command: UpdateCustomerCommand): Observable<void>;
     deleteCustomer(id: string): Observable<void>;
     getProductsList(): Observable<ProductsListVm>;
@@ -800,7 +800,7 @@ export class Client implements IClient {
         return _observableOf(null as any);
     }
 
-    getCustomer(id: string): Observable<CustomersListVm> {
+    getCustomer(id: string): Observable<CustomerDetailVm> {
         let url_ = this.baseUrl + "/api/customers/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
@@ -822,14 +822,14 @@ export class Client implements IClient {
                 try {
                     return this.processGetCustomer(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<CustomersListVm>;
+                    return _observableThrow(e) as any as Observable<CustomerDetailVm>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<CustomersListVm>;
+                return _observableThrow(response_) as any as Observable<CustomerDetailVm>;
         }));
     }
 
-    protected processGetCustomer(response: HttpResponseBase): Observable<CustomersListVm> {
+    protected processGetCustomer(response: HttpResponseBase): Observable<CustomerDetailVm> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -840,7 +840,7 @@ export class Client implements IClient {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = CustomersListVm.fromJS(resultData200);
+            result200 = CustomerDetailVm.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status === 404) {

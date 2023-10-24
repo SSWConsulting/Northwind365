@@ -503,7 +503,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CustomersListVm"
+                  "$ref": "#/components/schemas/CustomerDetailVm"
                 }
               }
             }

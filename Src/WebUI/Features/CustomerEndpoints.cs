@@ -26,7 +26,7 @@ public static class CustomerEndpoints
             .MapGet("/{id}",
                 (string id, ISender sender, CancellationToken ct) => sender.Send(new GetCustomerDetailQuery(id), ct))
             .WithName("GetCustomer")
-            .ProducesGet<CustomersListVm>();
+            .ProducesGet<CustomerDetailVm>();
 
         group
             .MapPost("/",
