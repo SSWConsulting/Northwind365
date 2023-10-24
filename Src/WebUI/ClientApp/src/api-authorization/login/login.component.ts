@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationResult, AuthorizeService, NetCore8LoginModel } from '../authorize.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
+import {RegisterComponent} from "../register/register.component";
 
 
 // The main responsibility of this component is to handle the user's login process.
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit{
   constructor(private authService: AuthorizeService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    
+
     console.log("Login component initialized. Attempting refresh...");
 
     this.authService.refreshLogin().subscribe(async (result: AuthenticationResult) => {
@@ -39,7 +40,7 @@ export class LoginComponent implements OnInit{
   loginClicked() {
 
     // todo: show that something is happening
-    
+
     let username = (<HTMLInputElement>document.getElementById("username")).value;
     let password = (<HTMLInputElement>document.getElementById("password")).value;
 
@@ -61,7 +62,7 @@ export class LoginComponent implements OnInit{
         // handle failure
       }
     });
-    
+
   }
 
   getReturnUrl(): string {
