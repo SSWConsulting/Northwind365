@@ -27,7 +27,7 @@ export class LogoutComponent implements OnInit {
     switch (action.path) {
       case LogoutActions.Logout:
         if (!!window.history.state.local) {
-          await this.logout(this.getReturnUrl());
+          await this.logout();
         } else {
           // This prevents regular links to <app>/authentication/logout from triggering a logout
           this.message.next('The logout was not initiated from within the page.');
@@ -45,28 +45,12 @@ export class LogoutComponent implements OnInit {
     }
   }
 
-  private async logout(returnUrl: string): Promise<void> {
-    const state: INavigationState = { returnUrl };
+  private async logout(): Promise<void> {
     const isauthenticated = await this.authorizeService.getLoggedInState().pipe(
       take(1)
     ).toPromise();
     if (isauthenticated) {
-      const result = await this.authorizeService.logout();
-      switch (result.status) {
-        case AuthenticationResultStatus.Redirect:
-          // We replace the location here so that in case the user hits the back
-          // arrow from within the IdP they don't get into an infinite redirect loop.
-          window.location.replace(result.redirectUrl);
-          break;
-        case AuthenticationResultStatus.Success:
-          await this.navigateToReturnUrl(returnUrl);
-          break;
-        case AuthenticationResultStatus.Fail:
-          this.message.next(result.message);
-          break;
-        default:
-          throw new Error('Invalid authentication result status.');
-      }
+      await this.navigateToReturnUrl("/");
     } else {
       this.message.next('You successfully logged out!');
     }
@@ -74,21 +58,8 @@ export class LogoutComponent implements OnInit {
 
   private async processLogoutCallback(): Promise<void> {
     const url = window.location.href;
-    const result = await this.authorizeService.completeSignOut(url);
-    switch (result.status) {
-      case AuthenticationResultStatus.Redirect:
-        // There should not be any redirects as the only time completeAuthentication finishes
-        // is when we are doing a redirect sign in flow.
-        throw new Error('Should not redirect.');
-      case AuthenticationResultStatus.Success:
-        await this.navigateToReturnUrl(this.getReturnUrl(result.state));
-        break;
-      case AuthenticationResultStatus.Fail:
-        this.message.next(result.message);
-        break;
-      default:
-        throw new Error('Invalid authentication result status.');
-    }
+    this.authorizeService.logout();
+    await this.navigateToReturnUrl("/");
   }
 
   private async navigateToReturnUrl(returnUrl: string) {
@@ -96,23 +67,4 @@ export class LogoutComponent implements OnInit {
       replaceUrl: true
     });
   }
-
-  private getReturnUrl(state?: INavigationState): string {
-    const fromQuery = (this.activatedRoute.snapshot.queryParams as INavigationState).returnUrl;
-    // If the url is comming from the query string, check that is either
-    // a relative url or an absolute url
-    if (fromQuery &&
-      !(fromQuery.startsWith(`${window.location.origin}/`) ||
-        /\/[^\/].*/.test(fromQuery))) {
-      // This is an extra check to prevent open redirects.
-      throw new Error('Invalid return url. The return url needs to have the same origin as the current page.');
-    }
-    return (state && state.returnUrl) ||
-      fromQuery ||
-      ApplicationPaths.LoggedOut;
-  }
-}
-
-interface INavigationState {
-  [ReturnUrlType]: string;
 }
