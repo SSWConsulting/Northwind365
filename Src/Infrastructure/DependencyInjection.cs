@@ -71,7 +71,9 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
 
-        // TODO DM: Is this needed?
+        // NOTE: Need to leave this in otherwise NSWAG throws the following excecption
+        //---> System.Reflection.ReflectionTypeLoadException: Unable to load one or more of the requested types.
+        //    Method 'get_ServerSideSessions' in type 'Microsoft.AspNetCore.ApiAuthorization.IdentityServer.ApiAuthorizationDbContext`1' from assembly 'Microsoft.AspNetCore.ApiAuthorization.IdentityServer, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60' does not have an implementation.
         services.AddControllersWithViews()
             .ConfigureApplicationPartManager(apm =>
             {
@@ -92,22 +94,22 @@ public static class DependencyInjection
                     options.EmitStaticAudienceClaim = true;
                 })
                 .AddAspNetIdentity<ApplicationUser>()
-                .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = b =>
-                        b.UseSqlServer(connectionString,
-                            dbOpts => dbOpts.MigrationsAssembly(typeof(IInfrastructureMarker).Assembly.FullName));
-                })
+                // .AddConfigurationStore(options =>
+                // {
+                //     options.ConfigureDbContext = b =>
+                //         b.UseSqlServer(connectionString,
+                //             dbOpts => dbOpts.MigrationsAssembly(typeof(IInfrastructureMarker).Assembly.FullName));
+                // })
                 // this is something you will want in production to reduce load on and requests to the DB
                 //.AddConfigurationStoreCache()
                 //
                 // this adds the operational data from DB (codes, tokens, consents)
-                .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = b =>
-                        b.UseSqlServer(connectionString,
-                            dbOpts => dbOpts.MigrationsAssembly(typeof(IInfrastructureMarker).Assembly.FullName));
-                })
+                // .AddOperationalStore(options =>
+                // {
+                //     options.ConfigureDbContext = b =>
+                //         b.UseSqlServer(connectionString,
+                //             dbOpts => dbOpts.MigrationsAssembly(typeof(IInfrastructureMarker).Assembly.FullName));
+                // })
 
             //.AddServerSideSessions();
             ;
@@ -184,8 +186,9 @@ public static class DependencyInjection
         }
         else
         {
-            identityServerBuilder
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+            // TODO DM: Fix
+            // identityServerBuilder
+            //     .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
         }
 
         services.AddAuthentication()
