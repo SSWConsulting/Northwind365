@@ -17,8 +17,6 @@ export class LoginComponent implements OnInit{
 
   constructor(private authService: AuthorizeService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
-  // todo: check to see whether the login can be refreshed rather than requiring an interactive login
-
   ngOnInit(): void {
     
     console.log("Login component initialized. Attempting refresh...");

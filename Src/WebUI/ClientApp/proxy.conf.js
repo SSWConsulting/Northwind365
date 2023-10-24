@@ -14,7 +14,10 @@ const PROXY_CONFIG = [
       "/Account",
       "/login",
       "/register",
-      "/refresh"
+      "/refresh",
+      "/swagger",
+      "_vs",
+      "_framework"
    ],
     proxyTimeout: 10000,
     target: target,

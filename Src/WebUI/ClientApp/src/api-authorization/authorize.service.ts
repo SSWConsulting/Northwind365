@@ -35,7 +35,7 @@ export class AuthorizeService {
             this.setAccessToken(response.accessToken);
             this.setRefreshToken(response.refreshToken);
             this.setLoggedInState(true);
-            this.userService.setUserName('Dan');
+            this.userService.setUserName(data.email);
             
             return AuthenticationResult.Success;
           }),
