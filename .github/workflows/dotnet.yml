@@ -5,7 +5,7 @@ name: .NET
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "rp-webinar" ]
   pull_request:
     branches: [ "main" ]
 
