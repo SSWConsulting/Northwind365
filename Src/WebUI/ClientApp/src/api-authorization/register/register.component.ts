@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthenticationResult, Authorizev2Service, NetCore8LoginModel } from '../authorizev2.service';
+import { AuthenticationResult, AuthorizeService, NetCore8LoginModel } from '../authorize.service';
 import { ApplicationPaths } from '../api-authorization.constants';
 
 @Component({
@@ -9,7 +9,7 @@ import { ApplicationPaths } from '../api-authorization.constants';
 })
 export class RegisterComponent {
 
-  constructor(private authService: Authorizev2Service) { }
+  constructor(private authService: AuthorizeService) { }
 
   registerClicked() {
 

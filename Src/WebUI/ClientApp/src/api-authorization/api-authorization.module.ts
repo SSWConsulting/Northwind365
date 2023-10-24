@@ -5,7 +5,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { RouterModule } from '@angular/router';
 import { ApplicationPaths } from './api-authorization.constants';
 import { HttpClientModule } from '@angular/common/http';
-import { LoginV2Component } from './loginV2/login.component';
+import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 
 @NgModule({
@@ -15,17 +15,17 @@ import { RegisterComponent } from './register/register.component';
     RouterModule.forChild(
       [
         { path: ApplicationPaths.Register, component: RegisterComponent },
-        { path: ApplicationPaths.Profile, component: LoginV2Component },
-        { path: ApplicationPaths.Login, component: LoginV2Component },
-        { path: ApplicationPaths.LoginFailed, component: LoginV2Component },
-        { path: ApplicationPaths.LoginCallback, component: LoginV2Component },
+        { path: ApplicationPaths.Profile, component: LoginComponent },
+        { path: ApplicationPaths.Login, component: LoginComponent },
+        { path: ApplicationPaths.LoginFailed, component: LoginComponent },
+        { path: ApplicationPaths.LoginCallback, component: LoginComponent },
         { path: ApplicationPaths.LogOut, component: LogoutComponent },
         { path: ApplicationPaths.LoggedOut, component: LogoutComponent },
         { path: ApplicationPaths.LogOutCallback, component: LogoutComponent }
       ]
     )
   ],
-  declarations: [LoginMenuComponent, LogoutComponent, LoginV2Component, RegisterComponent],
-  exports: [LoginMenuComponent, LogoutComponent, LoginV2Component]
+  declarations: [LoginMenuComponent, LogoutComponent, LoginComponent, RegisterComponent],
+  exports: [LoginMenuComponent, LogoutComponent, LoginComponent]
 })
 export class ApiAuthorizationModule { }

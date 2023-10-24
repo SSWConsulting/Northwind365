@@ -3,14 +3,14 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTr
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ApplicationPaths, QueryParameterNames } from './api-authorization.constants';
-import { Authorizev2Service } from './authorizev2.service';
+import { AuthorizeService } from './authorize.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthorizeGuard implements CanActivate {
 
-  constructor(private router: Router, private authService: Authorizev2Service) {
+  constructor(private router: Router, private authService: AuthorizeService) {
   }
   canActivate(
     _next: ActivatedRouteSnapshot,

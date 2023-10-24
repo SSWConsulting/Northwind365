@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthenticationResult, Authorizev2Service, NetCore8LoginModel } from '../authorizev2.service';
+import { AuthenticationResult, AuthorizeService, NetCore8LoginModel } from '../authorize.service';
 import { Router } from '@angular/router';
 
 
@@ -12,9 +12,9 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginV2Component{
+export class LoginComponent{
 
-  constructor(private authService: Authorizev2Service, private router: Router) { }
+  constructor(private authService: AuthorizeService, private router: Router) { }
 
   // todo: check to see whether the login can be refreshed rather than requiring an interactive login
 

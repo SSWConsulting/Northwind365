@@ -2,14 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
-import { Authorizev2Service } from './authorizev2.service';
+import { AuthorizeService } from './authorize.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthorizeInterceptor implements HttpInterceptor {
 
-  constructor(private authorize: Authorizev2Service) { }
+  constructor(private authorize: AuthorizeService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let token = this.authorize.getAccessToken();

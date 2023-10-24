@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Authorizev2Service } from 'src/api-authorization/authorizev2.service';
+import { AuthorizeService } from 'src/api-authorization/authorize.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,7 @@ import { Authorizev2Service } from 'src/api-authorization/authorizev2.service';
 export class AppComponent implements OnInit {
   title = 'app';
 
-  constructor(private authService: Authorizev2Service) { }
+  constructor(private authService: AuthorizeService) { }
 
   ngOnInit(): void {
     this.authService.refreshLogin();

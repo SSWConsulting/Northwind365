@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { LogoutActions, ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
-import { Authorizev2Service } from '../authorizev2.service';
+import { AuthorizeService } from '../authorize.service';
 
 // The main responsibility of this component is to handle the user's logout process.
 // This is the starting point for the logout process, which is usually initiated when a
@@ -17,7 +17,7 @@ export class LogoutComponent implements OnInit {
   public message = new BehaviorSubject<string>(null);
 
   constructor(
-    private authorizeService: Authorizev2Service,
+    private authorizeService: AuthorizeService,
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) { }
