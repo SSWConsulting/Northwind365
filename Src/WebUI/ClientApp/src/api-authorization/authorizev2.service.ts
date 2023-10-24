@@ -1,4 +1,6 @@
 import { Injectable } from "@angular/core";
+import { BehaviorSubject, Observable } from "rxjs";
+import { UserService } from "./user.service";
 
 
 @Injectable ({
@@ -6,14 +8,17 @@ import { Injectable } from "@angular/core";
 })
 export class Authorizev2Service {
 
+    constructor(private userService: UserService) { }
+
     accessToken: string;
     refreshToken: string;
-    loggedInState: boolean;
+    loggedInStateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
     handleLogin(response: NetCore8LoginResponse) {
         this.setAccessToken(response.accessToken);
         this.setRefreshToken(response.refreshToken);
         this.setLoggedInState(true);
+        this.userService.setUserName('Dan');
     }
 
     getAccessToken() {
@@ -23,7 +28,6 @@ export class Authorizev2Service {
     setAccessToken(accessToken: string) {
         this.accessToken = accessToken;
     }
-
 
 
     getRefreshToken() {
@@ -39,14 +43,13 @@ export class Authorizev2Service {
     }
 
 
-    getLoggedInState() {
-        return this.loggedInState;
+    getLoggedInState(): Observable<boolean | null> {
+        return this.loggedInStateSubject.asObservable();
     }
 
     setLoggedInState(loggedInState: boolean) {
-        this.loggedInState = loggedInState;
+        this.loggedInStateSubject.next(loggedInState);
     }
-
 
 
     clearTokens() {
@@ -55,7 +58,7 @@ export class Authorizev2Service {
     }
 
     clearLoggedInState() {
-        this.loggedInState = false;
+        this.loggedInStateSubject.next(false);
     }
 
 

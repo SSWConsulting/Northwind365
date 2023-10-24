@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationResultStatus, AuthorizeService } from '../authorize.service';
 import { BehaviorSubject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { LogoutActions, ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
-import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { Authorizev2Service } from '../authorizev2.service';
 
 // The main responsibility of this component is to handle the user's logout process.
 // This is the starting point for the logout process, which is usually initiated when a
@@ -18,46 +17,41 @@ export class LogoutComponent implements OnInit {
   public message = new BehaviorSubject<string>(null);
 
   constructor(
-    private authorizeService: AuthorizeService,
+    private authorizeService: Authorizev2Service,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private oidcSecurityService: OidcSecurityService,
+    private router: Router
   ) { }
 
-  ngOnInit() {
-    this.oidcSecurityService
-      .logoff()
-      .subscribe((result) => console.log(result));
-  // async ngOnInit() {
-    // const action = this.activatedRoute.snapshot.url[1];
-    // switch (action.path) {
-    //   case LogoutActions.Logout:
-    //     if (!!window.history.state.local) {
-    //       await this.logout(this.getReturnUrl());
-    //     } else {
-    //       // This prevents regular links to <app>/authentication/logout from triggering a logout
-    //       this.message.next('The logout was not initiated from within the page.');
-    //     }
+  async ngOnInit() {
+    const action = this.activatedRoute.snapshot.url[1];
+    switch (action.path) {
+      case LogoutActions.Logout:
+        if (!!window.history.state.local) {
+          await this.logout(this.getReturnUrl());
+        } else {
+          // This prevents regular links to <app>/authentication/logout from triggering a logout
+          this.message.next('The logout was not initiated from within the page.');
+        }
 
-    //     break;
-    //   case LogoutActions.LogoutCallback:
-    //     await this.processLogoutCallback();
-    //     break;
-    //   case LogoutActions.LoggedOut:
-    //     this.message.next('You successfully logged out!');
-    //     break;
-    //   default:
-    //     throw new Error(`Invalid action '${action}'`);
-    // }
+        break;
+      case LogoutActions.LogoutCallback:
+        await this.processLogoutCallback();
+        break;
+      case LogoutActions.LoggedOut:
+        this.message.next('You successfully logged out!');
+        break;
+      default:
+        throw new Error(`Invalid action '${action}'`);
+    }
   }
 
   private async logout(returnUrl: string): Promise<void> {
     const state: INavigationState = { returnUrl };
-    const isauthenticated = await this.authorizeService.isAuthenticated().pipe(
+    const isauthenticated = await this.authorizeService.getLoggedInState().pipe(
       take(1)
     ).toPromise();
     if (isauthenticated) {
-      const result = await this.authorizeService.signOut(state);
+      const result = await this.authorizeService.logout();
       switch (result.status) {
         case AuthenticationResultStatus.Redirect:
           // We replace the location here so that in case the user hits the back
