@@ -1,37 +1,35 @@
 <div class="row">
   <div class="col-md-6 p-md-5">
-      <section>
-          <form id="account" method="post">
-              <h4>Use a local account to log in.</h4>
-              <hr />
-              <div class="text-danger"></div>
-              <div class="form-group">
-                  <label for="email"></label>
-                  <input id="email" class="form-control" placeholder="Email" />
-                  <!-- <span asp-validation-for="Input.Email" class="text-danger"></span> -->
-              </div>
-              <div class="form-group">
-                  <label for="password"></label>
-                  <input id="password" type="password" class="form-control" placeholder="Password" />
-                  <!-- <span asp-validation-for="Input.Password" class="text-danger"></span> -->
-              </div>
-              <!-- <div class="form-group">
-                  <div class="checkbox">
-                      <label asp-for="Input.RememberMe">
-                          <input asp-for="Input.RememberMe" />
-                          @Html.DisplayNameFor(m => m.Input.RememberMe)
-                      </label>
-                  </div>
-              </div> -->
-              <div class="form-group">
-                  <button type="submit" class="btn btn-primary" (click)="loginClicked()">Log in</button>
-              </div>
-              <div class="form-group">
-                  <p>
-                      <a routerLink="/authentication/register">Register as a new user</a>
-                  </p>
-              </div>
-          </form>
-      </section>
+    <section>
+      <h4>Use a local account to log in.</h4>
+      <hr/>
+      <div class="text-danger"></div>
+      <div class="form-group">
+        <label for="username"></label>
+        <input id="username" class="form-control" placeholder="User Name"/>
+        <!-- <span asp-validation-for="Input.Email" class="text-danger"></span> -->
+      </div>
+      <div class="form-group">
+        <label for="password"></label>
+        <input id="password" type="password" class="form-control" placeholder="Password"/>
+        <!-- <span asp-validation-for="Input.Password" class="text-danger"></span> -->
+      </div>
+      <!-- <div class="form-group">
+          <div class="checkbox">
+              <label asp-for="Input.RememberMe">
+                  <input asp-for="Input.RememberMe" />
+                  @Html.DisplayNameFor(m => m.Input.RememberMe)
+              </label>
+          </div>
+      </div> -->
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary" (click)="loginClicked()">Log in</button>
+      </div>
+      <div class="form-group">
+        <p>
+          <a routerLink="/authentication/register">Register as a new user</a>
+        </p>
+      </div>
+    </section>
   </div>
 </div>
