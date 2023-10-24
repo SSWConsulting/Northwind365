@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthenticationResult, Authorizev2Service, NetCore8LoginModel } from '../authorizev2.service';
+import { Router } from '@angular/router';
 
 
 // The main responsibility of this component is to handle the user's login process.
@@ -13,10 +14,12 @@ import { AuthenticationResult, Authorizev2Service, NetCore8LoginModel } from '..
 })
 export class LoginV2Component{
 
-  constructor(private authService: Authorizev2Service) { }
+  constructor(private authService: Authorizev2Service, private router: Router) { }
 
   loginClicked() {
 
+    // todo: show that something is happening
+    
     let username = (<HTMLInputElement>document.getElementById("username")).value;
     let password = (<HTMLInputElement>document.getElementById("password")).value;
 
@@ -25,12 +28,12 @@ export class LoginV2Component{
       password: password
     };
 
-    this.authService.handleLogin(loginModel).subscribe((result: AuthenticationResult) => {
+    this.authService.handleLogin(loginModel).subscribe(async (result: AuthenticationResult) => {
       console.log(result);
 
       if (result == AuthenticationResult.Success) {
         console.log("Login successful");
-        window.location.href = "/";
+        await this.router.navigate(["/"]);
       } else {
         // handle failure
       }

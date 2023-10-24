@@ -13,6 +13,8 @@ export class RegisterComponent {
 
   registerClicked() {
 
+    // todo: show that something is happening
+    
     let username = (<HTMLInputElement>document.getElementById("username")).value;
     let password = (<HTMLInputElement>document.getElementById("password")).value;
 
