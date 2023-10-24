@@ -16,6 +16,8 @@ export class LoginV2Component{
 
   constructor(private authService: Authorizev2Service, private router: Router) { }
 
+  // todo: check to see whether the login can be refreshed rather than requiring an interactive login
+
   loginClicked() {
 
     // todo: show that something is happening

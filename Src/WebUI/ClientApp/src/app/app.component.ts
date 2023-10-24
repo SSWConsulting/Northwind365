@@ -1,5 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
+import { Component, OnInit } from '@angular/core';
+import { Authorizev2Service } from 'src/api-authorization/authorizev2.service';
 
 @Component({
   selector: 'app-root',
@@ -9,16 +9,9 @@ import { LoginResponse, OidcSecurityService } from 'angular-auth-oidc-client';
 export class AppComponent implements OnInit {
   title = 'app';
 
-  private oidcSecurityService = inject(OidcSecurityService);
+  constructor(private authService: Authorizev2Service) { }
 
   ngOnInit(): void {
-    this.oidcSecurityService
-      .checkAuth()
-      .subscribe((loginResponse: LoginResponse) => {
-        const { isAuthenticated, userData, accessToken, idToken, configId } =
-          loginResponse;
-
-        /*...*/
-      });
+    this.authService.refreshLogin();
   }
 }

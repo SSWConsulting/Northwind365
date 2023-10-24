@@ -56,7 +56,7 @@ export class Authorizev2Service {
 
 
     getRefreshToken() {
-        if (this.refreshToken === null) {
+        if (!this.refreshToken) {
             this.refreshToken = sessionStorage.getItem('refreshToken');
         }
         return this.refreshToken;
@@ -115,6 +115,32 @@ export class Authorizev2Service {
         );
     }
 
+    refreshLogin() {
+
+        this.getRefreshToken();
+
+        if (!this.refreshToken) {
+            console.log("No refresh token found");
+            return;
+        }
+
+        console.log("Refreshing login")
+
+        let data = {
+            refreshToken: this.refreshToken
+        };
+
+        this.httpClient.post<NetCore8LoginResponse>(`${this.baseUrl}/refresh`, data).subscribe((response) => {
+            if (response.accessToken && response.refreshToken) {
+                this.setAccessToken(response.accessToken);
+                this.setRefreshToken(response.refreshToken);
+                this.setLoggedInState(true);
+                this.userService.setUserName('Dan');
+            }
+        });
+
+    }
+
 }
 
 export interface NetCore8LoginResponse {
@@ -137,4 +163,8 @@ export interface NetCore8RegisterModel {
 export enum AuthenticationResult {
     Success,
     Failure
+}
+
+export interface RefreshModel {
+    refreshToken: string;
 }

@@ -13,7 +13,8 @@ const PROXY_CONFIG = [
       "/Identity",
       "/Account",
       "/login",
-      "/register"
+      "/register",
+      "/refresh"
    ],
     proxyTimeout: 10000,
     target: target,
