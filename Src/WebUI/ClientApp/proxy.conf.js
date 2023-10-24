@@ -16,8 +16,7 @@ const PROXY_CONFIG = [
       "/register",
       "/refresh",
       "/swagger",
-      "_vs",
-      "_framework"
+      "/manage"
    ],
     proxyTimeout: 10000,
     target: target,

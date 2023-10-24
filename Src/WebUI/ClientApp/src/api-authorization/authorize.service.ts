@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, catchError, map, of, tap } from "rxjs";
 import { UserService } from "./user.service";
-import { API_BASE_URL } from 'src/app/northwind-traders-api';
+import { API_BASE_URL, Client } from 'src/app/northwind-traders-api';
 import { HttpClient } from "@angular/common/http";
 
 
@@ -13,6 +13,7 @@ export class AuthorizeService {
     constructor(
         private userService: UserService,
         private httpClient: HttpClient,
+        private authCLient: Client,
         @Inject(API_BASE_URL) private baseUrl?: string) { }
 
     accessToken: string;
@@ -137,13 +138,22 @@ export class AuthorizeService {
                 this.setAccessToken(response.accessToken);
                 this.setRefreshToken(response.refreshToken);
                 this.setLoggedInState(true);
-                this.userService.setUserName('Dan');
+                this.setUserName();
                 return AuthenticationResult.Success;
             }
             else {
                 return AuthenticationResult.Failure;
             }
         }));
+    }
+
+    setUserName() {
+
+        this.authCLient.getManageInfo().subscribe(result => {
+            console.log(result);
+            this.userService.setUserName(result.email);
+        })
+
     }
 
 }
