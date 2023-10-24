@@ -1,6 +1,8 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { Inject, Injectable } from "@angular/core";
+import { BehaviorSubject, Observable, catchError, map, of } from "rxjs";
 import { UserService } from "./user.service";
+import { API_BASE_URL } from 'src/app/northwind-traders-api';
+import { HttpClient } from "@angular/common/http";
 
 
 @Injectable ({
@@ -8,17 +10,37 @@ import { UserService } from "./user.service";
 })
 export class Authorizev2Service {
 
-    constructor(private userService: UserService) { }
+    constructor(
+        private userService: UserService,
+        private httpClient: HttpClient,
+        @Inject(API_BASE_URL) private baseUrl?: string) { }
 
     accessToken: string;
     refreshToken: string;
     loggedInStateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-    handleLogin(response: NetCore8LoginResponse) {
-        this.setAccessToken(response.accessToken);
-        this.setRefreshToken(response.refreshToken);
-        this.setLoggedInState(true);
-        this.userService.setUserName('Dan');
+    handleLogin(loginModel: NetCore8LoginModel): Observable<AuthenticationResult> {
+
+        let data = {
+            email: loginModel.email,
+            password: loginModel.password
+        };
+      
+        return this.httpClient.post<NetCore8LoginResponse>(`${this.baseUrl}/login`, data).pipe(
+            catchError((error) => {
+                console.log(error);
+                return of(AuthenticationResult.Failure);
+            }),
+            map((response: NetCore8LoginResponse) => {
+                console.log(response);
+                this.setAccessToken(response.accessToken);
+                this.setRefreshToken(response.refreshToken);
+                this.setLoggedInState(true);
+                this.userService.setUserName('Dan');
+                
+                return AuthenticationResult.Success;
+            })
+        );
     }
 
     getAccessToken() {
@@ -68,6 +90,25 @@ export class Authorizev2Service {
         sessionStorage.clear();
     }
 
+    registerUser(registerModel: NetCore8RegisterModel): Observable<AuthenticationResult> {
+        
+        let data = {
+            email: registerModel.email,
+            password: registerModel.password
+        };
+      
+        return this.httpClient.post(`${this.baseUrl}/register`, data).pipe(
+            catchError((error) => {
+                console.log(error);
+                return of(AuthenticationResult.Failure);
+            }),
+            map((response: NetCore8LoginResponse) => {
+                console.log(response);
+                return AuthenticationResult.Success;
+            })
+        );
+    }
+
 }
 
 export interface NetCore8LoginResponse {
@@ -75,4 +116,19 @@ export interface NetCore8LoginResponse {
     accessToken: string;
     expiresIn: number;
     refreshToken: string;
-  }
+}
+
+export interface NetCore8LoginModel {
+    email: string;
+    password: string;
+}
+
+export interface NetCore8RegisterModel {
+    email: string;
+    password: string;
+}
+
+export enum AuthenticationResult {
+    Success,
+    Failure
+}
