@@ -115,13 +115,13 @@ export class AuthorizeService {
         );
     }
 
-    refreshLogin() {
+    refreshLogin(): Observable<AuthenticationResult> {
 
         this.getRefreshToken();
 
         if (!this.refreshToken) {
             console.log("No refresh token found");
-            return;
+            return of(AuthenticationResult.Failure);
         }
 
         console.log("Refreshing login")
@@ -130,15 +130,19 @@ export class AuthorizeService {
             refreshToken: this.refreshToken
         };
 
-        this.httpClient.post<NetCore8LoginResponse>(`${this.baseUrl}/refresh`, data).subscribe((response) => {
+        return this.httpClient.post<NetCore8LoginResponse>(`${this.baseUrl}/refresh`, data).pipe(
+            map(response => {
             if (response.accessToken && response.refreshToken) {
                 this.setAccessToken(response.accessToken);
                 this.setRefreshToken(response.refreshToken);
                 this.setLoggedInState(true);
                 this.userService.setUserName('Dan');
+                return AuthenticationResult.Success;
             }
-        });
-
+            else {
+                return AuthenticationResult.Failure;
+            }
+        }));
     }
 
 }
