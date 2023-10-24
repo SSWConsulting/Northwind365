@@ -84,6 +84,7 @@ export class AuthorizeService {
 
     clearLoggedInState() {
         this.loggedInStateSubject.next(false);
+        this.userService.setUserName(null);
     }
 
 
