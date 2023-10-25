@@ -2,10 +2,9 @@ using Northwind.Application;
 using Northwind.Infrastructure;
 using Northwind.Infrastructure.Identity;
 using Northwind.Infrastructure.Persistence;
-using Northwind.Persistence;
 using Northwind.WebUI;
-using Northwind.WebUI.Common;
 using Northwind.WebUI.Features;
+using Northwind.WebUI.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,7 +50,7 @@ else
     app.UseHsts();
 }
 
-app.UseCustomExceptionHandler();
+app.UseExceptionFilter();
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
