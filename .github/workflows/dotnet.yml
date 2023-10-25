@@ -68,11 +68,20 @@ jobs:
       #     reporter: dotnet-trx    # Format of test results
 
       # Package webapp 
+      - name: Zip webapp for Octopus 🐙
+        uses: OctopusDeploy/create-zip-package-action@v3.0.2
+        with:
+          package_id: 'NorthWind365'
+          version: '1.0.${{github.run_number}}'
+          output_folder: './packaging'
+          base_path: '/home/runner/work/Northwind365/Northwind365/Src/WebUI/bin/Release/net8.0/'
+          files: '**/*.*'
 
-      # Push to Octopus
+      # Push to Octopus 🐙
+      
 
       # Create release 
-      - name: Create a release in Octopus Deploy 🐙
+      - name: Create a release in Octopus 🐙
         uses: OctopusDeploy/create-release-action@v3
         with:
           space: 'SSW'
