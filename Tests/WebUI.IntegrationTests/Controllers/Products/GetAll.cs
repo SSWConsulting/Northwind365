@@ -2,7 +2,6 @@ using Common.Factories;
 using Common.Fixtures;
 using FluentAssertions;
 using Northwind.Application.Products.Queries.GetProductsList;
-using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -17,16 +16,16 @@ public class GetAll : IntegrationTestBase
     [Fact]
     public async Task ReturnsProductsListViewModel()
     {
+        // Arrange
         var client = await GetAuthenticatedClientAsync();
         var product = ProductFactory.Generate();
         await AddEntityAsync(product);
 
-        var response = await client.GetAsync("/api/products");
+        // Act
+        var vm = await client.GetFromJsonAsync<ProductsListVm>("/api/products");
 
-        response.EnsureSuccessStatusCode();
-
-        var vm = await Utilities.GetResponseContent<ProductsListVm>(response);
-
+        // Assert
+        vm.Should().NotBeNull();
         vm.Should().BeOfType<ProductsListVm>();
         vm.Products.Should().NotBeEmpty();
     }

@@ -1,17 +1,13 @@
 ﻿using Common.Factories;
 using Common.Fixtures;
 using FluentAssertions;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Northwind.Application.Customers.Commands.UpdateCustomer;
-using Northwind.WebUI.IntegrationTests.Common;
+using System.Net;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Customers;
 
-//[Collection(WebUICollection.Definition)]
 public class Update : IntegrationTestBase
 {
     public Update(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
@@ -21,6 +17,7 @@ public class Update : IntegrationTestBase
     [Fact]
     public async Task GivenUpdateCustomerCommand_ReturnsSuccessStatusCode()
     {
+        // Arrange
         var client = await GetAuthenticatedClientAsync();
 
         var customer = CustomerFactory.Generate();
@@ -41,16 +38,17 @@ public class Update : IntegrationTestBase
             "Region"
         );
 
-        var content = Utilities.GetRequestContent(command);
+        // Act
+        var response = await client.PutAsJsonAsync($"/api/customers/{command.Id}", command);
 
-        var response = await client.PutAsync($"/api/customers/{command.Id}", content);
-
+        // Assert
         response.EnsureSuccessStatusCode();
     }
 
     [Fact]
     public async Task GivenUpdateCustomerCommandWithInvalidId_ReturnsNotFoundStatusCode()
     {
+        // Arrange
         var client = await GetAuthenticatedClientAsync();
 
         var invalidCommand = new UpdateCustomerCommand
@@ -68,10 +66,11 @@ public class Update : IntegrationTestBase
             "Region"
         );
 
-        var content = Utilities.GetRequestContent(invalidCommand);
+        // Act
+        var response = await client.PutAsJsonAsync($"/api/customers/{invalidCommand.Id}", invalidCommand);
 
-        var response = await client.PutAsync($"/api/customers/{invalidCommand.Id}", content);
-
+        // Assert
+        response.Should().NotBeNull();
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }

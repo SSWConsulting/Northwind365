@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
+﻿// using Microsoft.AspNetCore.Hosting;
+// using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,11 +13,10 @@ namespace Northwind.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration,
-        IWebHostEnvironment environment)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         AddFiles(services);
-        AddIdentity(services, configuration, environment);
+        AddIdentity(services, configuration);
         AddPersistence(services, configuration);
         AddServices(services);
 
@@ -44,8 +43,7 @@ public static class DependencyInjection
         services.AddScoped<NorthwindDbContextInitializer>();
     }
 
-    private static void AddIdentity(IServiceCollection services, IConfiguration configuration,
-        IWebHostEnvironment environment)
+    private static void AddIdentity(IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("NorthwindDatabase");
 
@@ -55,9 +53,5 @@ public static class DependencyInjection
         services.AddScoped<IUserManager, UserManagerService>();
 
         services.AddScoped<ApplicationDbContextInitializer>();
-
-        services.AddIdentityCore<ApplicationUser>()
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddApiEndpoints();
     }
 }

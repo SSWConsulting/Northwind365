@@ -11,11 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddWebUI();
 builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // TODO: Move this to infrastructure later
 builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.AddAuthorizationBuilder();
+builder.Services.AddIdentityCore<ApplicationUser>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddApiEndpoints();
 
 var app = builder.Build();
 
@@ -31,7 +34,6 @@ if (app.Environment.IsDevelopment())
 
     try
     {
-
         var identityInitializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
         //await identityInitializer.EnsureDeleted();
         await identityInitializer.InitializeAsync();
