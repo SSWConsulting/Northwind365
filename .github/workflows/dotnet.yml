@@ -79,7 +79,7 @@ jobs:
 
       # Push to Octopus 🐙
       - name: Push Package to Octopus Deploy
-        uses: OctopusDeploy/push-package-action@v3.0.4
+        uses: OctopusDeploy/push-package-action@v3.1.0
         with:
           packages: './packaging/Northwind365.1.0.${{github.run_number}}.zip'
           space: 'SSW'
