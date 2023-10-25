@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Northwind.Application;
 using Northwind.Infrastructure;
 using Northwind.Infrastructure.Identity;
@@ -11,6 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddWebUI();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
+
+// TODO: Move this to infrastructure later
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthorizationBuilder();
 
 var app = builder.Build();
 
