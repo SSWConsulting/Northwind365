@@ -15,8 +15,7 @@ public static class ProductEndpoints
     {
         var group = app
             .MapApiGroup("products");
-            // TODO: Add back
-            //.RequireAuthorization();
+            .RequireAuthorization();
 
         group
             .MapGet("/", (ISender sender, CancellationToken ct) => sender.Send(new GetProductsListQuery(), ct))

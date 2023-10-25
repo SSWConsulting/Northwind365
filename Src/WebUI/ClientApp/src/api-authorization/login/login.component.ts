@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit{
 
   loginClicked() {
 
-    // todo: show that something is happening
+    // todo: show that something is happening (https://github.com/SSWConsulting/Northwind365/issues/105)
 
     let username = (<HTMLInputElement>document.getElementById("username")).value;
     let password = (<HTMLInputElement>document.getElementById("password")).value;

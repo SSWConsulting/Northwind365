@@ -15,8 +15,6 @@ public abstract class IntegrationTestBase : IAsyncLifetime
     protected IMediator Mediator { get; }
     protected NorthwindDbContext Context { get; }
 
-
-    // TODO: Hook up ITestOutputHelper
     public IntegrationTestBase(TestingDatabaseFixture fixture, ITestOutputHelper output)
     {
         Fixture = fixture;

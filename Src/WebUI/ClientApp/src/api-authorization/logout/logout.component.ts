@@ -23,6 +23,6 @@ export class LogoutComponent implements OnInit {
     this.authorizeService.logout();
     this.router.navigate(["/"]);
 
-    // todo: show a nice "you have been logged out" message
+    // todo: show a nice "you have been logged out" message (https://github.com/SSWConsulting/Northwind365/issues/106)
   }
 }

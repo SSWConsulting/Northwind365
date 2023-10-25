@@ -13,7 +13,7 @@ export class RegisterComponent {
 
   registerClicked() {
 
-    // todo: show that something is happening
+    // todo: show that something is happening (https://github.com/SSWConsulting/Northwind365/issues/107)
 
     let username = (<HTMLInputElement>document.getElementById("username")).value;
     let password = (<HTMLInputElement>document.getElementById("password")).value;
@@ -32,7 +32,7 @@ export class RegisterComponent {
 
         window.location.href = ApplicationPaths.Login;
 
-        // todo: Automatically log the user in, capture additional info from the form, and populate their profile, then redirect home instead of to the login page.
+        // todo: Automatically log the user in, capture additional info from the form, and populate their profile, then redirect home instead of to the login page. (https://github.com/SSWConsulting/Northwind365/issues/108)
 
       } else {
         // handle failure
