@@ -21,7 +21,6 @@ import { AppIconsModule } from './app.icons.module';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { environment } from "../environments/environment";
-import { AuthModule } from 'angular-auth-oidc-client';
 import { ApplicationName } from 'src/api-authorization/api-authorization.constants';
 
 @NgModule({
@@ -42,9 +41,6 @@ import { ApplicationName } from 'src/api-authorization/api-authorization.constan
     AppIconsModule,
     AppRoutingModule,
     ApiAuthorizationModule,
-    AuthModule.forRoot({
-
-    }),
     ModalModule.forRoot()
   ],
   providers: [
