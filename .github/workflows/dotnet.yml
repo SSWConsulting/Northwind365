@@ -12,9 +12,7 @@ on:
 permissions:
   contents: read
   id-token: write
-  statuses: write
   actions: write
-  checks: write
 
 env:
   DOTNET_VERSION: '8.0.x'
@@ -72,5 +70,9 @@ jobs:
       # Push to Octopus
 
       # Create release 
+      # - name: Create a release in Octopus Deploy 🐙
+      #   uses: OctopusDeploy/create-release-action@v3
+      #   with:
+      #     project: 'Northwind 365'
 
       # Deploy to Dev 
