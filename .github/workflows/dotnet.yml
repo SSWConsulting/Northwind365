@@ -78,7 +78,11 @@ jobs:
           files: '**/*.*'
 
       # Push to Octopus 🐙
-      
+      - name: Push Package to Octopus Deploy
+        uses: OctopusDeploy/push-package-action@v3.0.4
+        with:
+          packages: './packaging/Northwind365.1.0.${{github.run_number}}.zip'
+          space: 'SSW'
 
       # Create release 
       - name: Create a release in Octopus 🐙
