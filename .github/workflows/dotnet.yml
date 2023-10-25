@@ -10,11 +10,12 @@ on:
     branches: [ "main" ]
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
   actions: write
   checks: write
   statuses: write
+  packages: write
 
 env:
   DOTNET_VERSION: '8.0.x'
