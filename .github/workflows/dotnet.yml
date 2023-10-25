@@ -72,9 +72,9 @@ jobs:
       # Push to Octopus
 
       # Create release 
-      # - name: Create a release in Octopus Deploy 🐙
-      #   uses: OctopusDeploy/create-release-action@v3
-      #   with:
-      #     project: 'Northwind 365'
+      - name: Create a release in Octopus Deploy 🐙
+        uses: OctopusDeploy/create-release-action@v3
+        with:
+          project: 'Northwind 365'
 
       # Deploy to Dev 
