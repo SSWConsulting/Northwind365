@@ -47,12 +47,6 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Login to Octopus Deploy 
-        uses: OctopusDeploy/login@v0
-        with: 
-          server: https://robpearson.octopus.app
-          service_account_id: 0bcc0eaa-7530-4163-9109-fc43f2dc6e53
-
       - name: Build
         run: dotnet build --no-restore --configuration Release
 
@@ -67,6 +61,12 @@ jobs:
       #     path: "**/*.trx"        # Path to test results
       #     reporter: dotnet-trx    # Format of test results
 
+      - name: Login to Octopus Deploy 
+        uses: OctopusDeploy/login@v0
+        with: 
+          server: https://robpearson.octopus.app
+          service_account_id: 0bcc0eaa-7530-4163-9109-fc43f2dc6e53
+
       # Package webapp 
       - name: Zip webapp for Octopus 🐙
         uses: OctopusDeploy/create-zip-package-action@v3.0.2
@@ -75,7 +75,8 @@ jobs:
           version: '1.0.${{github.run_number}}'
           output_folder: './packaging'
           base_path: '/home/runner/work/Northwind365/Northwind365/Src/WebUI/bin/Release/net8.0/'
-          files: '**/*.*'
+          files: |
+            **/*.*
 
       # Push to Octopus 🐙
       - name: Push Package to Octopus Deploy
