@@ -80,7 +80,7 @@ jobs:
             **/*.*
 
       - name: Commit files
-        run: ls /home/runner/work/Northwind365/Northwind365/packaging/
+        run: ls -alF /home/runner/work/Northwind365/Northwind365/packaging/
 
       # Push to Octopus 🐙
       - name: Push Package to Octopus Deploy
