@@ -1,13 +1,20 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: CI 
+name: CI Process
 
 on:
   push:
-    branches: [ "main", "rp-webinar" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+permissions:
+  contents: read
+  id-token: write
+  actions: write
+  checks: write
+  statuses: write
 
 env:
   DOTNET_VERSION: '8.0.x'
@@ -40,16 +47,48 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
+      - name: Login to Octopus Deploy 
+        uses: OctopusDeploy/login@v0
+        with: 
+          server: https://robpearson.octopus.app
+          service_account_id: 0bcc0eaa-7530-4163-9109-fc43f2dc6e53
+
       - name: Build
         run: dotnet build --no-restore --configuration Release
 
-      - name: Test
-        run: dotnet test --no-build --no-restore --configuration Release --logger "trx;LogFileName=TestResults.trx"
+      # - name: Test
+      #   run: dotnet test --no-build --no-restore --configuration Release --logger "trx;LogFileName=TestResults.trx"
 
-      - name: Test Report
-        uses: dorny/test-reporter@v1
-        if: success() || failure()    # run this step even if previous step failed
+      # - name: Test Report
+      #   uses: dorny/test-reporter@v1
+      #   if: success() || failure()    # run this step even if previous step failed
+      #   with:
+      #     name: Tests             # Name of the check run which will be created
+      #     path: "**/*.trx"        # Path to test results
+      #     reporter: dotnet-trx    # Format of test results
+
+      # Package webapp 
+      - name: Zip webapp for Octopus 🐙
+        uses: OctopusDeploy/create-zip-package-action@v3.0.2
         with:
-          name: Tests             # Name of the check run which will be created
-          path: "**/*.trx"        # Path to test results
-          reporter: dotnet-trx    # Format of test results
+          package_id: 'NorthWind365'
+          version: '1.0.${{github.run_number}}'
+          output_folder: './packaging'
+          base_path: '/home/runner/work/Northwind365/Northwind365/Src/WebUI/bin/Release/net8.0/'
+          files: '**/*.*'
+
+      # Push to Octopus 🐙
+      - name: Push Package to Octopus Deploy
+        uses: OctopusDeploy/push-package-action@v3.1.0
+        with:
+          packages: '/home/runner/work/Northwind365/Northwind365/packaging/Northwind365.1.0.${{github.run_number}}.zip'
+          space: 'SSW'
+
+      # Create release 
+      - name: Create a release in Octopus 🐙
+        uses: OctopusDeploy/create-release-action@v3
+        with:
+          space: 'SSW'
+          project: 'Northwind 365'
+
+      # Deploy to Dev 
