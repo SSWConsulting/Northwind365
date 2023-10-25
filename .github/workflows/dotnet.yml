@@ -14,8 +14,6 @@ permissions:
   id-token: write
   actions: write
   checks: write
-  statuses: write
-  packages: write
 
 env:
   DOTNET_VERSION: '8.0.x'
@@ -76,11 +74,7 @@ jobs:
           version: '1.0.${{github.run_number}}'
           output_folder: './packaging'
           base_path: '/home/runner/work/Northwind365/Northwind365/Src/WebUI/'
-          files: |
-            **/*.*
-
-      - name: Commit files
-        run: ls -alF /home/runner/work/Northwind365/Northwind365/packaging/
+          files: '**/*.*'
 
       # Push to Octopus 🐙
       - name: Push Package to Octopus Deploy
