@@ -1,7 +1,6 @@
 ﻿using Common.Fixtures;
 using MediatR;
 using Northwind.Infrastructure.Persistence;
-using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
 using Xunit.Abstractions;
 
