@@ -1,17 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿// using Microsoft.AspNetCore.Identity.UI.Services;
+//
+// namespace Northwind.Infrastructure;
 
-namespace Northwind.Infrastructure;
-
-public class DebugEmailService : IEmailSender
-{
-    public Task SendEmailAsync(string email, string subject, string htmlMessage)
-    {
-        Console.WriteLine($"MOCK EMAIL:{subject}");
-        Console.WriteLine(htmlMessage);
-
-        return Task.CompletedTask;
-    }
-}
+// public class DebugEmailService : IEmailSender
+// {
+//     public Task SendEmailAsync(string email, string subject, string htmlMessage)
+//     {
+//         Console.WriteLine($"MOCK EMAIL:{subject}");
+//         Console.WriteLine(htmlMessage);
+//
+//         return Task.CompletedTask;
+//     }
+// }
 
 // public class DebugEmailService : IEmailSender<ApplicationUser>
 // {
