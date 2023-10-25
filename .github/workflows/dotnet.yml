@@ -72,7 +72,7 @@ jobs:
       - name: Zip webapp for Octopus 🐙
         uses: OctopusDeploy/create-zip-package-action@v3.0.2
         with:
-          package_id: 'NorthWind365'
+          package_id: 'Northwind365'
           version: '1.0.${{github.run_number}}'
           output_folder: './packaging'
           base_path: '/home/runner/work/Northwind365/Northwind365/Src/WebUI/'
@@ -86,7 +86,7 @@ jobs:
       - name: Push Package to Octopus Deploy
         uses: OctopusDeploy/push-package-action@v3.1.0
         with:
-          packages: '/home/runner/work/Northwind365/Northwind365/packaging/Northwind365.1.0.${{github.run_number}}.zip'
+          packages: '/home/runner/work/Northwind365/Northwind365/Src/WebUI/Northwind365.1.0.${{github.run_number}}.zip'
           space: 'SSW'
 
       # Create release 
