@@ -13,10 +13,9 @@ public static class DependencyInjection
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-        services.AddHealthChecks()
-            .AddDbContextCheck<NorthwindDbContext>();
+        services.AddHealthChecks().AddDbContextCheck<NorthwindDbContext>();
 
-        services.AddOpenApiDocument(configure => configure.Title = "Northwind Traders API");
+        // services.AddOpenApiDocument(configure => configure.Title = "Northwind Traders API");
         services.AddEndpointsApiExplorer();
 
         // NOTE: This will be removed soon
