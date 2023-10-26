@@ -5,7 +5,7 @@
     "aspNetCoreToOpenApi": {
       "project": "WebUI.csproj",
       "msBuildProjectExtensionsPath": null,
-      "configuration": "Debug",
+      "configuration": "$(Configuration)",
       "runtime": null,
       "targetFramework": null,
       "noBuild": true,
