@@ -17,6 +17,11 @@ public class ApplicationDbContextInitializer
         _dbContext = dbContext;
     }
 
+    public Task<bool> CanConnect()
+    {
+        return _dbContext.Database.CanConnectAsync();
+    }
+
     // ReSharper disable once UnusedMember.Global
     public async Task EnsureDeleted()
     {

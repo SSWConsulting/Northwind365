@@ -774,12 +774,12 @@
         }
       }
     },
-    "/api/products/Download": {
+    "/api/products/download": {
       "get": {
         "tags": [
           "products"
         ],
-        "operationId": "Download",
+        "operationId": "download",
         "responses": {
           "200": {
             "description": "",
