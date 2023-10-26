@@ -70,7 +70,6 @@ app.UseSwaggerUi3(settings => settings.Path = "/api");
 app.UseRouting();
 
 app.UseAuthentication();
-//app.UseIdentityServer();
 app.UseAuthorization();
 
 // TODO: Are controllers needed?
@@ -82,7 +81,6 @@ app.MapRazorPages();
 
 app.MapCategoryEndpoints();
 app.MapCustomerEndpoints();
-//app.MapIdentityEndpoints();
 app.MapProductEndpoints();
 
 app.MapFallbackToFile("index.html");

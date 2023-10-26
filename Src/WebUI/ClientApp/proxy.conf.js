@@ -7,11 +7,6 @@ const PROXY_CONFIG = [
   {
     context: [
       "/api",
-      "/_configuration",
-      "/.well-known",
-      "/connect",
-      "/Identity",
-      "/Account",
       "/login",
       "/register",
       "/refresh",
