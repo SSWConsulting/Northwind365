@@ -35,13 +35,16 @@ if (app.Environment.IsDevelopment())
     try
     {
         var identityInitializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
-        //await identityInitializer.EnsureDeleted();
-        await identityInitializer.InitializeAsync();
+        if (await identityInitializer.CanConnect())
+        {
+            //await identityInitializer.EnsureDeleted();
+            await identityInitializer.InitializeAsync();
 
-        // Initialise and seed database
-        var initializer = scope.ServiceProvider.GetRequiredService<NorthwindDbContextInitializer>();
-        await initializer.InitializeAsync();
-        await initializer.SeedAsync();
+            // Initialise and seed database
+            var initializer = scope.ServiceProvider.GetRequiredService<NorthwindDbContextInitializer>();
+            await initializer.InitializeAsync();
+            await initializer.SeedAsync();
+        }
     }
     catch (Exception ex)
     {
