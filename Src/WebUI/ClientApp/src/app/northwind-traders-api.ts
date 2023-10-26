@@ -1196,7 +1196,7 @@ export class Client implements IClient {
     }
 
     download(): Observable<ProductsListVm> {
-        let url_ = this.baseUrl + "/api/products/Download";
+        let url_ = this.baseUrl + "/api/products/download";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
