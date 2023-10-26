@@ -39,9 +39,11 @@ if (app.Environment.IsDevelopment())
         {
             //await identityInitializer.EnsureDeleted();
             await identityInitializer.InitializeAsync();
+        }
 
-            // Initialise and seed database
-            var initializer = scope.ServiceProvider.GetRequiredService<NorthwindDbContextInitializer>();
+        var initializer = scope.ServiceProvider.GetRequiredService<NorthwindDbContextInitializer>();
+        if (await identityInitializer.CanConnect())
+        {
             await initializer.InitializeAsync();
             await initializer.SeedAsync();
         }
@@ -49,7 +51,7 @@ if (app.Environment.IsDevelopment())
     catch (Exception ex)
     {
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred while migrating or initializing the database.");
+        logger.LogError(ex, "An error occurred while migrating or initializing the database");
     }
 }
 else
