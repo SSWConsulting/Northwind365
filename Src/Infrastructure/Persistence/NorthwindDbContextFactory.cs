@@ -1,14 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Northwind.Application.Common.Interfaces;
 using Northwind.Infrastructure.Services;
 
 namespace Northwind.Infrastructure.Persistence;
 
-public class NorthwindDbContextFactory : DesignTimeDbContextFactoryBase<NorthwindDbContext>
+// public class NorthwindDbContextFactory : DesignTimeDbContextFactoryBase<NorthwindDbContext>
+// {
+//     protected override NorthwindDbContext CreateNewInstance(DbContextOptions<NorthwindDbContext> options)
+//     {
+//         return new NorthwindDbContext(options, new DesignTimeUserService(), new MachineDateTime());
+//     }
+// }
+
+public sealed class NorthwindDbContextFactory : IDesignTimeDbContextFactory<NorthwindDbContext>
 {
-    protected override NorthwindDbContext CreateNewInstance(DbContextOptions<NorthwindDbContext> options)
+    public NorthwindDbContext CreateDbContext(string[] args)
     {
-        return new NorthwindDbContext(options, new DesignTimeUserService(), new MachineDateTime());
+        var optionsBuilder = new DbContextOptionsBuilder<NorthwindDbContext>();
+        optionsBuilder.UseSqlServer();
+        return new NorthwindDbContext(optionsBuilder.Options, new DesignTimeUserService(), new MachineDateTime());
     }
 }
 
