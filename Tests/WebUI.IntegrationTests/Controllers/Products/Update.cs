@@ -2,7 +2,6 @@
 using Common.Fixtures;
 using FluentAssertions;
 using Northwind.Application.Products.Commands.UpdateProduct;
-using Northwind.WebUI.IntegrationTests.Common;
 using System.Net;
 using Xunit;
 using Xunit.Abstractions;
@@ -35,10 +34,8 @@ public class Update : IntegrationTestBase
             false
         );
 
-        var content = Utilities.GetRequestContent(command);
-
         // Act
-        var response = await client.PutAsync($"/api/products", content);
+        var response = await client.PutAsJsonAsync($"/api/products", command);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -60,10 +57,9 @@ public class Update : IntegrationTestBase
             category.Id.Value,
             false
         );
-        var content = Utilities.GetRequestContent(invalidCommand);
 
         // Act
-        var response = await client.PutAsync($"/api/products", content);
+        var response = await client.PutAsJsonAsync($"/api/products", invalidCommand);
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);

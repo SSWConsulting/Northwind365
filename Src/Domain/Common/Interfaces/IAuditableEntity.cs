@@ -3,9 +3,9 @@
 public interface IAuditableEntity
 {
     public DateTimeOffset CreatedAt { get; }
-    public string? CreatedBy { get; } // TODO: String as userId? (https://github.com/SSWConsulting/SSW.CleanArchitecture/issues/76)
+    public string? CreatedBy { get; }
     public DateTimeOffset? UpdatedAt { get; }
-    public string? UpdatedBy { get; } // TODO: String as userId? (https://github.com/SSWConsulting/SSW.CleanArchitecture/issues/76)
+    public string? UpdatedBy { get; }
 
     public void SetCreated(DateTimeOffset now, string? by = null);
 

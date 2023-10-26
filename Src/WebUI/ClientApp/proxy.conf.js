@@ -7,9 +7,11 @@ const PROXY_CONFIG = [
   {
     context: [
       "/api",
-      "/_configuration",
-      "/.well-known",
-      "/connect"
+      "/login",
+      "/register",
+      "/refresh",
+      "/swagger",
+      "/manage"
    ],
     proxyTimeout: 10000,
     target: target,

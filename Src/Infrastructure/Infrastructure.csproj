@@ -9,10 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="30.0.1" />
-    <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="6.3.5" />
-    <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="6.3.5" />
-    <PackageReference Include="Duende.IdentityServer.EntityFramework.Storage" Version="6.3.5" />
-    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="8.0.0-preview.6.23329.11" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0-rc.2.23480.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0-rc.2.23480.1" />
     <PackageReference Include="Bogus" Version="34.0.2"/>
@@ -24,6 +20,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="8.0.0-rc.2.23479.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0-rc.2.23479.6" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0-rc.2.23479.6" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.0-rc.2.23480.2"/>
   </ItemGroup>
 
   <ItemGroup>

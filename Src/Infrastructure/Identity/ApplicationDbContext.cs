@@ -1,39 +1,13 @@
-﻿using Duende.IdentityServer.EntityFramework.Entities;
-using Duende.IdentityServer.EntityFramework.Extensions;
-using Duende.IdentityServer.EntityFramework.Interfaces;
-using Duende.IdentityServer.EntityFramework.Options;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace Northwind.Infrastructure.Identity;
 
-// NOTE: Workaround as per https://github.com/dotnet/aspnetcore/issues/46025#issuecomment-1379085253
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IPersistedGrantDbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
-    private readonly IOptions<OperationalStoreOptions> _operationalStoreOptions;
-
     public ApplicationDbContext(
-        DbContextOptions<ApplicationDbContext> options,
-        IOptions<OperationalStoreOptions> operationalStoreOptions)
+        DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
-        _operationalStoreOptions = operationalStoreOptions;
-    }
-
-    public DbSet<PersistedGrant> PersistedGrants { get; set; } = null!;
-
-    public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; } = null!;
-
-    public DbSet<Key> Keys { get; set; } = null!;
-
-    public DbSet<ServerSideSession> ServerSideSessions { get; set; } = null!;
-
-    Task<int> IPersistedGrantDbContext.SaveChangesAsync() => base.SaveChangesAsync();
-
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
-        builder.ConfigurePersistedGrantContext(_operationalStoreOptions.Value);
     }
 }
