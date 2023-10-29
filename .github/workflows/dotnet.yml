@@ -43,11 +43,17 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v3
 
+      - name: Setup .NET EF Tooling
+        run: dotnet tool install --global dotnet-ef; dotnet tool update --global dotnet-ef --version 8.0.0-rc.2.23480.1
+
       - name: Restore dependencies
         run: dotnet restore
 
       - name: Build
         run: dotnet build --no-restore --configuration Release
+
+      - name: Build EF Migrations bundle
+        run: dotnet ef migrations bundle --project ./Src/WebUI/ --context NorthwindDbContext --self-contained -r linux-x64
 
       - name: Test
         run: dotnet test --no-build --no-restore --configuration Release --logger "trx;LogFileName=TestResults.trx"
@@ -76,11 +82,23 @@ jobs:
           base_path: '/home/runner/work/Northwind365/Northwind365/Src/WebUI/'
           files: '**/*.*'
 
+      # Package EF bundle
+      - name: Zip EF bundle for Octopus 🐙
+        uses: OctopusDeploy/create-zip-package-action@v3.0.2
+        with:
+          package_id: 'Northwind365-db'
+          version: '1.0.${{github.run_number}}'
+          output_folder: './packaging'
+          base_path: '/home/runner/work/Northwind365/Northwind365/'
+          files: 'efbundle'
+          
       # Push to Octopus 🐙
       - name: Push Package to Octopus Deploy
         uses: OctopusDeploy/push-package-action@v3.1.0
         with:
-          packages: '/home/runner/work/Northwind365/Northwind365/packaging/Northwind365.1.0.${{github.run_number}}.zip'
+          packages: | 
+            /home/runner/work/Northwind365/Northwind365/packaging/Northwind365.1.0.${{github.run_number}}.zip
+            /home/runner/work/Northwind365/Northwind365/packaging/Northwind365-db.1.0.${{github.run_number}}.zip
           space: 'SSW'
 
       # Create release 

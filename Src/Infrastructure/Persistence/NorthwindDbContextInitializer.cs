@@ -43,6 +43,11 @@ public class NorthwindDbContextInitializer
         _userManager = userManager;
     }
 
+    public Task<bool> CanConnect()
+    {
+        return _dbContext.Database.CanConnectAsync();
+    }
+
     public async Task InitializeAsync()
     {
         try

@@ -32,7 +32,6 @@ public static class ExceptionFilter
         if (ExceptionHandlers.ContainsKey(type))
             return ExceptionHandlers[type].Invoke(context, exception);
 
-        // TODO: Testing around unhandled exceptions (https://github.com/SSWConsulting/SSW.CleanArchitecture/issues/80)
         return Results.Problem(statusCode: StatusCodes.Status500InternalServerError,
             type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
     }

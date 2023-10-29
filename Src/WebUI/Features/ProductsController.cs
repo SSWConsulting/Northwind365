@@ -14,25 +14,22 @@ public static class ProductEndpoints
     public static void MapProductEndpoints(this WebApplication app)
     {
         var group = app
-            .MapApiGroup("products");
-        // TODO: Add back
-        //.RequireAuthorization();
+            .MapApiGroup("products")
+            .AllowAnonymous();
 
         group
             .MapGet("/", (ISender sender, CancellationToken ct) => sender.Send(new GetProductsListQuery(), ct))
             .WithName("GetProductsList")
-            .ProducesGet<ProductsListVm>()
-            .AllowAnonymous();
+            .ProducesGet<ProductsListVm>();
 
         group
-            .MapGet("/Download", async (ISender sender, CancellationToken ct) =>
+            .MapGet("/download", async (ISender sender, CancellationToken ct) =>
             {
                 var file = await sender.Send(new GetProductsFileQuery(), ct);
                 return TypedResults.File(file.Content, file.ContentType, file.FileName);
             })
-            .WithName("Download")
-            .ProducesGet<ProductsListVm>()
-            .AllowAnonymous();
+            .WithName("download")
+            .ProducesGet<ProductsListVm>();
 
         group
             .MapGet("/{id}",

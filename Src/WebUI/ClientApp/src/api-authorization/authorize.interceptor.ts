@@ -1,18 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AuthorizeService } from './authorize.service';
 import { mergeMap } from 'rxjs/operators';
+import { AuthorizeService } from './authorize.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthorizeInterceptor implements HttpInterceptor {
+
   constructor(private authorize: AuthorizeService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return this.authorize.getAccessToken()
-      .pipe(mergeMap(token => this.processRequestWithToken(token, req, next)));
+    let token = this.authorize.getAccessToken();
+    return this.processRequestWithToken(token, req, next);
   }
 
   // Checks if there is an access_token available in the authorize service

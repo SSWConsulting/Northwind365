@@ -1,7 +1,6 @@
 ﻿using Common.Fixtures;
 using MediatR;
 using Northwind.Infrastructure.Persistence;
-using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -16,8 +15,6 @@ public abstract class IntegrationTestBase : IAsyncLifetime
     protected IMediator Mediator { get; }
     protected NorthwindDbContext Context { get; }
 
-
-    // TODO: Hook up ITestOutputHelper
     public IntegrationTestBase(TestingDatabaseFixture fixture, ITestOutputHelper output)
     {
         Fixture = fixture;

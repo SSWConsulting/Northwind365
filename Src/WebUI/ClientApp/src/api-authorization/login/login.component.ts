@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthorizeService, AuthenticationResultStatus } from '../authorize.service';
+import { AuthenticationResult, AuthorizeService, NetCore8LoginModel } from '../authorize.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { LoginActions, QueryParameterNames, ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
+import { ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
+import {RegisterComponent} from "../register/register.component";
+
 
 // The main responsibility of this component is to handle the user's login process.
 // This is the starting point for the login process. Any component that needs to authenticate
@@ -13,120 +14,59 @@ import { LoginActions, QueryParameterNames, ApplicationPaths, ReturnUrlType } fr
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
-  public message = new BehaviorSubject<string>(null);
+export class LoginComponent implements OnInit{
 
-  constructor(
-    private authorizeService: AuthorizeService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+  constructor(private authService: AuthorizeService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
-  async ngOnInit() {
-    const action = this.activatedRoute.snapshot.url[1];
-    switch (action.path) {
-      case LoginActions.Login:
-        await this.login(this.getReturnUrl());
-        break;
-      case LoginActions.LoginCallback:
-        await this.processLoginCallback();
-        break;
-      case LoginActions.LoginFailed:
-        const message = this.activatedRoute.snapshot.queryParamMap.get(QueryParameterNames.Message);
-        this.message.next(message);
-        break;
-      case LoginActions.Profile:
-        this.redirectToProfile();
-        break;
-      case LoginActions.Register:
-        this.redirectToRegister();
-        break;
-      default:
-        throw new Error(`Invalid action '${action}'`);
-    }
+  ngOnInit(): void {
+
+    console.log("Login component initialized. Attempting refresh...");
+
+    this.authService.refreshLogin().subscribe(async (result: AuthenticationResult) => {
+      if (result === AuthenticationResult.Success) {
+        console.log("Login refresh successful on login page");
+
+        let returnUrl = this.getReturnUrl();
+
+        console.log("Redirecting to: " + returnUrl);
+        await this.router.navigate([returnUrl]);
+      } else {
+        console.log("Login refresh failed on login page");
+        console.log(result);
+      }
+    })
   }
 
+  loginClicked() {
 
-  private async login(returnUrl: string): Promise<void> {
-    const state: INavigationState = { returnUrl };
-    const result = await this.authorizeService.signIn(state);
-    this.message.next(undefined);
-    switch (result.status) {
-      case AuthenticationResultStatus.Redirect:
-        // We replace the location here so that in case the user hits the back
-        // arrow from within the login page they don't get into an infinite
-        // redirect loop.
-        window.location.replace(result.redirectUrl);
-        break;
-      case AuthenticationResultStatus.Success:
-        await this.navigateToReturnUrl(returnUrl);
-        break;
-      case AuthenticationResultStatus.Fail:
-        await this.router.navigate(ApplicationPaths.LoginFailedPathComponents, {
-          queryParams: { [QueryParameterNames.Message]: result.message }
-        });
-        break;
-      default:
-        throw new Error(`Invalid status result ${(result as any).status}.`);
-    }
-  }
+    // todo: show that something is happening (https://github.com/SSWConsulting/Northwind365/issues/105)
 
-  private async processLoginCallback(): Promise<void> {
-    const url = window.location.href;
-    const result = await this.authorizeService.completeSignIn(url);
-    switch (result.status) {
-      case AuthenticationResultStatus.Redirect:
-        // There should not be any redirects as completeSignIn never redirects.
-        throw new Error('Should not redirect.');
-      case AuthenticationResultStatus.Success:
-        await this.navigateToReturnUrl(this.getReturnUrl(result.state));
-        break;
-      case AuthenticationResultStatus.Fail:
-        this.message.next(result.message);
-        break;
-    }
-  }
+    let username = (<HTMLInputElement>document.getElementById("username")).value;
+    let password = (<HTMLInputElement>document.getElementById("password")).value;
 
-  private redirectToRegister(): any {
-    this.redirectToApiAuthorizationPath(
-      `${ApplicationPaths.IdentityRegisterPath}?returnUrl=${encodeURI('/' + ApplicationPaths.Login)}`);
-  }
+    let loginModel: NetCore8LoginModel = {
+      email: username,
+      password: password
+    };
 
-  private redirectToProfile(): void {
-    this.redirectToApiAuthorizationPath(ApplicationPaths.IdentityManagePath);
-  }
+    this.authService.handleLogin(loginModel).subscribe(async (result: AuthenticationResult) => {
+      console.log(result);
 
-  private async navigateToReturnUrl(returnUrl: string) {
-    // It's important that we do a replace here so that we remove the callback uri with the
-    // fragment containing the tokens from the browser history.
-    await this.router.navigateByUrl(returnUrl, {
-      replaceUrl: true
+      if (result == AuthenticationResult.Success) {
+        console.log("Login successful");
+
+        let returnUrl = this.getReturnUrl();
+
+        await this.router.navigate([returnUrl]);
+      } else {
+        // handle failure
+      }
     });
+
   }
 
-  private getReturnUrl(state?: INavigationState): string {
-    const fromQuery = (this.activatedRoute.snapshot.queryParams as INavigationState).returnUrl;
-    // If the url is comming from the query string, check that is either
-    // a relative url or an absolute url
-    if (fromQuery &&
-      !(fromQuery.startsWith(`${window.location.origin}/`) ||
-        /\/[^\/].*/.test(fromQuery))) {
-      // This is an extra check to prevent open redirects.
-      throw new Error('Invalid return url. The return url needs to have the same origin as the current page.');
-    }
-    return (state && state.returnUrl) ||
-      fromQuery ||
-      ApplicationPaths.DefaultLoginRedirectPath;
+  getReturnUrl(): string {
+    return this.activatedRoute.snapshot.queryParams[ReturnUrlType] || '/';
   }
 
-  private redirectToApiAuthorizationPath(apiAuthorizationPath: string) {
-    // It's important that we do a replace here so that when the user hits the back arrow on the
-    // browser they get sent back to where it was on the app instead of to an endpoint on this
-    // component.
-    const redirectUrl = `${window.location.origin}${apiAuthorizationPath}`;
-    window.location.replace(redirectUrl);
-  }
-}
-
-interface INavigationState {
-  [ReturnUrlType]: string;
 }

@@ -1,4 +1,3 @@
-using IdentityModel.Client;
 using Meziantou.Extensions.Logging.Xunit;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -10,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using Northwind.Infrastructure.Identity;
 using Northwind.Infrastructure.Persistence;
 using Northwind.WebUI;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using Xunit.Abstractions;
 
 namespace Common.Fixtures;
@@ -19,6 +20,8 @@ public class WebUiTestFactory : WebApplicationFactory<IWebUiMarker>
     public DatabaseContainer Database { get; }
 
     public ITestOutputHelper Output { get; set; } = null!;
+
+    private HttpClient? _authenticatedClient;
 
     // ReSharper disable once ConvertConstructorToMemberInitializers
     public WebUiTestFactory()
@@ -47,48 +50,57 @@ public class WebUiTestFactory : WebApplicationFactory<IWebUiMarker>
 
     public async Task<HttpClient> GetAuthenticatedClientAsync()
     {
-        return await GetAuthenticatedClientAsync("jason@northwind", "Northwind1!");
+        return await GetAuthenticatedClientAsync("daniel@northwind.com", "Northwind1!");
     }
 
-    public async Task<HttpClient> GetAuthenticatedClientAsync(string userName, string password)
+    private async Task<HttpClient> GetAuthenticatedClientAsync(string userName, string password)
     {
-        var client = CreateClient();
+        if (_authenticatedClient is not null)
+            return _authenticatedClient;
 
-        var token = await GetAccessTokenAsync(client, userName, password);
-        if (token is null)
+        var client = CreateClient();
+        await Register(userName, password, client);
+        var loginResponseContent = await Login(userName, password, client);
+        SetAuthHeader(client, loginResponseContent);
+
+        _authenticatedClient = client;
+
+        return _authenticatedClient;
+    }
+
+    private static void SetAuthHeader(HttpClient client, LoginResponse? loginResponseContent)
+    {
+        ArgumentNullException.ThrowIfNull(loginResponseContent);
+
+        client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", loginResponseContent.accessToken);
+    }
+
+    private static async Task<LoginResponse?> Login(string userName, string password, HttpClient client)
+    {
+        var loginResponse = await client.PostAsJsonAsync("/login", new { Email = userName, Password = password });
+        loginResponse.EnsureSuccessStatusCode();
+
+        var loginResponseContent = await loginResponse.Content.ReadFromJsonAsync<LoginResponse>();
+        if (loginResponseContent is null)
             throw new NullReferenceException("Not able to generate access token");
 
-        client.SetBearerToken(token);
-
-        return client;
+        return loginResponseContent;
     }
 
-    private async Task<string?> GetAccessTokenAsync(HttpClient client, string userName, string password)
+    private static async Task Register(string userName, string password, HttpClient client)
     {
-        var disco = await client.GetDiscoveryDocumentAsync();
-
-        if (disco.IsError)
-        {
-            throw new Exception(disco.Error);
-        }
-
-        var response = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
-        {
-            Address = disco.TokenEndpoint,
-            ClientId = "Northwind.IntegrationTests",
-            ClientSecret = "secret",
-            Scope = "Northwind.WebUIAPI openid profile",
-            UserName = userName,
-            Password = password
-        });
-
-        if (response.IsError)
-        {
-            throw new Exception(response.Error);
-        }
-
-        return response.AccessToken;
+        var registerResponse = await client.PostAsJsonAsync("/register", new { Email = userName, Password = password });
+        registerResponse.EnsureSuccessStatusCode();
     }
+}
+
+public class LoginResponse
+{
+    public string tokenType { get; set; }
+    public string accessToken { get; set; }
+    public int expiresIn { get; set; }
+    public string refreshToken { get; set; }
 }
 
 internal static class DbContextExt
