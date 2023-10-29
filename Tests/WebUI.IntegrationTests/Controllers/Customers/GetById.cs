@@ -1,9 +1,7 @@
 using Common.Factories;
 using Common.Fixtures;
 using FluentAssertions;
-using Northwind.Application.Common.Interfaces;
 using Northwind.Application.Customers.Queries.GetCustomerDetail;
-using Northwind.WebUI.IntegrationTests.Common;
 using System.Net;
 using Xunit;
 using Xunit.Abstractions;
@@ -26,13 +24,10 @@ public class GetById : IntegrationTestBase
         await AddEntityAsync(customer);
 
         // Act
-        var response = await client.GetAsync($"/api/customers/{customer.Id.Value}");
+        var customerResp = await client.GetFromJsonAsync<CustomerDetailVm>($"/api/customers/{customer.Id.Value}");
 
         // Assert
-        response.EnsureSuccessStatusCode();
-
-        var customerResp = await Utilities.GetResponseContent<CustomerDetailVm>(response);
-
+        customerResp.Should().NotBeNull();
         customerResp.Id.Should().Be(customer.Id.Value);
     }
 

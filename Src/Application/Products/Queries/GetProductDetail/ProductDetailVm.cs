@@ -37,20 +37,4 @@ public class ProductDetailVm : IMapFrom<Product>
             .ForMember(d => d.SupplierCompanyName, opt => opt.MapFrom(s => s.Supplier != null ? s.Supplier.CompanyName : string.Empty))
             .ForMember(d => d.CategoryName, opt => opt.MapFrom(s => s.Category != null ? s.Category.CategoryName : string.Empty));
     }
-
-    public class PermissionsResolver : IValueResolver<Product, ProductDetailVm, bool>
-    {
-
-        // TODO: Inject your services and helper here
-        // ReSharper disable once EmptyConstructor
-        public PermissionsResolver()
-        {
-
-        }
-
-        public bool Resolve(Product source, ProductDetailVm destination, bool destMember, ResolutionContext context)
-        {
-            return false;
-        }
-    }
 }

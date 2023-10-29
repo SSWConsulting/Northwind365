@@ -1,7 +1,6 @@
 ﻿using Common.Fixtures;
 using FluentAssertions;
 using Northwind.Application.Products.Commands.CreateProduct;
-using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -30,16 +29,12 @@ public class Create : IntegrationTestBase
             false
         );
 
-        var content = Utilities.GetRequestContent(command);
-
         // Act
-        var response = await client.PostAsync($"/api/products", content);
+        var response = await client.PostAsJsonAsync($"/api/products", command);
 
         // Assert
         response.EnsureSuccessStatusCode();
-
-        var productId = await Utilities.GetResponseContent<int>(response);
-
+        var productId = response.Content.ReadFromJsonAsync<int>();
         productId.Should().NotBe(0);
     }
 
@@ -60,16 +55,12 @@ public class Create : IntegrationTestBase
             false
         );
 
-        var content = Utilities.GetRequestContent(command);
-
         // Act
-        var response = await client.PostAsync($"/api/products", content);
+        var response = await client.PostAsJsonAsync($"/api/products", command);
 
         // Assert
         response.EnsureSuccessStatusCode();
-
-        var productId = await Utilities.GetResponseContent<int>(response);
-
+        var productId = response.Content.ReadFromJsonAsync<int>();
         productId.Should().NotBe(0);
     }
 
@@ -90,16 +81,12 @@ public class Create : IntegrationTestBase
             false
         );
 
-        var content = Utilities.GetRequestContent(command);
-
         // Act
-        var response = await client.PostAsync($"/api/products", content);
+        var response = await client.PostAsJsonAsync($"/api/products", command);
 
         // Assert
         response.EnsureSuccessStatusCode();
-
-        var productId = await Utilities.GetResponseContent<int>(response);
-
+        var productId = response.Content.ReadFromJsonAsync<int>();
         productId.Should().NotBe(0);
     }
 
@@ -121,16 +108,12 @@ public class Create : IntegrationTestBase
             false
         );
 
-        var content = Utilities.GetRequestContent(command);
-
         // Act
-        var response = await client.PostAsync($"/api/products", content);
+        var response = await client.PostAsJsonAsync($"/api/products", command);
 
         // Assert
         response.EnsureSuccessStatusCode();
-
-        var productId = await Utilities.GetResponseContent<int>(response);
-
+        var productId = response.Content.ReadFromJsonAsync<int>();
         productId.Should().NotBe(0);
     }
 }

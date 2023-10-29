@@ -1,6 +1,5 @@
 ﻿using Common.Fixtures;
 using Northwind.Application.Customers.Commands.CreateCustomer;
-using Northwind.WebUI.IntegrationTests.Common;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -15,6 +14,7 @@ public class Create : IntegrationTestBase
     [Fact]
     public async Task GivenCreateCustomerCommand_ReturnsSuccessStatusCode()
     {
+        // Arrange
         var client = await GetAuthenticatedClientAsync();
 
         var command = new CreateCustomerCommand
@@ -32,10 +32,10 @@ public class Create : IntegrationTestBase
             "Region"
         );
 
-        var content = Utilities.GetRequestContent(command);
+        // Act
+        var response = await client.PostAsJsonAsync($"/api/customers", command);
 
-        var response = await client.PostAsync($"/api/customers", content);
-
+        // Assert
         response.EnsureSuccessStatusCode();
     }
 }

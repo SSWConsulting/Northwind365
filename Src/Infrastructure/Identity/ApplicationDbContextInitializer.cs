@@ -17,8 +17,12 @@ public class ApplicationDbContextInitializer
         _dbContext = dbContext;
     }
 
-    [SuppressMessage("ReSharper", "UnusedMember.Global",
-        Justification = "Occasionally used during development to reset the database")]
+    public Task<bool> CanConnect()
+    {
+        return _dbContext.Database.CanConnectAsync();
+    }
+
+    // ReSharper disable once UnusedMember.Global
     public async Task EnsureDeleted()
     {
         try

@@ -1,8 +1,6 @@
 ﻿using Common.Factories;
 using Common.Fixtures;
 using FluentAssertions;
-using Northwind.Application.Common.Interfaces;
-using Northwind.WebUI.IntegrationTests.Common;
 using System.Net;
 using Xunit;
 using Xunit.Abstractions;

@@ -2,7 +2,6 @@ using Common.Factories;
 using Common.Fixtures;
 using FluentAssertions;
 using Northwind.Application.Products.Queries.GetProductDetail;
-using Northwind.WebUI.IntegrationTests.Common;
 using System.Net;
 using Xunit;
 using Xunit.Abstractions;
@@ -18,16 +17,16 @@ public class GetById : IntegrationTestBase
     [Fact]
     public async Task GivenId_ReturnsProductViewModel()
     {
+        // Arrange
         var client = await GetAuthenticatedClientAsync();
         var product = ProductFactory.Generate();
         await AddEntityAsync(product);
 
-        var response = await client.GetAsync($"/api/products/{product.Id.Value}");
+        // Act
+        var vm = await client.GetFromJsonAsync<ProductDetailVm>($"/api/products/{product.Id.Value}");
 
-        response.EnsureSuccessStatusCode();
-
-        var vm = await Utilities.GetResponseContent<ProductDetailVm>(response);
-
+        // Assert
+        vm.Should().NotBeNull();
         vm.Should().NotBeNull();
         vm.ProductId.Should().Be(product.Id.Value);
     }

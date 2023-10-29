@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CustomerDetailVm } from '../northwind-traders-api';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-customer-detail',
@@ -11,9 +11,12 @@ export class CustomerDetailComponent implements OnInit {
   public customer: CustomerDetailVm;
   public detailKeys: string[] = [];
 
-  constructor(private bsModalRef: BsModalRef) {}
+  constructor(private bsModalService: BsModalService, private bsModalRef: BsModalRef) {}
 
   ngOnInit() {
+
+    this.customer = this.bsModalService.config.initialState['customer'];
+
     this.detailKeys = Object
       .keys(this.customer)
       .filter(keys => keys !== 'id');

@@ -21,6 +21,7 @@ import { AppIconsModule } from './app.icons.module';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { environment } from "../environments/environment";
+import { ApplicationName } from 'src/api-authorization/api-authorization.constants';
 
 @NgModule({
   declarations: [

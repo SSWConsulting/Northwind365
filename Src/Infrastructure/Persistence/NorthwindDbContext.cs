@@ -16,11 +16,6 @@ public class NorthwindDbContext : DbContext, INorthwindDbContext
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTime _dateTime;
 
-    // public NorthwindDbContext(DbContextOptions<NorthwindDbContext> options)
-    //     : base(options)
-    // {
-    // }
-
     public NorthwindDbContext(
         DbContextOptions<NorthwindDbContext> options, 
         ICurrentUserService currentUserService,
