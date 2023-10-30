@@ -47,7 +47,7 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet publish --no-restore --configuration Release --output Publish --self-contained true
+        run: dotnet publish --no-restore --configuration Release --output Publish --self-contained true --os linux
 
       # Package webapp 
       - name: Zip webapp for Octopus 🐙
