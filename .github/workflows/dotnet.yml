@@ -5,7 +5,7 @@ name: CI Process
 
 on:
   push:
-    branches: [ "main", "rp-webinar" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
