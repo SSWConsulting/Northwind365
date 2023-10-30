@@ -47,7 +47,7 @@ jobs:
         run: dotnet restore -r linux-x64
 
       - name: Build
-        run: dotnet publish --no-restore --configuration Release --output Publish --self-contained -r linux-x64
+        run: dotnet publish --project ./Src/WebUI/WebUI.csproj --no-restore --configuration Release --output Publish --self-contained -r linux-x64
 
       # Package webapp 
       - name: Zip webapp for Octopus 🐙
