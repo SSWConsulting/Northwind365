@@ -44,7 +44,7 @@ jobs:
         run: dotnet tool install --global dotnet-ef; dotnet tool update --global dotnet-ef --version 8.0.0-rc.2.23480.1
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ] -r linux-x64
 
       - name: Build
         run: dotnet publish --no-restore --configuration Release --output Publish --self-contained -r linux-x64
