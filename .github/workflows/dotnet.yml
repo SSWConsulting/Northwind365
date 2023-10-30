@@ -47,7 +47,13 @@ jobs:
         run: dotnet restore -r linux-x64
 
       - name: Build
-        run: dotnet publish --no-restore --configuration Release --output Publish --self-contained -r linux-x64
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Test
+        run: dotnet test --no-build --no-restore --configuration Release --logger "trx;LogFileName=TestResults.trx"
+
+      - name: Publish
+        run: dotnet publish ./Src/WebUI/WebUI.csproj --no-restore --configuration Release --output Publish --self-contained -r linux-x64
 
       # Package webapp 
       - name: Zip webapp for Octopus 🐙
@@ -71,9 +77,6 @@ jobs:
           output_folder: './packaging'
           base_path: './'
           files: 'efbundle'
-
-      - name: Test
-        run: dotnet test --no-build --no-restore --configuration Release --logger "trx;LogFileName=TestResults.trx"
 
       - name: Test Report
         uses: dorny/test-reporter@v1
