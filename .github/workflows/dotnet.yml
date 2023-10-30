@@ -5,7 +5,7 @@ name: CI Process
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "rp-webinar" ]
   pull_request:
     branches: [ "main" ]
 
@@ -50,7 +50,17 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
+        run: dotnet publish --no-restore --configuration Release
+
+      # Package webapp 
+      - name: Zip webapp for Octopus 🐙
+        uses: OctopusDeploy/create-zip-package-action@v3.0.2
+        with:
+          package_id: 'Northwind365'
+          version: '1.0.${{github.run_number}}'
+          output_folder: './packaging'
+          base_path: '/home/runner/work/Northwind365/Northwind365/Src/WebUI/'
+          files: '**/*.*'
 
       - name: Build EF Migrations bundle
         run: dotnet ef migrations bundle --project ./Src/WebUI/ --context NorthwindDbContext --self-contained -r linux-x64
@@ -71,16 +81,6 @@ jobs:
         with: 
           server: https://robpearson.octopus.app
           service_account_id: 0bcc0eaa-7530-4163-9109-fc43f2dc6e53
-
-      # Package webapp 
-      - name: Zip webapp for Octopus 🐙
-        uses: OctopusDeploy/create-zip-package-action@v3.0.2
-        with:
-          package_id: 'Northwind365'
-          version: '1.0.${{github.run_number}}'
-          output_folder: './packaging'
-          base_path: '/home/runner/work/Northwind365/Northwind365/Src/WebUI/'
-          files: '**/*.*'
 
       # Package EF bundle
       - name: Zip EF bundle for Octopus 🐙
