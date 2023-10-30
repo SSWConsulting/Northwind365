@@ -65,6 +65,16 @@ jobs:
       - name: Build EF Migrations bundle
         run: dotnet ef migrations bundle --project ./Src/WebUI/ --context NorthwindDbContext --self-contained -r linux-x64
 
+      # Package EF bundle
+      - name: Zip EF bundle for Octopus 🐙
+        uses: OctopusDeploy/create-zip-package-action@v3.0.2
+        with:
+          package_id: 'Northwind365-db'
+          version: '1.0.${{github.run_number}}'
+          output_folder: './packaging'
+          base_path: '/home/runner/work/Northwind365/Northwind365/'
+          files: 'efbundle'
+
       - name: Test
         run: dotnet test --no-build --no-restore --configuration Release --logger "trx;LogFileName=TestResults.trx"
 
@@ -81,16 +91,6 @@ jobs:
         with: 
           server: https://robpearson.octopus.app
           service_account_id: 0bcc0eaa-7530-4163-9109-fc43f2dc6e53
-
-      # Package EF bundle
-      - name: Zip EF bundle for Octopus 🐙
-        uses: OctopusDeploy/create-zip-package-action@v3.0.2
-        with:
-          package_id: 'Northwind365-db'
-          version: '1.0.${{github.run_number}}'
-          output_folder: './packaging'
-          base_path: '/home/runner/work/Northwind365/Northwind365/'
-          files: 'efbundle'
           
       # Push to Octopus 🐙
       - name: Push Package to Octopus Deploy
