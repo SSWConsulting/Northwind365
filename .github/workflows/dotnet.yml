@@ -69,7 +69,7 @@ jobs:
           package_id: 'Northwind365-db'
           version: '1.0.${{github.run_number}}'
           output_folder: './packaging'
-          base_path: '/home/runner/work/Northwind365/Northwind365/'
+          base_path: './'
           files: 'efbundle'
 
       - name: Test
@@ -94,8 +94,8 @@ jobs:
         uses: OctopusDeploy/push-package-action@v3.1.0
         with:
           packages: | 
-            /home/runner/work/Northwind365/Northwind365/packaging/Northwind365.1.0.${{github.run_number}}.zip
-            /home/runner/work/Northwind365/Northwind365/packaging/Northwind365-db.1.0.${{github.run_number}}.zip
+            ./packaging/Northwind365.1.0.${{github.run_number}}.zip
+            ./packaging/Northwind365-db.1.0.${{github.run_number}}.zip
           space: 'SSW'
 
       # Create release 
