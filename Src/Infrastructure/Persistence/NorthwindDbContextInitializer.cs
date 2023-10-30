@@ -67,6 +67,9 @@ public class NorthwindDbContextInitializer
     {
         try
         {
+            // don't be random, be consistent! otherwise this may generate names etc that are too big for DB columns
+            Randomizer.Seed = new Random(420);
+            
             await SeedCustomersAsync(cancellationToken);
             await SeedCategoriesAsync(cancellationToken);
             await SeedRegionsAsync(cancellationToken);
