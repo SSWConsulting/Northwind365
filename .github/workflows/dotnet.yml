@@ -41,7 +41,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Setup .NET EF Tooling
-        run: dotnet tool install --global dotnet-ef; dotnet tool update --global dotnet-ef --version 8.0.0-rc.2.23480.1
+        run: dotnet tool install --global dotnet-ef --version 8.0.0-rc.2.23480.1
 
       - name: Restore dependencies
         run: dotnet restore -r linux-x64
