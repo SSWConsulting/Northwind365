@@ -110,7 +110,7 @@
       <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'"/>
       <RelativePath>%(DistFiles.Identity)</RelativePath>
       -->
-      <DistFiles Include="$(SpaRoot)build\**"/>
+      <DistFiles Include="$(SpaRoot)\dist\**"/>
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
 
         <RelativePath>wwwroot\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
