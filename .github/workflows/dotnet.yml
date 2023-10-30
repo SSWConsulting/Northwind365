@@ -40,9 +40,6 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v3
-
       - name: Setup .NET EF Tooling
         run: dotnet tool install --global dotnet-ef; dotnet tool update --global dotnet-ef --version 8.0.0-rc.2.23480.1
 
@@ -50,7 +47,7 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet publish --no-restore --configuration Release --output Publish
+        run: dotnet publish --no-restore --configuration Release --output Publish --self-contained true
 
       # Package webapp 
       - name: Zip webapp for Octopus 🐙
