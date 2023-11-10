@@ -108,6 +108,7 @@ jobs:
         with:
           space: 'SSW'
           project: 'Northwind 365'
+          git_ref: ${{ github.ref }}
 
       # Deploy to Dev 
       - name: Deploy a release in Octopus Deploy 🐙
