@@ -7,7 +7,7 @@ step "production-approval" {
         properties = {
             Octopus.Action.Manual.BlockConcurrentDeployments = "False"
             Octopus.Action.Manual.Instructions = "Do you approve this production deployment? Please check the change request."
-            Octopus.Action.Manual.ResponsibleTeamIds = "space-managers"
+            Octopus.Action.Manual.ResponsibleTeamIds = "northwind-customer-team"
         }
     }
 }
