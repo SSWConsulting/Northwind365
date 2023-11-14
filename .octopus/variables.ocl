@@ -1,0 +1,55 @@
+variable "Azure.Account" {
+    type = "AzureAccount"
+
+    value "developer-playground" {}
+}
+
+variable "Azure.Database.ConnectionString" {
+    value "Server=#{Azure.Database.Server};Initial Catalog=#{Azure.Database.Name};Persist Security Info=False;User ID=#{Azure.Database.User};Password=#{Azure.Database.UserPassword};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" {}
+}
+
+variable "Azure.Database.Name" {
+    value "au-northwind-appservice-database" {
+        environment = ["production"]
+    }
+
+    value "dev-northwind-appservice-database" {
+        environment = ["development"]
+    }
+
+    value "staging-northwind-appservice-database" {
+        environment = ["staging"]
+    }
+}
+
+variable "Azure.Database.Server" {
+    value "tcp:au-northwind-appservice-server.database.windows.net,1433;" {}
+}
+
+variable "Azure.Database.User" {
+    value "au-northwind-appservice-server-admin" {}
+}
+
+variable "Azure.Region" {
+    value "australiaeast" {}
+}
+
+variable "Azure.ResourceGroupName" {
+    value "rp-ssw-webinar-resource-group" {}
+}
+
+variable "Azure.Storage.AccountName" {
+    value "rptfstatestorage" {}
+}
+
+variable "Azure.Storage.ContainerName" {
+    value "rptfstatecontainer" {}
+}
+
+variable "ConnectionStrings:NorthwindDatabase" {
+    value "#{Azure.Database.ConnectionString}" {}
+}
+
+variable "Slack.Notification.Channel" {
+    value "#production-notifications" {}
+}

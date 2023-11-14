@@ -19,13 +19,11 @@ public static class DependencyInjection
         services.AddOpenApiDocument(configure => configure.Title = "Northwind Traders API");
         services.AddEndpointsApiExplorer();
 
-        // NOTE: This will be removed soon
-#pragma warning disable CS0618 // Type or member is obsolete
         services
             .AddControllersWithViews()
-            .AddNewtonsoftJson()
-            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<INorthwindDbContext>());
-#pragma warning restore CS0618 // Type or member is obsolete
+            .AddNewtonsoftJson();
+        
+        services.AddFluentValidationAutoValidation();
 
         services.AddRazorPages();
 

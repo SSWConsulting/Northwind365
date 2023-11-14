@@ -16,7 +16,7 @@ namespace Northwind.Infrastructure.Persistence;
 
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 public class NorthwindDbContextInitializer
-{
+{    
     private readonly ILogger<NorthwindDbContextInitializer> _logger;
     private readonly NorthwindDbContext _dbContext;
     private readonly IUserManager _userManager;
@@ -53,7 +53,9 @@ public class NorthwindDbContextInitializer
         try
         {
             if (_dbContext.Database.IsSqlServer())
+            {
                 await _dbContext.Database.MigrateAsync();
+            }
         }
         catch (Exception e)
         {
@@ -67,6 +69,7 @@ public class NorthwindDbContextInitializer
     {
         try
         {
+            Randomizer.Seed = new Random(420);
             await SeedCustomersAsync(cancellationToken);
             await SeedCategoriesAsync(cancellationToken);
             await SeedRegionsAsync(cancellationToken);

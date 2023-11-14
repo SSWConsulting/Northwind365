@@ -1,0 +1,115 @@
+step "production-approval" {
+    name = "Production Approval"
+
+    action {
+        action_type = "Octopus.Manual"
+        environments = ["production"]
+        properties = {
+            Octopus.Action.Manual.BlockConcurrentDeployments = "False"
+            Octopus.Action.Manual.Instructions = "Please confirm if the change request is approved."
+            Octopus.Action.Manual.ResponsibleTeamIds = "northwind-customer-team"
+        }
+    }
+}
+
+step "run-db" {
+    name = "Run EF Database Migrations"
+
+    action {
+        action_type = "Octopus.Script"
+        properties = {
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Script.ScriptBody = <<-EOT
+                echo "Running EF Migrations using efbundle ..."
+                
+                cd #{Octopus.Action.Package[Northwind365-db].ExtractedPath}/
+                
+                ls -alF efbundle
+                
+                chmod 755 efbundle
+                
+                ls -alF efbundle
+                
+                ./efbundle --connection '#{Azure.Database.ConnectionString}'
+                EOT
+            Octopus.Action.Script.ScriptSource = "Inline"
+            Octopus.Action.Script.Syntax = "Bash"
+        }
+        worker_pool = "hosted-ubuntu"
+
+        packages "Northwind365-db" {
+            acquisition_location = "Server"
+            feed = "octopus-server-built-in"
+            package_id = "Northwind365-db"
+            properties = {
+                Extract = "True"
+                Purpose = ""
+                SelectionMode = "immediate"
+            }
+        }
+    }
+}
+
+step "deploy-legacy-forex-service-1" {
+    name = "Deploy (Legacy) Forex Service"
+
+    action {
+        action_type = "Octopus.DeployRelease"
+        properties = {
+            Octopus.Action.DeployRelease.DeploymentCondition = "IfNotCurrentVersion"
+            Octopus.Action.DeployRelease.ProjectId = "foreign-exchange"
+        }
+        worker_pool_variable = ""
+    }
+}
+
+step "deploy-front-end" {
+    name = "Deploy front end"
+    properties = {
+        Octopus.Action.TargetRoles = "northwind-web"
+    }
+
+    action {
+        action_type = "Octopus.AzureAppService"
+        properties = {
+            Octopus.Action.Azure.DeploymentType = "Package"
+            Octopus.Action.EnabledFeatures = "Octopus.Features.JsonConfigurationVariables,Octopus.Features.ConfigurationTransforms,Octopus.Features.SubstituteInFiles"
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "octopus-server-built-in"
+            Octopus.Action.Package.JsonConfigurationVariablesTargets = "**/appsettings.json"
+            Octopus.Action.Package.PackageId = "Northwind365"
+            Octopus.Action.RunOnServer = "true"
+            OctopusUseBundledTooling = "False"
+        }
+        worker_pool = "hosted-ubuntu"
+
+        packages {
+            acquisition_location = "Server"
+            feed = "octopus-server-built-in"
+            package_id = "Northwind365"
+            properties = {
+                SelectionMode = "immediate"
+            }
+        }
+    }
+}
+
+step "slack-send-simple-notification" {
+    name = "Slack - Send Simple Notification"
+
+    action {
+        environments = ["production"]
+        properties = {
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Template.Id = "ActionTemplates-301"
+            Octopus.Action.Template.Version = "15"
+            ssn_Channel = "#{Slack.Notification.Channel}"
+            ssn_Color = "good"
+            ssn_HookUrl = "#{Slack.Webhook.Url}"
+            ssn_IconUrl = "https://octopus.com/content/resources/favicon.png"
+            ssn_Title = ":rocket: #{Octopus.Project.Name} #{Octopus.Release.Number} has been deployed to #{Octopus.Environment.Name}."
+            ssn_Username = "Octopus Deploy"
+        }
+        worker_pool = "hosted-windows"
+    }
+}
