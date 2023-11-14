@@ -1,17 +1,3 @@
-step "production-approval" {
-    name = "Production approval"
-
-    action {
-        action_type = "Octopus.Manual"
-        environments = ["production"]
-        properties = {
-            Octopus.Action.Manual.BlockConcurrentDeployments = "False"
-            Octopus.Action.Manual.Instructions = "Do you approve this production deployment? Please check the change request."
-            Octopus.Action.Manual.ResponsibleTeamIds = "northwind-customer-team"
-        }
-    }
-}
-
 step "run-db" {
     name = "Run EF Database Migrations"
 
@@ -51,7 +37,7 @@ step "run-db" {
 }
 
 step "deploy-legacy-forex-service" {
-    name = "Deploy (Legacy) Forex Service "
+    name = "Deploy (Legacy) Forex Service to IIS"
     properties = {
         Octopus.Action.TargetRoles = "trading-service"
     }
@@ -91,6 +77,19 @@ step "deploy-legacy-forex-service" {
                 SelectionMode = "immediate"
             }
         }
+    }
+}
+
+step "deploy-legacy-forex-service-1" {
+    name = "Deploy (Legacy) Forex Service"
+
+    action {
+        action_type = "Octopus.DeployRelease"
+        properties = {
+            Octopus.Action.DeployRelease.DeploymentCondition = "IfNotCurrentVersion"
+            Octopus.Action.DeployRelease.ProjectId = "foreign-exchange"
+        }
+        worker_pool_variable = ""
     }
 }
 
