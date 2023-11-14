@@ -12,6 +12,19 @@ step "production-approval" {
     }
 }
 
+step "deploy-legacy-forex-service-1" {
+    name = "Deploy (Legacy) Forex Service"
+
+    action {
+        action_type = "Octopus.DeployRelease"
+        properties = {
+            Octopus.Action.DeployRelease.DeploymentCondition = "IfNotCurrentVersion"
+            Octopus.Action.DeployRelease.ProjectId = "foreign-exchange"
+        }
+        worker_pool_variable = ""
+    }
+}
+
 step "run-db" {
     name = "Run EF Database Migrations"
 
@@ -47,19 +60,6 @@ step "run-db" {
                 SelectionMode = "immediate"
             }
         }
-    }
-}
-
-step "deploy-legacy-forex-service-1" {
-    name = "Deploy (Legacy) Forex Service"
-
-    action {
-        action_type = "Octopus.DeployRelease"
-        properties = {
-            Octopus.Action.DeployRelease.DeploymentCondition = "IfNotCurrentVersion"
-            Octopus.Action.DeployRelease.ProjectId = "foreign-exchange"
-        }
-        worker_pool_variable = ""
     }
 }
 
