@@ -10,7 +10,6 @@
       <PackageReference Include="Bogus" Version="34.0.2" />
       <PackageReference Include="Meziantou.Extensions.Logging.Xunit" Version="1.0.7" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" />
-<!--      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0-rc.2.23479.6" />-->
       <PackageReference Include="Respawn" Version="6.1.0" />
       <PackageReference Include="Testcontainers.SqlEdge" Version="3.6.0" />
       <PackageReference Include="xunit.extensibility.core" Version="2.6.1" />
