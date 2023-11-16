@@ -19,7 +19,7 @@
 <!--        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>-->
       </div>
       <button (click)="registerClicked()" class="btn btn-primary" type="button" [disabled]="isBusy">
-        <span *nfIg="isBusy" class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+        <span *ngIf="isBusy" class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
         {{ buttonText }}
       </button>
   </div>
