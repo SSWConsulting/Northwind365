@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthenticationResult, AuthorizeService, NetCore8LoginModel } from '../authorize.service';
-import { ApplicationPaths } from '../api-authorization.constants';
-import { Router } from '@angular/router';
+import { ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
+import { ActivatedRoute, Router } from '@angular/router';
 
 declare var bootstrap: any;
 
@@ -12,7 +12,7 @@ declare var bootstrap: any;
 })
 export class RegisterComponent {
 
-  constructor(private authService: AuthorizeService, private router: Router) { }
+  constructor(private authService: AuthorizeService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   isBusy: boolean = false;
   
@@ -42,14 +42,16 @@ export class RegisterComponent {
         this.showToast();
 
         this.authService.handleLogin(registerModel)
-          .subscribe((result: AuthenticationResult) => {
+          .subscribe(async (result: AuthenticationResult) => {
             console.log(result);
 
             if (result == AuthenticationResult.Success) {
               this.notificationMessage = "✅ Login successful! Redirecting...";
               this.showToast();
 
-              this.router.navigate(["/"]); // todo: redirect to previous page?
+              let returnUrl = this.getReturnUrl();
+
+              await this.router.navigate([returnUrl]);
 
             } else {
               // handle failure
@@ -75,6 +77,10 @@ export class RegisterComponent {
       }
     });
 
+  }
+
+  getReturnUrl(): string {
+    return this.activatedRoute.snapshot.queryParams[ReturnUrlType] || '/';
   }
 
   showToast() {
