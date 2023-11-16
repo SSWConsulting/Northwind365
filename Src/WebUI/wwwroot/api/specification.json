@@ -1106,12 +1106,6 @@
           },
           "isEmailConfirmed": {
             "type": "boolean"
-          },
-          "claims": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
           }
         }
       },
