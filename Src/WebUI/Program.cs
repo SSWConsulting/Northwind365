@@ -70,7 +70,7 @@ app.UseStaticFiles();
 app.UseOpenApi();
 
 //app.UseSwaggerUi3(settings => settings.DocumentPath = "/api/specification.json");
-app.UseSwaggerUi3(settings => settings.Path = "/api");
+app.UseSwaggerUi(settings => settings.Path = "/api");
 
 app.UseRouting();
 
