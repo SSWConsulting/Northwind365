@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Northwind.Application;
 using Northwind.Infrastructure;
 using Northwind.Infrastructure.Identity;
@@ -12,13 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddWebUI();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
-
-// TODO: Move this to infrastructure later (https://github.com/SSWConsulting/Northwind365/issues/104)
-builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
-builder.Services.AddAuthorizationBuilder();
-builder.Services.AddIdentityCore<ApplicationUser>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddApiEndpoints();
 
 var app = builder.Build();
 
