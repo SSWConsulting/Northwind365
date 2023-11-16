@@ -18,10 +18,9 @@
         <input id="confirmPassword" class="form-control" type="password" [disabled]="isBusy" />
 <!--        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>-->
       </div>
-      <button (click)="registerClicked()" class="btn btn-primary" [disabled]="isBusy">
+      <button (click)="registerClicked()" class="btn btn-primary" type="button" [disabled]="isBusy">
         <span *nfIg="isBusy" class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
-        <span *nfIg="!isBusy">Register</span>
-        <span *nfIg="isBusy">Registering...</span>
+        {{ buttonText }}
       </button>
   </div>
 </div>

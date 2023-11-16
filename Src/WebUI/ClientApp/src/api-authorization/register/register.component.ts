@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { AuthenticationResult, AuthorizeService, NetCore8LoginModel } from '../authorize.service';
 import { ApplicationPaths } from '../api-authorization.constants';
-import { bootstrap } from 'bootstrap';
 import { Router } from '@angular/router';
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-register',
@@ -17,9 +18,12 @@ export class RegisterComponent {
   
   notificationMessage: string = '';
 
+  buttonText: string = 'Register';
+
   registerClicked() {
 
     this.isBusy = true;
+    this.buttonText = 'Registering...';
 
     let username = (<HTMLInputElement>document.getElementById("username")).value;
     let password = (<HTMLInputElement>document.getElementById("password")).value;
@@ -55,6 +59,7 @@ export class RegisterComponent {
               this.showToast();
 
               this.isBusy = false;
+              this.buttonText = 'Register';
             }
         });
 
@@ -66,6 +71,7 @@ export class RegisterComponent {
         this.showToast();
 
         this.isBusy = false;
+        this.buttonText = 'Register';
       }
     });
 

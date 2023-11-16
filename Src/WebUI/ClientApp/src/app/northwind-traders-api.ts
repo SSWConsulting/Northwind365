@@ -1918,7 +1918,6 @@ export interface ITwoFactorRequest {
 export class InfoResponse implements IInfoResponse {
     email?: string;
     isEmailConfirmed?: boolean;
-    claims?: { [key: string]: string; };
 
     constructor(data?: IInfoResponse) {
         if (data) {
@@ -1933,13 +1932,6 @@ export class InfoResponse implements IInfoResponse {
         if (_data) {
             this.email = _data["email"];
             this.isEmailConfirmed = _data["isEmailConfirmed"];
-            if (_data["claims"]) {
-                this.claims = {} as any;
-                for (let key in _data["claims"]) {
-                    if (_data["claims"].hasOwnProperty(key))
-                        (<any>this.claims)![key] = _data["claims"][key];
-                }
-            }
         }
     }
 
@@ -1954,13 +1946,6 @@ export class InfoResponse implements IInfoResponse {
         data = typeof data === 'object' ? data : {};
         data["email"] = this.email;
         data["isEmailConfirmed"] = this.isEmailConfirmed;
-        if (this.claims) {
-            data["claims"] = {};
-            for (let key in this.claims) {
-                if (this.claims.hasOwnProperty(key))
-                    (<any>data["claims"])[key] = (<any>this.claims)[key];
-            }
-        }
         return data;
     }
 }
@@ -1968,7 +1953,6 @@ export class InfoResponse implements IInfoResponse {
 export interface IInfoResponse {
     email?: string;
     isEmailConfirmed?: boolean;
-    claims?: { [key: string]: string; };
 }
 
 export class InfoRequest implements IInfoRequest {
