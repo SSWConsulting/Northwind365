@@ -1,5 +1,5 @@
 {
-  "x-generator": "NSwag v13.20.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v13.0.0.0))",
+  "x-generator": "NSwag v14.0.0.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))",
   "openapi": "3.0.0",
   "info": {
     "title": "Northwind Traders API",
@@ -11,7 +11,6 @@
         "operationId": "PostRegister",
         "requestBody": {
           "x-name": "registration",
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -63,7 +62,6 @@
         ],
         "requestBody": {
           "x-name": "login",
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -92,7 +90,6 @@
         "operationId": "PostRefresh",
         "requestBody": {
           "x-name": "refreshRequest",
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -160,7 +157,6 @@
         "operationId": "PostResendConfirmationEmail",
         "requestBody": {
           "x-name": "resendRequest",
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -182,7 +178,6 @@
         "operationId": "PostForgotPassword",
         "requestBody": {
           "x-name": "resetRequest",
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -214,7 +209,6 @@
         "operationId": "PostResetPassword",
         "requestBody": {
           "x-name": "resetRequest",
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -246,7 +240,6 @@
         "operationId": "PostManage2fa",
         "requestBody": {
           "x-name": "tfaRequest",
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -316,7 +309,6 @@
         "operationId": "PostManageInfo",
         "requestBody": {
           "x-name": "infoRequest",
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -442,7 +434,6 @@
         "operationId": "CreateCustomer",
         "requestBody": {
           "x-name": "command",
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -548,7 +539,6 @@
         ],
         "requestBody": {
           "x-name": "command",
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -670,7 +660,6 @@
         "operationId": "CreateProduct",
         "requestBody": {
           "x-name": "command",
-          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -733,7 +722,6 @@
         "operationId": "UpdateProduct",
         "requestBody": {
           "x-name": "command",
-          "description": "",
           "content": {
             "application/json": {
               "schema": {

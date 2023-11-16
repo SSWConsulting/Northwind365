@@ -37,8 +37,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0-rc.2.23479.6"/>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0-rc.2.23509.1"/>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0"/>
-    <PackageReference Include="NSwag.AspNetCore" Version="13.20.0"/>
-    <PackageReference Include="NSwag.MSBuild" Version="13.20.0">
+    <PackageReference Include="NSwag.AspNetCore" Version="14.0.0-preview010" />
+    <PackageReference Include="NSwag.MSBuild" Version="14.0.0-preview010">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
@@ -51,6 +51,9 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**"/>
     <Content Remove="ClientApp\.angular\**"/>
     <None Remove="ClientApp\.angular\**"/>
+    <Content Update="nswag.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -75,15 +78,19 @@
     <_ContentIncludedByDefault Remove="Pages\_ViewStart.cshtml" />
   </ItemGroup>
 
-<!--  <Target Name="NSwag" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">-->
-<!--    <Copy SourceFiles="@(Reference)" DestinationFolder="$(OutDir)References"/>-->
-<!--    <Exec Command="nswag run /variables:Configuration=$(Configuration) /runtime:Net80"/>-->
-<!--    <RemoveDir Directories="$(OutDir)References"/>-->
+<!--  <Target Name="NSwag" AfterTargets="PostBuildEvent">-->
+<!--    &lt;!&ndash; nswag will run all *.nswag and nswag.json by default &ndash;&gt;-->
+<!--    <Exec WorkingDirectory="$(ProjectDir)" Command="$(NSwagExe_Net80) run /variables:Configuration=$(Configuration)"/>-->
 <!--  </Target>-->
 
-  <Target Name="SwaggerPostBuildClientAndSpec" AfterTargets="PostBuildEvent">
-    <!-- nswag will run all *.nswag and nswag.json by default -->
-    <Exec WorkingDirectory="$(ProjectDir)" Command="$(NSwagExe_Net70) run /variables:Configuration=$(Configuration)"/>
+  <Target Name="NSwag" AfterTargets="PostBuildEvent" Condition=" '$(Configuration)' == 'Debug'">
+    <Exec ConsoleToMSBuild="true" ContinueOnError="true" WorkingDirectory="$(ProjectDir)" EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Net80) run nswag.json /variables:Configuration=$(Configuration)">
+      <Output TaskParameter="ExitCode" PropertyName="NSwagExitCode" />
+      <Output TaskParameter="ConsoleOutput" PropertyName="NSwagOutput" />
+    </Exec>
+
+    <Message Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' == '0'" Importance="low" />
+    <Error Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' != '0'" />
   </Target>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
