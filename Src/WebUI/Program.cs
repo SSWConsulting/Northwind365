@@ -14,11 +14,11 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 // TODO: Move this to infrastructure later (https://github.com/SSWConsulting/Northwind365/issues/104)
-builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
-builder.Services.AddAuthorizationBuilder();
-builder.Services.AddIdentityCore<ApplicationUser>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddApiEndpoints();
+//builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+//builder.Services.AddAuthorizationBuilder();
+//builder.Services.AddIdentityCore<ApplicationUser>()
+//    .AddEntityFrameworkStores<ApplicationDbContext>()
+//    .AddApiEndpoints();
 
 var app = builder.Build();
 

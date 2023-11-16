@@ -1,5 +1,5 @@
 ﻿// using Microsoft.AspNetCore.Hosting;
-// using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +10,7 @@ using Northwind.Infrastructure.Persistence;
 using Northwind.Infrastructure.Services;
 
 namespace Northwind.Infrastructure;
+//namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjection
 {
@@ -53,5 +54,11 @@ public static class DependencyInjection
         services.AddScoped<IUserManager, UserManagerService>();
 
         services.AddScoped<ApplicationDbContextInitializer>();
+
+        //services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+        //services.AddAuthorizationBuilder();
+        //services.AddIdentityCore<ApplicationUser>()
+        //    .AddEntityFrameworkStores<ApplicationDbContext>()
+        //    .AddApiEndpoints();
     }
 }
