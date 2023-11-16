@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { AuthenticationResult, AuthorizeService, NetCore8LoginModel } from '../authorize.service';
-import { ApplicationPaths } from '../api-authorization.constants';
+import { ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
+import { ActivatedRoute, Router } from '@angular/router';
+
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-register',
@@ -9,11 +12,18 @@ import { ApplicationPaths } from '../api-authorization.constants';
 })
 export class RegisterComponent {
 
-  constructor(private authService: AuthorizeService) { }
+  constructor(private authService: AuthorizeService, private router: Router, private activatedRoute: ActivatedRoute) { }
+
+  isBusy: boolean = false;
+  
+  notificationMessage: string = '';
+
+  buttonText: string = 'Register';
 
   registerClicked() {
 
-    // todo: show that something is happening (https://github.com/SSWConsulting/Northwind365/issues/107)
+    this.isBusy = true;
+    this.buttonText = 'Registering...';
 
     let username = (<HTMLInputElement>document.getElementById("username")).value;
     let password = (<HTMLInputElement>document.getElementById("password")).value;
@@ -27,19 +37,56 @@ export class RegisterComponent {
       console.log(result);
 
       if (result == AuthenticationResult.Success) {
-        console.log("Registration successful");
-        console.log("Redirecting to: " + ApplicationPaths.Login);
 
-        window.location.href = ApplicationPaths.Login;
+        this.notificationMessage = "✅ Registration successful! Logging you in...";
+        this.showToast();
 
-        // todo: Automatically log the user in, capture additional info from the form, and populate their profile, then redirect home instead of to the login page. (https://github.com/SSWConsulting/Northwind365/issues/108)
+        this.authService.handleLogin(registerModel)
+          .subscribe(async (result: AuthenticationResult) => {
+            console.log(result);
+
+            if (result == AuthenticationResult.Success) {
+              this.notificationMessage = "✅ Login successful! Redirecting...";
+              this.showToast();
+
+              let returnUrl = this.getReturnUrl();
+
+              await this.router.navigate([returnUrl]);
+
+            } else {
+              // handle failure
+              console.log("Login failed")
+              
+              this.notificationMessage = "⚠️ Could not automatically log you in. Please navigate to the login page.";
+              this.showToast();
+
+              this.isBusy = false;
+              this.buttonText = 'Register';
+            }
+        });
 
       } else {
         // handle failure
         console.log("Registration failed")
+        
+        this.notificationMessage = "⚠️ Registration failed. Please try again.";
+        this.showToast();
+
+        this.isBusy = false;
+        this.buttonText = 'Register';
       }
     });
 
+  }
+
+  getReturnUrl(): string {
+    return this.activatedRoute.snapshot.queryParams[ReturnUrlType] || '/';
+  }
+
+  showToast() {
+    const toastRef = document.getElementById("statusToast");
+    const toast = bootstrap.Toast.getOrCreateInstance(toastRef);
+    toast.show();
   }
 
 }

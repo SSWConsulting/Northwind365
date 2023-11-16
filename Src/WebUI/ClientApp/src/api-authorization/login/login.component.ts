@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
 import {RegisterComponent} from "../register/register.component";
 
+declare var bootstrap: any;
 
 // The main responsibility of this component is to handle the user's login process.
 // This is the starting point for the login process. Any component that needs to authenticate
@@ -17,6 +18,10 @@ import {RegisterComponent} from "../register/register.component";
 export class LoginComponent implements OnInit{
 
   constructor(private authService: AuthorizeService, private router: Router, private activatedRoute: ActivatedRoute) { }
+
+  isBusy: boolean = false;
+  buttonText: string = 'Login';
+  toastMessage: string = '';
 
   ngOnInit(): void {
 
@@ -39,7 +44,8 @@ export class LoginComponent implements OnInit{
 
   loginClicked() {
 
-    // todo: show that something is happening (https://github.com/SSWConsulting/Northwind365/issues/105)
+    this.isBusy = true;
+    this.buttonText = 'Logging in...';
 
     let username = (<HTMLInputElement>document.getElementById("username")).value;
     let password = (<HTMLInputElement>document.getElementById("password")).value;
@@ -54,12 +60,18 @@ export class LoginComponent implements OnInit{
 
       if (result == AuthenticationResult.Success) {
         console.log("Login successful");
+        this.toastMessage = '✅ Login successful! Sending you back where you came from...';
+        this.showToast();
 
         let returnUrl = this.getReturnUrl();
 
         await this.router.navigate([returnUrl]);
       } else {
         // handle failure
+        this.isBusy = false;
+        this.buttonText = 'Login';
+        this.toastMessage = '⚠️ Login failed. Please check your credentials and try again.';
+        this.showToast();
       }
     });
 
@@ -67,6 +79,12 @@ export class LoginComponent implements OnInit{
 
   getReturnUrl(): string {
     return this.activatedRoute.snapshot.queryParams[ReturnUrlType] || '/';
+  }
+
+  showToast() {
+    const toastRef = document.getElementById("loginFailedToast");
+    const toast = bootstrap.Toast.getOrCreateInstance(toastRef);
+    toast.show();
   }
 
 }
