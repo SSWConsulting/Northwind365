@@ -33,6 +33,9 @@ If you'd like to start a new project using Clean Architecture, you can use the S
 
 * [SSW Clean Architecture Template](https://github.com/SSWConsulting/SSW.CleanArchitecture/)
 
+You can also find a collection of commumity projects built on Clean Architecture here:
+
+* [Awesome Clean Architecture](https://github.com/SSWConsulting/awesome-clean-architecture)
 
 ## Getting Started
 
