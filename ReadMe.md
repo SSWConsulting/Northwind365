@@ -43,9 +43,9 @@ Use these instructions to get the project up and running.
 You will need the following tools:
 
 * [Visual Studio or VS Code](https://visualstudio.microsoft.com/downloads/), or [Rider](https://www.jetbrains.com/rider/download/)
-* [.NET 7 SDK](https://dotnet.microsoft.com/en-us/download)
-* [Node.js](https://nodejs.org/en/) (version 10 or later) with npm (version 6.11.3 or later)
-* Angular CLI (version 8.3.23 or later) - install by running `npm install -g @angular/cli`
+* [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download)
+* [Node.js](https://nodejs.org/en/) (version 16 or later) with npm (version 7 or later)
+* Angular CLI (version 15 or later) - install by running `npm install -g @angular/cli`
 
 ### Setup
 
