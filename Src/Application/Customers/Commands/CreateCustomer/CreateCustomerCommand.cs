@@ -44,6 +44,6 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        await _mediator.Publish(new CustomerCreated(entity.Id), cancellationToken);
+        await _mediator.Publish(new CustomerCreatedEvent(entity.Id), cancellationToken);
     }
 }

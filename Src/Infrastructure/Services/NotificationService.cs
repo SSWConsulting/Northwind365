@@ -1,5 +1,5 @@
 ﻿using Northwind.Application.Common.Interfaces;
-using Northwind.Application.Notifications.Models;
+using Northwind.Application.Customers.EventHandlers;
 
 namespace Northwind.Infrastructure.Services;
 

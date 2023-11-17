@@ -30,6 +30,6 @@ public class CreateCustomerCommandTests : CommandTestBase
 
         // Assert
         mediatorMock.Received()
-            .Publish(Arg.Is<CustomerCreated>(cc => cc.CustomerId == newCustomerId), Arg.Any<CancellationToken>());
+            .Publish(Arg.Is<CustomerCreatedEvent>(cc => cc.CustomerId == newCustomerId), Arg.Any<CancellationToken>());
     }
 }

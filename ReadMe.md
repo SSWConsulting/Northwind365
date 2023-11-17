@@ -7,20 +7,35 @@
 [![SSW TV | YouTube](https://img.shields.io/youtube/channel/views/UCBFgwtV9lIIhvoNh0xoQ7Pg?label=SSW%20TV%20%7C%20Views&style=social)](https://youtube.com/@SSWTV)
 
 [![.NET](https://github.com/SSWConsulting/Northwind365/actions/workflows/dotnet.yml/badge.svg)](https://github.com/SSWConsulting/Northwind365/actions/workflows/dotnet.yml)
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/SSWConsulting/Northwind365/issues)
 
 </div>
 
-Northwind 365 is a sample application built using ASP.NET Core and Entity Framework Core. The architecture and
-design of the project is explained in the video:
-
-* [Clean Architecture with ASP.NET Core](https://youtu.be/_lwCVE_XgqI) ([slide deck](https://github.com/SSWConsulting/Northwind365/raw/main/Slides.pdf))
+Northwind 365 is a sample application built using .NET 8, ASP.NET Core, and Entity Framework Core.
 
 The initial construction of this project is explained in the following blog posts:
 
-* [Code: Northwind Traders with Entity Framework Core](http://www.codingflow.net/northwind-traders-with-entity-framework-core/)
-* [Create Northwind Traders Code First with Entity Framework Core – Part 1](http://www.codingflow.net/create-northwind-traders-code-first-with-entity-framework-core-part-1/)
-* [Create Northwind Traders Code First with Entity Framework Core – Part 2](http://www.codingflow.net/create-northwind-traders-code-first-with-entity-framework-core-part-2/)
+* [Code: Northwind Traders with Entity Framework Core](https://jasontaylor.dev/northwind-traders-with-entity-framework-core/)
+* [Create Northwind Traders Code First with Entity Framework Core – Part 1](https://jasontaylor.dev/create-northwind-traders-code-first-with-entity-framework-core-part-1/)
+* [Create Northwind Traders Code First with Entity Framework Core – Part 2](https://jasontaylor.dev/create-northwind-traders-code-first-with-entity-framework-core-part-2/)
+
+## Learning Resources
+
+You're interested learning more about Clean Architecture, please see this excellent video by Matt Goldman:
+
+* [Clean Architecture with ASP.NET Core and MAUI](https://www.youtube.com/live/K9ryHflmQJE?si=VC2FtSZiAA3CxSsK)
+
+Alternatively, SSW has many great rules about Clean Architecture:
+
+* [SSW Rules - Clean Architecture](https://www.ssw.com.au/rules/rules-to-better-clean-architecture/)
+
+If you'd like to start a new project using Clean Architecture, you can use the SSW Clean Architecture template:
+
+* [SSW Clean Architecture Template](https://github.com/SSWConsulting/SSW.CleanArchitecture/)
+
+You can also find a collection of commumity projects built on Clean Architecture here:
+
+* [Awesome Clean Architecture](https://github.com/SSWConsulting/awesome-clean-architecture)
 
 ## Getting Started
 
@@ -31,9 +46,9 @@ Use these instructions to get the project up and running.
 You will need the following tools:
 
 * [Visual Studio or VS Code](https://visualstudio.microsoft.com/downloads/), or [Rider](https://www.jetbrains.com/rider/download/)
-* [.NET 7 SDK](https://dotnet.microsoft.com/en-us/download)
-* [Node.js](https://nodejs.org/en/) (version 10 or later) with npm (version 6.11.3 or later)
-* Angular CLI (version 8.3.23 or later) - install by running `npm install -g @angular/cli`
+* [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download)
+* [Node.js](https://nodejs.org/en/) (version 16 or later) with npm (version 7 or later)
+* Angular CLI (version 15 or later) - install by running `npm install -g @angular/cli`
 
 ### Setup
 
