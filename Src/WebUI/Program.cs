@@ -61,7 +61,6 @@ app.UseStaticFiles();
 
 app.UseOpenApi();
 
-//app.UseSwaggerUi3(settings => settings.DocumentPath = "/api/specification.json");
 app.UseSwaggerUi(settings => settings.Path = "/api");
 
 app.UseRouting();
@@ -69,12 +68,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// TODO: Are controllers needed?
-// app.MapControllerRoute(
-//          "default",
-//          "{controller}/{action=Index}/{id?}");
-//app.MapControllers();
-app.MapRazorPages();
+//app.MapRazorPages();
 
 app.MapCategoryEndpoints();
 app.MapCustomerEndpoints();
