@@ -29,8 +29,8 @@ public static class ExceptionFilter
     {
         var type = exception.GetType();
 
-        if (ExceptionHandlers.ContainsKey(type))
-            return ExceptionHandlers[type].Invoke(context, exception);
+        if (ExceptionHandlers.TryGetValue(type, out var handler))
+            return handler.Invoke(context, exception);
 
         return Results.Problem(statusCode: StatusCodes.Status500InternalServerError,
             type: "https://tools.ietf.org/html/rfc7231#section-6.6.1");
