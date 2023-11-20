@@ -1,4 +1,3 @@
-using AutoMapper.Configuration.Annotations;
 using Common.Factories;
 using Microsoft.EntityFrameworkCore;
 using Northwind.Application.Common.Interfaces;
@@ -18,17 +17,12 @@ public static class NorthwindContextFactory
         var context = new NorthwindDbContext(options, Substitute.For<ICurrentUserService>(), Substitute.For<IDateTime>());
         context.Database.EnsureCreated();
 
-        var customers = CustomerFactory.Generate(3);
-        context.Customers.AddRange(customers);
-        context.SaveChanges();
-
         return context;
     }
 
     public static void Destroy(NorthwindDbContext context)
     {
         context.Database.EnsureDeleted();
-
         context.Dispose();
     }
 }

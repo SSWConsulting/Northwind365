@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Common.Factories;
 using FluentAssertions;
 using Northwind.Application.Customers.Queries.GetCustomersList;
 using Northwind.Application.UnitTests.Common;
@@ -17,6 +18,10 @@ public class GetCustomersListQueryHandlerTests(QueryTestFixture fixture)
     public async Task GetCustomersTest()
     {
         // Arrange
+        var customers = CustomerFactory.Generate(3);
+        fixture.Context.Customers.AddRange(customers);
+        await fixture.Context.SaveChangesAsync();
+
         var sut = new GetCustomersListQueryHandler(_context, _mapper);
 
         // Act
