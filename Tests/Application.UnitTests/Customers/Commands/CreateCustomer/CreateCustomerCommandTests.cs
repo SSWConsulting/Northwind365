@@ -11,7 +11,7 @@ namespace Northwind.Application.UnitTests.Customers.Commands.CreateCustomer;
 public class CreateCustomerCommandTests : CommandTestBase
 {
     [Fact]
-    public void Handle_GivenValidRequest_ShouldRaiseCustomerCreatedNotification()
+    public async Task Handle_GivenValidRequest_ShouldRaiseCustomerCreatedNotification()
     {
         // Arrange
         var mediatorMock = Substitute.For<IMediator>();
@@ -26,10 +26,10 @@ public class CreateCustomerCommandTests : CommandTestBase
             .Create();
 
         // Act
-        var result = sut.Handle(command, CancellationToken.None);
+        await sut.Handle(command, CancellationToken.None);
 
         // Assert
-        mediatorMock.Received()
+        await mediatorMock.Received()
             .Publish(Arg.Is<CustomerCreatedEvent>(cc => cc.CustomerId == newCustomerId), Arg.Any<CancellationToken>());
     }
 }
