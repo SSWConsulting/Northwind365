@@ -1,6 +1,7 @@
 ﻿using Common.Factories;
 using Common.Fixtures;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Northwind.Application.Products.Commands.UpdateProduct;
 using System.Net;
 using Xunit;
@@ -17,8 +18,8 @@ public class Update(TestingDatabaseFixture fixture, ITestOutputHelper output) : 
         var client = await GetAuthenticatedClientAsync();
         var product = ProductFactory.Generate();
         await AddEntityAsync(product);
-        var supplier = Context.Suppliers.First();
-        var category = Context.Categories.First();
+        var supplier = await Context.Suppliers.FirstAsync();
+        var category = await Context.Categories.FirstAsync();
 
         var command = new UpdateProductCommand
         (
@@ -42,8 +43,8 @@ public class Update(TestingDatabaseFixture fixture, ITestOutputHelper output) : 
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var supplier = Context.Suppliers.First();
-        var category = Context.Categories.First();
+        var supplier = await Context.Suppliers.FirstAsync();
+        var category = await Context.Categories.FirstAsync();
         var invalidCommand = new UpdateProductCommand
         (
             0,

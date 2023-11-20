@@ -23,7 +23,7 @@ public class GetById(TestingDatabaseFixture fixture, ITestOutputHelper output) :
 
         // Assert
         customerResp.Should().NotBeNull();
-        customerResp.Id.Should().Be(customer.Id.Value);
+        customerResp!.Id.Should().Be(customer.Id.Value);
     }
 
     [Fact]

@@ -23,6 +23,6 @@ public class GetAll(TestingDatabaseFixture fixture, ITestOutputHelper output) : 
         // Assert
         vm.Should().NotBeNull();
         vm.Should().BeOfType<ProductsListVm>();
-        vm.Products.Should().NotBeEmpty();
+        vm!.Products.Should().NotBeEmpty();
     }
 }

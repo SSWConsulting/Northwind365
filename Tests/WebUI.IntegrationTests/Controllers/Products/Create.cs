@@ -1,5 +1,6 @@
 ﻿using Common.Fixtures;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Northwind.Application.Products.Commands.CreateProduct;
 using Xunit;
 using Xunit.Abstractions;
@@ -13,15 +14,15 @@ public class Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : 
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var supplier = Context.Suppliers.First().Id.Value;
-        var category = Context.Categories.First().Id.Value;
+        var supplier = await Context.Suppliers.FirstAsync();
+        var category = await Context.Categories.FirstAsync();
 
         var command = new CreateProductCommand
         (
             "Coffee",
             19.00m,
-            supplier,
-            category,
+            supplier.Id.Value,
+            category.Id.Value,
             false
         );
 
@@ -40,14 +41,14 @@ public class Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : 
         // Arrange
         var client = await GetAuthenticatedClientAsync();
         int? supplier = null;
-        var category = Context.Categories.First().Id.Value;
+        var category = await Context.Categories.FirstAsync();
 
         var command = new CreateProductCommand
         (
             "Coffee",
             19.00m,
             supplier,
-            category,
+            category.Id.Value,
             false
         );
 
@@ -65,14 +66,14 @@ public class Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : 
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var supplier = Context.Suppliers.First().Id.Value;
+        var supplier = await Context.Suppliers.FirstAsync();
         int? category = null;
 
         var command = new CreateProductCommand
         (
             "Coffee",
             19.00m,
-            supplier,
+            supplier.Id.Value,
             category,
             false
         );
@@ -91,16 +92,16 @@ public class Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : 
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var supplier = Context.Suppliers.First().Id.Value;
-        var category = Context.Categories.First().Id.Value;
+        var supplier = await Context.Suppliers.FirstAsync();
+        var category = await Context.Categories.FirstAsync();
         decimal? unitPrice = null;
 
         var command = new CreateProductCommand
         (
             "Coffee",
             unitPrice,
-            supplier,
-            category,
+            supplier.Id.Value,
+            category.Id.Value,
             false
         );
 
