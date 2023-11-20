@@ -10,6 +10,7 @@ namespace Northwind.Application.Categories.Queries.GetCategoriesList;
 
 public record GetCategoriesListQuery : IRequest<CategoriesListVm>;
 
+// ReSharper disable once UnusedType.Global
 public class GetCategoriesListQueryHandler(INorthwindDbContext context, IMapper mapper) : IRequestHandler<GetCategoriesListQuery, CategoriesListVm>
 {
     public async Task<CategoriesListVm> Handle(GetCategoriesListQuery request, CancellationToken cancellationToken)

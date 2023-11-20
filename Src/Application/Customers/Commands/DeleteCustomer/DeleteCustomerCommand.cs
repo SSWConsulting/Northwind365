@@ -28,9 +28,9 @@ public class DeleteCustomerCommandHandler(INorthwindDbContext context) : IReques
         }
 
         // TODO: Can this logic be moved to the Domain?
-        var hasOrders = context.Orders
+        var hasOrders = await context.Orders
             .WithSpecification(new OrderByCustomerIdSpec(customerId))
-            .Any();
+            .AnyAsync(cancellationToken: cancellationToken);
         if (hasOrders)
         {
             throw new DeleteFailureException(nameof(Customer), request.Id,
