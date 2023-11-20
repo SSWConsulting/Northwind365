@@ -1,7 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using Northwind.Domain.Common;
 using Northwind.Domain.Common.Base;
-using Northwind.Domain.Common.Guards;
 using Northwind.Domain.Orders;
 
 namespace Northwind.Domain.Customers;

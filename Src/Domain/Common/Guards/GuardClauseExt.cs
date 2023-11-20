@@ -1,7 +1,10 @@
 ﻿using Ardalis.GuardClauses;
 using System.Runtime.CompilerServices;
 
-namespace Northwind.Domain.Common.Guards;
+// Using the same namespace will make sure your code picks up your
+// extensions no matter where they are in your codebase.
+// ReSharper disable once CheckNamespace
+namespace Ardalis.GuardClauses;
 
 public static class GuardClauseExt
 {
