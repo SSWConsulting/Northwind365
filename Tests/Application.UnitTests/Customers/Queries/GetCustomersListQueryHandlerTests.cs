@@ -8,16 +8,10 @@ using Xunit;
 namespace Northwind.Application.UnitTests.Customers.Queries;
 
 [Collection("QueryCollection")]
-public class GetCustomersListQueryHandlerTests
+public class GetCustomersListQueryHandlerTests(QueryTestFixture fixture)
 {
-    private readonly NorthwindDbContext _context;
-    private readonly IMapper _mapper;
-
-    public GetCustomersListQueryHandlerTests(QueryTestFixture fixture)
-    {
-        _context = fixture.Context;
-        _mapper = fixture.Mapper;
-    }
+    private readonly NorthwindDbContext _context = fixture.Context;
+    private readonly IMapper _mapper = fixture.Mapper;
 
     [Fact]
     public async Task GetCustomersTest()

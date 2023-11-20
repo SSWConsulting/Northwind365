@@ -6,12 +6,8 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-public class Create : IntegrationTestBase
+public class Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : IntegrationTestBase(fixture, output)
 {
-    public Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
-    {
-    }
-
     [Fact]
     public async Task GivenCreateProductCommand_ReturnsNewProductId()
     {

@@ -8,12 +8,8 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Customers;
 
-public class Update : IntegrationTestBase
+public class Update(TestingDatabaseFixture fixture, ITestOutputHelper output) : IntegrationTestBase(fixture, output)
 {
-    public Update(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
-    {
-    }
-
     [Fact]
     public async Task GivenUpdateCustomerCommand_ReturnsSuccessStatusCode()
     {

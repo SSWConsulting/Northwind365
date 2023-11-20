@@ -12,16 +12,10 @@ using Xunit;
 
 namespace Northwind.Application.UnitTests;
 
-public class MappingTests : IClassFixture<MappingTestsFixture>
+public class MappingTests(MappingTestsFixture fixture) : IClassFixture<MappingTestsFixture>
 {
-    private readonly IConfigurationProvider _configuration;
-    private readonly IMapper _mapper;
-
-    public MappingTests(MappingTestsFixture fixture)
-    {
-        _configuration = fixture.ConfigurationProvider;
-        _mapper = fixture.Mapper;
-    }
+    private readonly IConfigurationProvider _configuration = fixture.ConfigurationProvider;
+    private readonly IMapper _mapper = fixture.Mapper;
 
     [Fact]
     public void ShouldHaveValidConfiguration()

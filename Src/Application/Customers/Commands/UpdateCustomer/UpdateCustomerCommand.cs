@@ -12,19 +12,12 @@ public record UpdateCustomerCommand(string Id, string Address, string City, stri
     string ContactTitle, string Country, string Fax, string Phone, string PostalCode, string Region) : IRequest;
 
 // ReSharper disable once UnusedType.Global
-public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerCommand>
+public class UpdateCustomerCommandHandler(INorthwindDbContext context) : IRequestHandler<UpdateCustomerCommand>
 {
-    private readonly INorthwindDbContext _context;
-
-    public UpdateCustomerCommandHandler(INorthwindDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
     {
         var customerId = new CustomerId(request.Id);
-        var entity = await _context.Customers
+        var entity = await context.Customers
             .WithSpecification(new CustomerByIdSpec(customerId))
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -40,6 +33,6 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
         entity.UpdateFax(request.Fax);
         entity.UpdateCompanyName(request.CompanyName);
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

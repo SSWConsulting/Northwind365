@@ -12,34 +12,23 @@ namespace Northwind.Application.Products.Queries.GetProductsFile;
 public record GetProductsFileQuery : IRequest<ProductsFileVm>;
 
 // ReSharper disable once UnusedType.Global
-public class GetProductsFileQueryHandler : IRequestHandler<GetProductsFileQuery, ProductsFileVm>
+public class GetProductsFileQueryHandler(INorthwindDbContext context, ICsvFileBuilder fileBuilder, IMapper mapper,
+        IDateTime dateTime)
+    : IRequestHandler<GetProductsFileQuery, ProductsFileVm>
 {
-    private readonly INorthwindDbContext _context;
-    private readonly ICsvFileBuilder _fileBuilder;
-    private readonly IMapper _mapper;
-    private readonly IDateTime _dateTime;
-
-    public GetProductsFileQueryHandler(INorthwindDbContext context, ICsvFileBuilder fileBuilder, IMapper mapper, IDateTime dateTime)
-    {
-        _context = context;
-        _fileBuilder = fileBuilder;
-        _mapper = mapper;
-        _dateTime = dateTime;
-    }
-
     public async Task<ProductsFileVm> Handle(GetProductsFileQuery request, CancellationToken cancellationToken)
     {
-        var records = await _context.Products
-            .ProjectTo<ProductRecordDto>(_mapper.ConfigurationProvider)
+        var records = await context.Products
+            .ProjectTo<ProductRecordDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
-        var fileContent = _fileBuilder.BuildProductsFile(records);
+        var fileContent = fileBuilder.BuildProductsFile(records);
 
         var vm = new ProductsFileVm
         {
             Content = fileContent,
             ContentType = "text/csv",
-            FileName = $"{_dateTime.Now:yyyy-MM-dd}-Products.csv"
+            FileName = $"{dateTime.Now:yyyy-MM-dd}-Products.csv"
         };
 
         return vm;

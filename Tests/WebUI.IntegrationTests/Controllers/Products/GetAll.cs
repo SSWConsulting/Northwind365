@@ -7,12 +7,8 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
 
-public class GetAll : IntegrationTestBase
+public class GetAll(TestingDatabaseFixture fixture, ITestOutputHelper output) : IntegrationTestBase(fixture, output)
 {
-    public GetAll(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
-    {
-    }
-
     [Fact]
     public async Task ReturnsProductsListViewModel()
     {

@@ -13,20 +13,12 @@ namespace Northwind.Application.Customers.Commands.DeleteCustomer;
 
 public record DeleteCustomerCommand(string Id) : IRequest;
 
-// ReSharper disable once UnusedType.Global
-public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand>
+public class DeleteCustomerCommandHandler(INorthwindDbContext context) : IRequestHandler<DeleteCustomerCommand>
 {
-    private readonly INorthwindDbContext _context;
-
-    public DeleteCustomerCommandHandler(INorthwindDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
         var customerId = new CustomerId(request.Id);
-        var entity = await _context.Customers
+        var entity = await context.Customers
             .WithSpecification(new CustomerByIdSpec(customerId))
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -36,7 +28,7 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
         }
 
         // TODO: Can this logic be moved to the Domain?
-        var hasOrders = _context.Orders
+        var hasOrders = context.Orders
             .WithSpecification(new OrderByCustomerIdSpec(customerId))
             .Any();
         if (hasOrders)
@@ -45,8 +37,8 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
                 "There are existing orders associated with this customer.");
         }
 
-        _context.Customers.Remove(entity);
+        context.Customers.Remove(entity);
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

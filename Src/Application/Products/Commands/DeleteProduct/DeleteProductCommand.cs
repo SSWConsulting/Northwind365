@@ -11,19 +11,12 @@ namespace Northwind.Application.Products.Commands.DeleteProduct;
 public record DeleteProductCommand(int Id) : IRequest;
 
 // ReSharper disable once UnusedType.Global
-public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
+public class DeleteProductCommandHandler(INorthwindDbContext context) : IRequestHandler<DeleteProductCommand>
 {
-    private readonly INorthwindDbContext _context;
-
-    public DeleteProductCommandHandler(INorthwindDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
         var productId = new ProductId(request.Id);
-        var entity = await _context.Products
+        var entity = await context.Products
             .WithSpecification(new ProductByIdSpec(productId))
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -32,7 +25,7 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
             throw new NotFoundException(nameof(Product), request.Id);
         }
 
-        var hasOrders = await _context.OrderDetails
+        var hasOrders = await context.OrderDetails
             .WithSpecification(new OrderDetailByProductIdSpec(productId))
             .AnyAsync(cancellationToken);
         if (hasOrders)
@@ -42,8 +35,8 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand>
                 "There are existing orders associated with this product.");
         }
 
-        _context.Products.Remove(entity);
+        context.Products.Remove(entity);
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

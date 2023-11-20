@@ -4,12 +4,8 @@ using Xunit.Abstractions;
 
 namespace Northwind.WebUI.IntegrationTests.Controllers.Categories;
 
-public class GetCategoryList : IntegrationTestBase
+public class GetCategoryList(TestingDatabaseFixture fixture, ITestOutputHelper output) : IntegrationTestBase(fixture, output)
 {
-    public GetCategoryList(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
-    {
-    }
-
     [Fact]
     public async Task ReturnsSuccessResult()
     {

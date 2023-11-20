@@ -11,21 +11,11 @@ using Northwind.Domain.Supplying;
 
 namespace Northwind.Infrastructure.Persistence;
 
-public class NorthwindDbContext : DbContext, INorthwindDbContext
-{
-    private readonly ICurrentUserService _currentUserService;
-    private readonly IDateTime _dateTime;
-
-    public NorthwindDbContext(
-        DbContextOptions<NorthwindDbContext> options, 
+public class NorthwindDbContext(DbContextOptions<NorthwindDbContext> options,
         ICurrentUserService currentUserService,
         IDateTime dateTime)
-        : base(options)
-    {
-        _currentUserService = currentUserService;
-        _dateTime = dateTime;
-    }
-
+    : DbContext(options), INorthwindDbContext
+{
     public DbSet<Category> Categories { get; set; } = null!;
 
     public DbSet<Customer> Customers { get; set; } = null!;
@@ -56,11 +46,11 @@ public class NorthwindDbContext : DbContext, INorthwindDbContext
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.SetCreated(_dateTime.Now, _currentUserService.GetUserId());
+                entry.Entity.SetCreated(dateTime.Now, currentUserService.GetUserId());
             }
             else if (entry.State == EntityState.Modified)
             {
-                entry.Entity.SetUpdated(_dateTime.Now, _currentUserService.GetUserId());
+                entry.Entity.SetUpdated(dateTime.Now, currentUserService.GetUserId());
             }
         }
 

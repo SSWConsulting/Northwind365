@@ -6,12 +6,8 @@ using static Northwind.Infrastructure.Persistence.NorthwindDbContextInitializer;
 
 namespace Northwind.Infrastructure.IntegrationTests;
 
-public class NorthwindDbContextInitializerTests : IntegrationTestBase
+public class NorthwindDbContextInitializerTests(TestingDatabaseFixture fixture) : IntegrationTestBase(fixture)
 {
-    public NorthwindDbContextInitializerTests(TestingDatabaseFixture fixture) : base(fixture)
-    {
-    }
-
     [Fact]
     public async Task SeedAsync_AfterInitializeAsync_PopulatesDatabase()
     {
