@@ -30,7 +30,7 @@ public class Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : 
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var productId = response.Content.ReadFromJsonAsync<int>();
+        var productId = await response.Content.ReadFromJsonAsync<int>();
         productId.Should().NotBe(0);
     }
 
@@ -56,7 +56,7 @@ public class Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : 
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var productId = response.Content.ReadFromJsonAsync<int>();
+        var productId = await response.Content.ReadFromJsonAsync<int>();
         productId.Should().NotBe(0);
     }
 
@@ -82,7 +82,7 @@ public class Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : 
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var productId = response.Content.ReadFromJsonAsync<int>();
+        var productId = await response.Content.ReadFromJsonAsync<int>();
         productId.Should().NotBe(0);
     }
 
@@ -109,7 +109,7 @@ public class Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : 
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var productId = response.Content.ReadFromJsonAsync<int>();
+        var productId = await response.Content.ReadFromJsonAsync<int>();
         productId.Should().NotBe(0);
     }
 }
