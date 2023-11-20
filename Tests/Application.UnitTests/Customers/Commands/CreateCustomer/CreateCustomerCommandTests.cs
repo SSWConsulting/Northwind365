@@ -3,13 +3,16 @@ using MediatR;
 using Northwind.Application.Customers.Commands.CreateCustomer;
 using Northwind.Application.UnitTests.Common;
 using Northwind.Domain.Customers;
+using Northwind.Infrastructure.Persistence;
 using NSubstitute;
 using Xunit;
 
 namespace Northwind.Application.UnitTests.Customers.Commands.CreateCustomer;
 
-public class CreateCustomerCommandTests : CommandTestBase
+public class CreateCustomerCommandTests : IDisposable, IAsyncDisposable
 {
+    private readonly NorthwindDbContext _context = NorthwindContextFactory.Create();
+
     [Fact]
     public async Task Handle_GivenValidRequest_ShouldRaiseCustomerCreatedNotification()
     {
@@ -31,5 +34,15 @@ public class CreateCustomerCommandTests : CommandTestBase
         // Assert
         await mediatorMock.Received()
             .Publish(Arg.Is<CustomerCreatedEvent>(cc => cc.CustomerId == newCustomerId), Arg.Any<CancellationToken>());
+    }
+
+    public void Dispose()
+    {
+        _context.Dispose();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await _context.DisposeAsync();
     }
 }
