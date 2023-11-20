@@ -43,11 +43,6 @@ public class WebUiTestFactory : WebApplicationFactory<IWebUiMarker>
             .ReplaceDbContext<NorthwindDbContext>(Database));
     }
 
-    public HttpClient GetAnonymousClient()
-    {
-        return CreateClient();
-    }
-
     public async Task<HttpClient> GetAuthenticatedClientAsync()
     {
         return await GetAuthenticatedClientAsync("daniel@northwind.com", "Northwind1!");
