@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Northwind.Application.UnitTests.Customers.Queries;
 
-[Collection("QueryCollection")]
+[Collection(QueryCollection.Definition)]
 public class GetCustomerDetailQueryHandlerTests(QueryTestFixture fixture)
 {
     private readonly NorthwindDbContext _context = fixture.Context;

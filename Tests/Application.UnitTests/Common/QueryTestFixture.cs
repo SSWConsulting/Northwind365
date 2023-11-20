@@ -28,5 +28,8 @@ public class QueryTestFixture : IDisposable
     }
 }
 
-[CollectionDefinition("QueryCollection")]
-public class QueryCollection : ICollectionFixture<QueryTestFixture> { }
+[CollectionDefinition(Definition)]
+public class QueryCollection : ICollectionFixture<QueryTestFixture>
+{
+    public const string Definition = nameof(QueryCollection);
+}
