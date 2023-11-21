@@ -3,16 +3,13 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Northwind.Application.Common.Exceptions;
 using Northwind.Application.Common.Interfaces;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Northwind.Domain.Customers;
-using Northwind.Domain.Orders;
 
 namespace Northwind.Application.Customers.Commands.DeleteCustomer;
 
 public record DeleteCustomerCommand(string Id) : IRequest;
 
+// ReSharper disable once UnusedType.Global
 public class DeleteCustomerCommandHandler(INorthwindDbContext context) : IRequestHandler<DeleteCustomerCommand>
 {
     public async Task Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
@@ -27,11 +24,7 @@ public class DeleteCustomerCommandHandler(INorthwindDbContext context) : IReques
             throw new NotFoundException(nameof(Customer), request.Id);
         }
 
-        // TODO: Can this logic be moved to the Domain?
-        var hasOrders = await context.Orders
-            .WithSpecification(new OrderByCustomerIdSpec(customerId))
-            .AnyAsync(cancellationToken: cancellationToken);
-        if (hasOrders)
+        if (!entity.CanDelete())
         {
             throw new DeleteFailureException(nameof(Customer), request.Id,
                 "There are existing orders associated with this customer.");

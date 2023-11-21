@@ -7,7 +7,7 @@ namespace Northwind.Domain.Customers;
 
 public readonly record struct CustomerId(string Value);
 
-public class Customer : BaseEntity<CustomerId>
+public class Customer : AggregateRoot<CustomerId>
 {
     private Customer() { }
 
@@ -62,5 +62,10 @@ public class Customer : BaseEntity<CustomerId>
     public void UpdateCompanyName(string companyName)
     {
         CompanyName = companyName;
+    }
+
+    public bool CanDelete()
+    {
+        return !_orders.Any();
     }
 }
