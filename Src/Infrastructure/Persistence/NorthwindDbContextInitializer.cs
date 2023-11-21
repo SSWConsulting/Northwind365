@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Northwind.Application.Common.Interfaces;
@@ -161,8 +162,8 @@ public class NorthwindDbContextInitializer(ILogger<NorthwindDbContextInitializer
             f.Address.StreetAddress(),
             f.Address.City(),
             f.Address.State(),
-            new PostCode(f.Address.ZipCode()),
-            new Country(f.Address.Country())
+            new PostCode(f.Address.ZipCode().Truncate(30)),
+            new Country(f.Address.Country().Truncate(15))
             ));
 
     private async Task SeedEmployeesAsync(CancellationToken cancellationToken)

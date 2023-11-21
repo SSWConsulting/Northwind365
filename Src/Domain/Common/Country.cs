@@ -5,13 +5,17 @@ namespace Northwind.Domain.Common;
 
 public record Country : ValueObject
 {
-    public Country(string name)
+    public Country(string countryName)
     {
-        this.Name = Guard.Against.StringLength(name, 15);
+        this.Name = Guard.Against.StringLength(countryName, 15);
     }
 
+    // Needed for EF Core
+    // ReSharper disable once UnusedMember.Local
+    private Country() { }
+
     public bool IsAustralia => Name.Equals("Australia", StringComparison.OrdinalIgnoreCase);
-    public string Name { get; }
+    public string Name { get; } = null!;
 
     public void Deconstruct(out string name)
     {

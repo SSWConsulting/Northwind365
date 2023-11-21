@@ -1,20 +1,20 @@
 using Ardalis.GuardClauses;
 using Northwind.Domain.Common.Base;
 
-namespace Northwind.Domain.Common;
+namespace Northwind.Domain.Customers;
 
-public record PostCode : ValueObject
+public record Phone : ValueObject
 {
-    public PostCode(string postCode)
+    public Phone(string phoneNumber)
     {
-        this.Number = Guard.Against.StringLength(postCode, 30);
+        this.Number = Guard.Against.StringLength(phoneNumber, 24) ;
     }
 
     // Needed for EF Core
     // ReSharper disable once UnusedMember.Local
-    private PostCode() { }
+    private Phone() { }
 
-    public bool IsQueenslandPostCode => Number.StartsWith('4');
+    public bool IsQueenslandLandLine => Number.StartsWith("07");
     public string Number { get; } = null!;
 
     public void Deconstruct(out string number)
