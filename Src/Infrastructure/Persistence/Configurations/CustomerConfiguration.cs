@@ -26,10 +26,8 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.Property(e => e.ContactTitle).HasMaxLength(50);
 
         builder.ComplexProperty(e => e.Fax, faxBuilder => faxBuilder.Property(m => m.Number).HasMaxLength(24));
-        //builder.Property(e => e.Fax).HasMaxLength(24);
 
         builder.ComplexProperty(e => e.Phone, phoneBuilder => phoneBuilder.Property(m => m.Number).HasMaxLength(24));
-        //builder.Property(e => e.Phone).HasMaxLength(24);
 
         builder.HasMany(e => e.Orders)
             .WithOne(p => p.Customer)
