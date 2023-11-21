@@ -68,7 +68,7 @@ public class WebUiTestFactory : WebApplicationFactory<IWebUiMarker>
         ArgumentNullException.ThrowIfNull(loginResponseContent);
 
         client.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Bearer", loginResponseContent.accessToken);
+            new AuthenticationHeaderValue("Bearer", loginResponseContent.AccessToken);
     }
 
     private static async Task<LoginResponse?> Login(string userName, string password, HttpClient client)
@@ -90,13 +90,7 @@ public class WebUiTestFactory : WebApplicationFactory<IWebUiMarker>
     }
 }
 
-public class LoginResponse
-{
-    public string tokenType { get; set; }
-    public string accessToken { get; set; }
-    public int expiresIn { get; set; }
-    public string refreshToken { get; set; }
-}
+public record LoginResponse(string TokenType, string AccessToken, int ExpiresIn, string RefreshToken);
 
 internal static class DbContextExt
 {
