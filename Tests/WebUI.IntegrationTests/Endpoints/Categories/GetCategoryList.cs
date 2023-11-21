@@ -2,7 +2,7 @@
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Northwind.WebUI.IntegrationTests.Controllers.Categories;
+namespace Northwind.WebUI.IntegrationTests.Endpoints.Categories;
 
 public class GetCategoryList(TestingDatabaseFixture fixture, ITestOutputHelper output) : IntegrationTestBase(fixture, output)
 {

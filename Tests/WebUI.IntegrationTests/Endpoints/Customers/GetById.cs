@@ -6,7 +6,7 @@ using System.Net;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Northwind.WebUI.IntegrationTests.Controllers.Customers;
+namespace Northwind.WebUI.IntegrationTests.Endpoints.Customers;
 
 public class GetById(TestingDatabaseFixture fixture, ITestOutputHelper output) : IntegrationTestBase(fixture, output)
 {

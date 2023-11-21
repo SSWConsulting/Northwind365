@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Humanizer;
 using Northwind.Domain.Common;
 using Northwind.Domain.Customers;
 
@@ -16,7 +17,7 @@ public static class CustomerFactory
             f.Address.City(),
             f.Address.State(),
             new PostCode(f.Address.ZipCode()),
-            new Country(f.Address.Country())
+            new Country(f.Address.Country().Truncate(15))
         ),
         new Phone(f.Phone.PhoneNumber()),
         new Phone(f.Phone.PhoneNumber())

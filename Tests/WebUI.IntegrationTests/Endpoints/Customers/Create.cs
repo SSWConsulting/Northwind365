@@ -3,7 +3,7 @@ using Northwind.Application.Customers.Commands.CreateCustomer;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Northwind.WebUI.IntegrationTests.Controllers.Customers;
+namespace Northwind.WebUI.IntegrationTests.Endpoints.Customers;
 
 public class Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : IntegrationTestBase(fixture, output)
 {

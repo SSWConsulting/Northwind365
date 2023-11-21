@@ -5,7 +5,7 @@ using Northwind.Application.Products.Queries.GetProductsList;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
+namespace Northwind.WebUI.IntegrationTests.Endpoints.Products;
 
 public class GetAll(TestingDatabaseFixture fixture, ITestOutputHelper output) : IntegrationTestBase(fixture, output)
 {
