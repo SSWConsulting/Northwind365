@@ -8,57 +8,45 @@ using Northwind.Domain.Orders;
 using Northwind.Domain.Products;
 using Northwind.Domain.Shipping;
 using Northwind.Domain.Supplying;
+using Northwind.Infrastructure.Persistence.Interceptors;
 
 namespace Northwind.Infrastructure.Persistence;
 
 public class NorthwindDbContext(DbContextOptions<NorthwindDbContext> options,
-        ICurrentUserService currentUserService,
-        IDateTime dateTime)
+        EntitySaveChangesInterceptor saveChangesInterceptor,
+        DispatchDomainEventsInterceptor dispatchDomainEventsInterceptor)
     : DbContext(options), INorthwindDbContext
 {
-    public DbSet<Category> Categories { get; set; } = null!;
+    public DbSet<Category> Categories => Set<Category>();
 
-    public DbSet<Customer> Customers { get; set; } = null!;
+    public DbSet<Customer> Customers => Set<Customer>();
 
-    public DbSet<Employee> Employees { get; set; } = null!;
+    public DbSet<Employee> Employees => Set<Employee>();
 
-    public DbSet<EmployeeTerritory> EmployeeTerritories { get; set; } = null!;
+    public DbSet<EmployeeTerritory> EmployeeTerritories => Set<EmployeeTerritory>();
 
-    public DbSet<OrderDetail> OrderDetails { get; set; } = null!;
+    public DbSet<OrderDetail> OrderDetails => Set<OrderDetail>();
 
-    public DbSet<Order> Orders { get; set; } = null!;
+    public DbSet<Order> Orders => Set<Order>();
 
-    public DbSet<Product> Products { get; set; } = null!;
+    public DbSet<Product> Products => Set<Product>();
 
-    public DbSet<Region> Region { get; set; } = null!;
+    public DbSet<Region> Region => Set<Region>();
 
-    public DbSet<Shipper> Shippers { get; set; } = null!;
+    public DbSet<Shipper> Shippers => Set<Shipper>();
 
-    public DbSet<Supplier> Suppliers { get; set; } = null!;
+    public DbSet<Supplier> Suppliers => Set<Supplier>();
 
-    public DbSet<Territory> Territories { get; set; } = null!;
-
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
-    {
-        ChangeTracker.DetectChanges();
-
-        foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
-        {
-            if (entry.State == EntityState.Added)
-            {
-                entry.Entity.SetCreated(dateTime.Now, currentUserService.GetUserId());
-            }
-            else if (entry.State == EntityState.Modified)
-            {
-                entry.Entity.SetUpdated(dateTime.Now, currentUserService.GetUserId());
-            }
-        }
-
-        return base.SaveChangesAsync(cancellationToken);
-    }
+    public DbSet<Territory> Territories => Set<Territory>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(NorthwindDbContext).Assembly);
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        // Order of the interceptors is important
+        optionsBuilder.AddInterceptors(saveChangesInterceptor, dispatchDomainEventsInterceptor);
     }
 }

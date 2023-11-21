@@ -15,27 +15,27 @@ namespace Northwind.Application.Common.Interfaces;
 
 public interface INorthwindDbContext
 {
-    DbSet<Category> Categories { get; set; }
+    DbSet<Category> Categories { get; }
 
-    DbSet<Customer> Customers { get; set; }
+    DbSet<Customer> Customers { get; }
 
-    DbSet<Employee> Employees { get; set; }
+    DbSet<Employee> Employees { get; }
 
-    DbSet<EmployeeTerritory> EmployeeTerritories { get; set; }
+    DbSet<EmployeeTerritory> EmployeeTerritories { get; }
 
-    DbSet<OrderDetail> OrderDetails { get; set; }
+    DbSet<OrderDetail> OrderDetails { get; }
 
-    DbSet<Order> Orders { get; set; }
+    DbSet<Order> Orders { get; }
 
-    DbSet<Product> Products { get; set; }
+    DbSet<Product> Products { get; }
 
-    DbSet<Region> Region { get; set; }
+    DbSet<Region> Region { get; }
 
-    DbSet<Shipper> Shippers { get; set; }
+    DbSet<Shipper> Shippers { get; }
 
-    DbSet<Supplier> Suppliers { get; set; }
+    DbSet<Supplier> Suppliers { get; }
 
-    DbSet<Territory> Territories { get; set; }
+    DbSet<Territory> Territories { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

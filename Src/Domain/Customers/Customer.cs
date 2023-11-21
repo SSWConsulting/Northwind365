@@ -22,6 +22,8 @@ public class Customer : AggregateRoot<CustomerId>
         customer.UpdateAddress(address);
         customer.UpdateContact(contactName, contactTitle);
 
+        customer.AddDomainEvent(new CustomerCreatedEvent(customer.Id));
+
         return customer;
     }
 

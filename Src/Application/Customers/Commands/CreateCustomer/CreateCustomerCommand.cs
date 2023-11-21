@@ -34,7 +34,5 @@ public class CreateCustomerCommandHandler(INorthwindDbContext context, IMediator
         context.Customers.Add(entity);
 
         await context.SaveChangesAsync(cancellationToken);
-
-        await mediator.Publish(new CustomerCreatedEvent(entity.Id), cancellationToken);
     }
 }
