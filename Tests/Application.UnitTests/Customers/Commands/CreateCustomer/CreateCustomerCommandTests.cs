@@ -17,14 +17,17 @@ public class CreateCustomerCommandTests : IDisposable, IAsyncDisposable
     public async Task Handle_GivenValidRequest_ShouldRaiseCustomerCreatedNotification()
     {
         // Arrange
-        var mediatorMock = Substitute.For<IMediator>();
-        var sut = new CreateCustomerCommandHandler(_context, mediatorMock);
+        var sut = new CreateCustomerCommandHandler(_context);
         var newCustomerId = new CustomerId("123");
 
         var fixture = new Fixture();
         var command = fixture.Build<CreateCustomerCommand>()
             .With(x => x.ContactName, "ContactName")
             .With(x => x.ContactTitle, "ContactTitle")
+            .With(x => x.Phone, "123456")
+            .With(x => x.Fax, "123456")
+            .With(x => x.PostalCode, "4000")
+            .With(x => x.Country, "New Zealand")
             .With(x => x.Id, newCustomerId.Value)
             .Create();
 

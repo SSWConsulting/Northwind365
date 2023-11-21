@@ -88,8 +88,8 @@ public class NorthwindDbContextInitializer(ILogger<NorthwindDbContextInitializer
             f.Name.FullName(),
             f.Name.JobTitle(),
             AddressFaker.Generate(),
-            f.Phone.PhoneNumber(),
-            f.Phone.PhoneNumber()
+            new Phone(f.Phone.PhoneNumber()),
+            new Phone(f.Phone.PhoneNumber())
         ));
 
         var customers = faker.Generate(NumCustomers);
@@ -157,12 +157,12 @@ public class NorthwindDbContextInitializer(ILogger<NorthwindDbContextInitializer
     }
 
     private Faker<Address> AddressFaker = new Faker<Address>()
-        .CustomInstantiator(f => new Address(
+        .CustomInstantiator(f => Address.Create(
             f.Address.StreetAddress(),
             f.Address.City(),
             f.Address.State(),
-            f.Address.ZipCode(),
-            f.Address.Country()
+            new PostCode(f.Address.ZipCode()),
+            new Country(f.Address.Country())
             ));
 
     private async Task SeedEmployeesAsync(CancellationToken cancellationToken)

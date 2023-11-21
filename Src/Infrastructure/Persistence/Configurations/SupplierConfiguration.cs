@@ -13,7 +13,7 @@ public class SupplierConfiguration : IEntityTypeConfiguration<Supplier>
             .HasConversion(x => x.Value, x => new SupplierId(x))
             .ValueGeneratedOnAdd();
 
-        builder.OwnsOne(e => e.Address, AddressConfiguration.BuildAction);
+        builder.ComplexProperty(e => e.Address, AddressConfiguration.BuildAction);
 
         builder.Property(e => e.CompanyName)
             .IsRequired()

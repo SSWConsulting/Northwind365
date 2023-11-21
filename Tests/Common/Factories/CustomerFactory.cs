@@ -11,15 +11,15 @@ public static class CustomerFactory
         f.Company.CompanyName(0),
         f.Name.FullName(),
         f.Name.JobTitle(),
-        new Address(
+        Address.Create(
             f.Address.StreetAddress(),
             f.Address.City(),
             f.Address.State(),
-            f.Address.ZipCode(),
-            f.Address.Country()
+            new PostCode(f.Address.ZipCode()),
+            new Country(f.Address.Country())
         ),
-        f.Phone.PhoneNumber(),
-        f.Phone.PhoneNumber()
+        new Phone(f.Phone.PhoneNumber()),
+        new Phone(f.Phone.PhoneNumber())
     ));
 
     public static Customer Generate() => Faker.Generate();

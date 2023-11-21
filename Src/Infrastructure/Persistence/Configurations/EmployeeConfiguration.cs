@@ -16,7 +16,7 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
         builder.Property(e => e.BirthDate)
             .HasColumnType("datetime");
 
-        builder.OwnsOne(e => e.Address, AddressConfiguration.BuildAction);
+        builder.ComplexProperty(e => e.Address, AddressConfiguration.BuildAction);
 
         builder.Property(e => e.Extension)
             .HasMaxLength(4);

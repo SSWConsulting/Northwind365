@@ -4,17 +4,20 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Northwind.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace Northwind.Persistence.Migrations
+namespace Northwind.Infrastructure.Identity.Persistence
 {
     [DbContext(typeof(NorthwindDbContext))]
-    partial class NorthwindDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231121032051_Add_ValueObjects")]
+    partial class Add_ValueObjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

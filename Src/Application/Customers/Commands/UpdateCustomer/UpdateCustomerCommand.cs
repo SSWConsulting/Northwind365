@@ -26,11 +26,11 @@ public class UpdateCustomerCommandHandler(INorthwindDbContext context) : IReques
             throw new NotFoundException(nameof(Customer), request.Id);
         }
 
-        entity.UpdateAddress(new Address(request.Address, request.City, request.Region, request.PostalCode,
-            request.Country));
+        entity.UpdateAddress(Address.Create(request.Address, request.City, request.Region, new PostCode(request.PostalCode),
+            new Country(request.Country)));
         entity.UpdateContact(request.ContactName, request.ContactTitle);
-        entity.UpdatePhone(request.Phone);
-        entity.UpdateFax(request.Fax);
+        entity.UpdatePhone(new Phone(request.Phone));
+        entity.UpdateFax(new Phone(request.Fax));
         entity.UpdateCompanyName(request.CompanyName);
 
         await context.SaveChangesAsync(cancellationToken);

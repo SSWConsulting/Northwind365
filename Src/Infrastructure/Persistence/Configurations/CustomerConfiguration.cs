@@ -15,7 +15,7 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
                 x => new CustomerId(x))
             .ValueGeneratedNever();
 
-        builder.OwnsOne(e => e.Address, AddressConfiguration.BuildAction);
+        builder.ComplexProperty(e => e.Address, AddressConfiguration.BuildAction);
 
         builder.Property(e => e.CompanyName)
             .IsRequired()
@@ -25,9 +25,11 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
 
         builder.Property(e => e.ContactTitle).HasMaxLength(50);
 
-        builder.Property(e => e.Fax).HasMaxLength(24);
+        builder.ComplexProperty(e => e.Fax, faxBuilder => faxBuilder.Property(m => m.Number).HasMaxLength(24));
+        //builder.Property(e => e.Fax).HasMaxLength(24);
 
-        builder.Property(e => e.Phone).HasMaxLength(24);
+        builder.ComplexProperty(e => e.Phone, phoneBuilder => phoneBuilder.Property(m => m.Number).HasMaxLength(24));
+        //builder.Property(e => e.Phone).HasMaxLength(24);
 
         builder.HasMany(e => e.Orders)
             .WithOne(p => p.Customer)
