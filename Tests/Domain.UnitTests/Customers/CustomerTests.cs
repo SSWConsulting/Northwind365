@@ -1,7 +1,5 @@
 ﻿using Common.Factories;
-using FluentAssertions;
 using Northwind.Domain.Customers;
-using Xunit;
 
 namespace Northwind.Domain.UnitTests.Customers;
 
