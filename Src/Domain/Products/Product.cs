@@ -1,7 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using Northwind.Domain.Categories;
 using Northwind.Domain.Common.Base;
-using Northwind.Domain.Common.Guards;
 using Northwind.Domain.Orders;
 using Northwind.Domain.Supplying;
 

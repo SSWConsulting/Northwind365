@@ -9,15 +9,8 @@ public record CreateProductCommand(string ProductName, decimal? UnitPrice, int? 
     bool Discontinued) : IRequest<int>;
 
 // ReSharper disable once UnusedType.Global
-public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, int>
+public class CreateProductCommandHandler(INorthwindDbContext context) : IRequestHandler<CreateProductCommand, int>
 {
-    private readonly INorthwindDbContext _context;
-
-    public CreateProductCommandHandler(INorthwindDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<int> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         var entity = Product.Create
@@ -29,9 +22,9 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             request.Discontinued
         );
 
-        _context.Products.Add(entity);
+        context.Products.Add(entity);
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
 
         return entity.Id.Value;
     }

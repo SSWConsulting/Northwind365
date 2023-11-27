@@ -16,23 +16,14 @@ namespace Northwind.Application.Products.Queries.GetProductDetail;
 public record GetProductDetailQuery(int Id) : IRequest<ProductDetailVm>;
 
 // ReSharper disable once UnusedType.Global
-public class GetProductDetailQueryHandler : IRequestHandler<GetProductDetailQuery, ProductDetailVm>
+public class GetProductDetailQueryHandler(INorthwindDbContext context, IMapper mapper) : IRequestHandler<GetProductDetailQuery, ProductDetailVm>
 {
-    private readonly INorthwindDbContext _context;
-    private readonly IMapper _mapper;
-
-    public GetProductDetailQueryHandler(INorthwindDbContext context, IMapper mapper)
-    {
-        _context = context;
-        _mapper = mapper;
-    }
-
     public async Task<ProductDetailVm> Handle(GetProductDetailQuery request, CancellationToken cancellationToken)
     {
         var productId = new ProductId(request.Id);
-        var vm = await _context.Products
+        var vm = await context.Products
             .WithSpecification(new ProductByIdSpec(productId))
-            .ProjectTo<ProductDetailVm>(_mapper.ConfigurationProvider)
+            .ProjectTo<ProductDetailVm>(mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (vm == null)

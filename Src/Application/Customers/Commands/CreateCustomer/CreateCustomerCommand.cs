@@ -1,7 +1,5 @@
 ﻿using MediatR;
 using Northwind.Application.Common.Interfaces;
-using System.Threading;
-using System.Threading.Tasks;
 using Northwind.Domain.Common;
 using Northwind.Domain.Customers;
 
@@ -10,17 +8,8 @@ namespace Northwind.Application.Customers.Commands.CreateCustomer;
 public record CreateCustomerCommand(string Id, string Address, string City, string CompanyName, string ContactName,
     string ContactTitle, string Country, string Fax, string Phone, string PostalCode, string Region) : IRequest;
 
-public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand>
+public class CreateCustomerCommandHandler(INorthwindDbContext context) : IRequestHandler<CreateCustomerCommand>
 {
-    private readonly INorthwindDbContext _context;
-    private readonly IMediator _mediator;
-
-    public CreateCustomerCommandHandler(INorthwindDbContext context, IMediator mediator)
-    {
-        _context = context;
-        _mediator = mediator;
-    }
-
     public async Task Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
         var entity = Customer.Create
@@ -29,21 +18,19 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
             request.CompanyName,
             request.ContactName,
             request.ContactTitle,
-            new Address(
+            Address.Create(
                 request.Address,
                 request.City,
                 request.Region,
-                request.PostalCode,
-                request.Country
+                new PostCode(request.PostalCode),
+                new Country(request.Country)
             ),
-            request.Fax,
-            request.Phone
+            new Phone(request.Fax),
+            new Phone(request.Phone)
         );
 
-        _context.Customers.Add(entity);
+        context.Customers.Add(entity);
 
-        await _context.SaveChangesAsync(cancellationToken);
-
-        await _mediator.Publish(new CustomerCreatedEvent(entity.Id), cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

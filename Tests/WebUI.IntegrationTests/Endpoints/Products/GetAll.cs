@@ -5,14 +5,10 @@ using Northwind.Application.Products.Queries.GetProductsList;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
+namespace Northwind.WebUI.IntegrationTests.Endpoints.Products;
 
-public class GetAll : IntegrationTestBase
+public class GetAll(TestingDatabaseFixture fixture, ITestOutputHelper output) : IntegrationTestBase(fixture, output)
 {
-    public GetAll(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
-    {
-    }
-
     [Fact]
     public async Task ReturnsProductsListViewModel()
     {
@@ -27,6 +23,6 @@ public class GetAll : IntegrationTestBase
         // Assert
         vm.Should().NotBeNull();
         vm.Should().BeOfType<ProductsListVm>();
-        vm.Products.Should().NotBeEmpty();
+        vm!.Products.Should().NotBeEmpty();
     }
 }

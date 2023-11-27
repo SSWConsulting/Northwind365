@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Northwind.Application.Common.Interfaces;
+using Northwind.Application.Products.Queries.GetProductsFile;
 using Northwind.Infrastructure.Files;
 using Northwind.Infrastructure.Identity;
 using Northwind.Infrastructure.Persistence;
+using Northwind.Infrastructure.Persistence.Interceptors;
 using Northwind.Infrastructure.Services;
 
 namespace Northwind.Infrastructure;
@@ -40,6 +42,9 @@ public static class DependencyInjection
 
         services.AddScoped<INorthwindDbContext>(provider => provider.GetRequiredService<NorthwindDbContext>());
         services.AddScoped<NorthwindDbContextInitializer>();
+
+        services.AddScoped<EntitySaveChangesInterceptor>();
+        services.AddScoped<DispatchDomainEventsInterceptor>();
     }
 
     private static void AddIdentity(IServiceCollection services, IConfiguration configuration)

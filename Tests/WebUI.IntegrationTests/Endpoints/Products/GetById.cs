@@ -6,14 +6,10 @@ using System.Net;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
+namespace Northwind.WebUI.IntegrationTests.Endpoints.Products;
 
-public class GetById : IntegrationTestBase
+public class GetById(TestingDatabaseFixture fixture, ITestOutputHelper output) : IntegrationTestBase(fixture, output)
 {
-    public GetById(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
-    {
-    }
-
     [Fact]
     public async Task GivenId_ReturnsProductViewModel()
     {
@@ -27,8 +23,7 @@ public class GetById : IntegrationTestBase
 
         // Assert
         vm.Should().NotBeNull();
-        vm.Should().NotBeNull();
-        vm.ProductId.Should().Be(product.Id.Value);
+        vm!.ProductId.Should().Be(product.Id.Value);
     }
 
     [Fact]

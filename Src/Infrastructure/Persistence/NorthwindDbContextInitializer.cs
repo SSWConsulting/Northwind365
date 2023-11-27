@@ -1,4 +1,5 @@
 ﻿using Bogus;
+using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Northwind.Application.Common.Interfaces;
@@ -15,12 +16,9 @@ using System.Diagnostics.CodeAnalysis;
 namespace Northwind.Infrastructure.Persistence;
 
 [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
-public class NorthwindDbContextInitializer
+public class NorthwindDbContextInitializer(ILogger<NorthwindDbContextInitializer> logger, NorthwindDbContext dbContext,
+    IUserManager userManager)
 {
-    private readonly ILogger<NorthwindDbContextInitializer> _logger;
-    private readonly NorthwindDbContext _dbContext;
-    private readonly IUserManager _userManager;
-
     public const int NumCategories = 5;
     public const int NumRegions = 4;
     public const int NumTerritoriesPerRegion = 5;
@@ -35,29 +33,21 @@ public class NorthwindDbContextInitializer
     public const int MinOrderDetails = 1;
     public const int MaxOrderDetails = 10;
 
-    public NorthwindDbContextInitializer(ILogger<NorthwindDbContextInitializer> logger, NorthwindDbContext dbContext,
-        IUserManager userManager)
-    {
-        _logger = logger;
-        _dbContext = dbContext;
-        _userManager = userManager;
-    }
-
     public Task<bool> CanConnect()
     {
-        return _dbContext.Database.CanConnectAsync();
+        return dbContext.Database.CanConnectAsync();
     }
 
     public async Task InitializeAsync()
     {
         try
         {
-            if (_dbContext.Database.IsSqlServer())
-                await _dbContext.Database.MigrateAsync();
+            if (dbContext.Database.IsSqlServer())
+                await dbContext.Database.MigrateAsync();
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "An error occurred while migrating or initializing the database");
+            logger.LogError(e, "An error occurred while migrating or initializing the database");
             throw;
         }
     }
@@ -83,14 +73,14 @@ public class NorthwindDbContextInitializer
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "An error occurred while seeding the database");
+            logger.LogError(e, "An error occurred while seeding the database");
             throw;
         }
     }
 
     private async Task SeedCustomersAsync(CancellationToken cancellationToken)
     {
-        if (_dbContext.Customers.Any())
+        if (dbContext.Customers.Any())
             return;
 
         var faker = new Faker<Customer>().CustomInstantiator(f => Customer.Create(
@@ -99,19 +89,19 @@ public class NorthwindDbContextInitializer
             f.Name.FullName(),
             f.Name.JobTitle(),
             AddressFaker.Generate(),
-            f.Phone.PhoneNumber(),
-            f.Phone.PhoneNumber()
+            new Phone(f.Phone.PhoneNumber()),
+            new Phone(f.Phone.PhoneNumber())
         ));
 
         var customers = faker.Generate(NumCustomers);
-        await _dbContext.Customers.AddRangeAsync(customers, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.Customers.AddRangeAsync(customers, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
 
     private async Task SeedCategoriesAsync(CancellationToken cancellationToken)
     {
-        if (_dbContext.Categories.Any())
+        if (dbContext.Categories.Any())
             return;
 
         var faker = new Faker<Category>()
@@ -124,13 +114,13 @@ public class NorthwindDbContextInitializer
             ));
 
         var categories = faker.Generate(NumCategories);
-        await _dbContext.Categories.AddRangeAsync(categories, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.Categories.AddRangeAsync(categories, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private async Task SeedRegionsAsync(CancellationToken cancellationToken)
     {
-        if (_dbContext.Region.Any())
+        if (dbContext.Region.Any())
             return;
 
         var regions = new[]
@@ -139,19 +129,19 @@ public class NorthwindDbContextInitializer
             Region.Create("Southern"),
         };
 
-        _dbContext.Region.AddRange(regions);
+        dbContext.Region.AddRange(regions);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private async Task SeedTerritoriesAsync(CancellationToken cancellationToken)
     {
-        if (_dbContext.Territories.Any())
+        if (dbContext.Territories.Any())
             return;
 
         var faker = new Faker();
 
-        foreach (var region in await _dbContext.Region.ToListAsync(cancellationToken: cancellationToken))
+        foreach (var region in await dbContext.Region.ToListAsync(cancellationToken: cancellationToken))
         {
             for (var i = 0; i < NumTerritoriesPerRegion; i++)
             {
@@ -160,28 +150,28 @@ public class NorthwindDbContextInitializer
                 var territoryDescription = faker.Lorem.Sentence(3);
                 var territory = Territory.Create(territoryId, regionId, territoryDescription);
 
-                _dbContext.Territories.Add(territory);
+                dbContext.Territories.Add(territory);
             }
         }
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private Faker<Address> AddressFaker = new Faker<Address>()
-        .CustomInstantiator(f => new Address(
+        .CustomInstantiator(f => Address.Create(
             f.Address.StreetAddress(),
             f.Address.City(),
             f.Address.State(),
-            f.Address.ZipCode(),
-            f.Address.Country()
+            new PostCode(f.Address.ZipCode().Truncate(30)),
+            new Country(f.Address.Country().Truncate(15))
             ));
 
     private async Task SeedEmployeesAsync(CancellationToken cancellationToken)
     {
-        if (_dbContext.Employees.Any())
+        if (dbContext.Employees.Any())
             return;
 
-        var territories = await _dbContext.Territories.ToListAsync(cancellationToken);
+        var territories = await dbContext.Territories.ToListAsync(cancellationToken);
 
         var faker = new Faker<Employee>()
             .CustomInstantiator(f => Employee.Create
@@ -202,13 +192,13 @@ public class NorthwindDbContextInitializer
             ));
 
         var employees = faker.Generate(NumEmployees);
-        await _dbContext.Employees.AddRangeAsync(employees, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.Employees.AddRangeAsync(employees, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private async Task SeedShippersAsync(CancellationToken cancellationToken)
     {
-        if (_dbContext.Shippers.Any())
+        if (dbContext.Shippers.Any())
             return;
 
         var faker = new Faker<Shipper>().CustomInstantiator(f => Shipper.Create
@@ -218,13 +208,13 @@ public class NorthwindDbContextInitializer
         ));
 
         var shippers = faker.Generate(NumShippers);
-        await _dbContext.Shippers.AddRangeAsync(shippers, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.Shippers.AddRangeAsync(shippers, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private async Task SeedSuppliersAsync(CancellationToken cancellationToken)
     {
-        if (_dbContext.Suppliers.Any())
+        if (dbContext.Suppliers.Any())
             return;
 
         var faker = new Faker<Supplier>().CustomInstantiator(f => Supplier.Create
@@ -239,17 +229,17 @@ public class NorthwindDbContextInitializer
         ));
 
         var suppliers = faker.Generate(NumSuppliers);
-        await _dbContext.Suppliers.AddRangeAsync(suppliers, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.Suppliers.AddRangeAsync(suppliers, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private async Task SeedProductsAsync(CancellationToken cancellationToken)
     {
-        if (_dbContext.Products.Any())
+        if (dbContext.Products.Any())
             return;
 
-        var suppliers = await _dbContext.Suppliers.ToListAsync(cancellationToken: cancellationToken);
-        var categories = await _dbContext.Categories.ToListAsync(cancellationToken: cancellationToken);
+        var suppliers = await dbContext.Suppliers.ToListAsync(cancellationToken: cancellationToken);
+        var categories = await dbContext.Categories.ToListAsync(cancellationToken: cancellationToken);
 
         var faker = new Faker<Product>().CustomInstantiator(f =>
         {
@@ -271,19 +261,19 @@ public class NorthwindDbContextInitializer
         });
 
         var products = faker.Generate(NumProducts);
-        await _dbContext.Products.AddRangeAsync(products, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.Products.AddRangeAsync(products, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private async Task SeedOrdersAsync(CancellationToken cancellationToken)
     {
-        if (_dbContext.Orders.Any())
+        if (dbContext.Orders.Any())
             return;
 
-        var customer = await _dbContext.Customers.ToListAsync(cancellationToken: cancellationToken);
-        var employees = await _dbContext.Employees.ToListAsync(cancellationToken: cancellationToken);
-        var shippers = await _dbContext.Shippers.ToListAsync(cancellationToken: cancellationToken);
-        var products = await _dbContext.Products.ToListAsync(cancellationToken: cancellationToken);
+        var customer = await dbContext.Customers.ToListAsync(cancellationToken: cancellationToken);
+        var employees = await dbContext.Employees.ToListAsync(cancellationToken: cancellationToken);
+        var shippers = await dbContext.Shippers.ToListAsync(cancellationToken: cancellationToken);
+        var products = await dbContext.Products.ToListAsync(cancellationToken: cancellationToken);
 
         var faker = new Faker<Order>().CustomInstantiator(f => Order.Create
         (
@@ -314,13 +304,13 @@ public class NorthwindDbContextInitializer
             }
         }
 
-        await _dbContext.Orders.AddRangeAsync(orders, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.Orders.AddRangeAsync(orders, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private async Task SeedUsersAsync(CancellationToken cancellationToken)
     {
-        var employees = await _dbContext.Employees
+        var employees = await dbContext.Employees
             .Include(e => e.DirectReports)
             .Where(e => e.UserId == null)
             .ToListAsync(cancellationToken);
@@ -330,7 +320,7 @@ public class NorthwindDbContextInitializer
             foreach (var employee in employees)
             {
                 var userName = $"{employee.FirstName}.{employee.LastName}@northwind".ToLower();
-                var userId = await _userManager.CreateUserAsync(userName, "Northwind1!");
+                var userId = await userManager.CreateUserAsync(userName, "Northwind1!");
 
                 // NOTE: If the user already exists, then the user id will be null
                 if (!string.IsNullOrWhiteSpace(userId))
@@ -344,7 +334,7 @@ public class NorthwindDbContextInitializer
                 }
             }
 
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            await dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

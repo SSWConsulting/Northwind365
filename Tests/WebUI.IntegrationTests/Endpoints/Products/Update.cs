@@ -1,19 +1,16 @@
 ﻿using Common.Factories;
 using Common.Fixtures;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Northwind.Application.Products.Commands.UpdateProduct;
 using System.Net;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
+namespace Northwind.WebUI.IntegrationTests.Endpoints.Products;
 
-public class Update : IntegrationTestBase
+public class Update(TestingDatabaseFixture fixture, ITestOutputHelper output) : IntegrationTestBase(fixture, output)
 {
-    public Update(TestingDatabaseFixture fixture, ITestOutputHelper output): base(fixture, output)
-    {
-    }
-
     [Fact]
     public async Task GivenUpdateProductCommand_ReturnsSuccessStatusCode()
     {
@@ -21,8 +18,8 @@ public class Update : IntegrationTestBase
         var client = await GetAuthenticatedClientAsync();
         var product = ProductFactory.Generate();
         await AddEntityAsync(product);
-        var supplier = Context.Suppliers.First();
-        var category = Context.Categories.First();
+        var supplier = await Context.Suppliers.FirstAsync();
+        var category = await Context.Categories.FirstAsync();
 
         var command = new UpdateProductCommand
         (
@@ -46,8 +43,8 @@ public class Update : IntegrationTestBase
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var supplier = Context.Suppliers.First();
-        var category = Context.Categories.First();
+        var supplier = await Context.Suppliers.FirstAsync();
+        var category = await Context.Categories.FirstAsync();
         var invalidCommand = new UpdateProductCommand
         (
             0,

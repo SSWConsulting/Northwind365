@@ -5,21 +5,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Northwind.Infrastructure.Identity;
 
-public class ApplicationDbContextInitializer
+public class ApplicationDbContextInitializer(ILogger<ApplicationDbContextInitializer> logger,
+    ApplicationDbContext dbContext)
 {
-    private readonly ILogger<ApplicationDbContextInitializer> _logger;
-    private readonly ApplicationDbContext _dbContext;
-
-    public ApplicationDbContextInitializer(ILogger<ApplicationDbContextInitializer> logger,
-        ApplicationDbContext dbContext)
-    {
-        _logger = logger;
-        _dbContext = dbContext;
-    }
-
     public Task<bool> CanConnect()
     {
-        return _dbContext.Database.CanConnectAsync();
+        return dbContext.Database.CanConnectAsync();
     }
 
     // ReSharper disable once UnusedMember.Global
@@ -27,12 +18,12 @@ public class ApplicationDbContextInitializer
     {
         try
         {
-            if (_dbContext.Database.IsSqlServer())
-                await _dbContext.Database.EnsureDeletedAsync();
+            if (dbContext.Database.IsSqlServer())
+                await dbContext.Database.EnsureDeletedAsync();
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "An error occurred while migrating or initializing the database");
+            logger.LogError(e, "An error occurred while migrating or initializing the database");
             throw;
         }
     }
@@ -41,12 +32,12 @@ public class ApplicationDbContextInitializer
     {
         try
         {
-            if (_dbContext.Database.IsSqlServer())
-                await _dbContext.Database.MigrateAsync();
+            if (dbContext.Database.IsSqlServer())
+                await dbContext.Database.MigrateAsync();
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "An error occurred while migrating or initializing the database");
+            logger.LogError(e, "An error occurred while migrating or initializing the database");
             throw;
         }
     }

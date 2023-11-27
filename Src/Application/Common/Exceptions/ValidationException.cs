@@ -5,14 +5,8 @@ using FluentValidation.Results;
 
 namespace Northwind.Application.Common.Exceptions;
 
-public class ValidationException : Exception
+public class ValidationException() : Exception("One or more validation failures have occurred.")
 {
-    public ValidationException()
-        : base("One or more validation failures have occurred.")
-    {
-        Failures = new Dictionary<string, string[]>();
-    }
-
     public ValidationException(List<ValidationFailure> failures)
         : this()
     {
@@ -31,5 +25,5 @@ public class ValidationException : Exception
         }
     }
 
-    public IDictionary<string, string[]> Failures { get; }
+    public IDictionary<string, string[]> Failures { get; } = new Dictionary<string, string[]>();
 }

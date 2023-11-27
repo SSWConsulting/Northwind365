@@ -39,7 +39,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.Property(e => e.ShipName).HasMaxLength(40);
 
-        builder.OwnsOne(e => e.ShipAddress, AddressConfiguration.BuildAction);
+        builder.ComplexProperty(e => e.ShipAddress, AddressConfiguration.BuildAction);
 
         builder.Property(e => e.ShippedDate).HasColumnType("datetime");
 

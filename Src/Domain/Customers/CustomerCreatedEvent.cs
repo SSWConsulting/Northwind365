@@ -1,5 +1,5 @@
-﻿using MediatR;
+﻿using Northwind.Domain.Common.Base;
 
 namespace Northwind.Domain.Customers;
 
-public record CustomerCreatedEvent(CustomerId CustomerId) : INotification;
+public record CustomerCreatedEvent(CustomerId CustomerId) : DomainEvent;

@@ -7,19 +7,11 @@ using Northwind.Application.Common.Interfaces;
 
 namespace Northwind.Application.Common.Behaviours;
 
-public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
+public class PerformanceBehavior<TRequest, TResponse>(ILogger<TRequest> logger, ICurrentUserService currentUserService)
+    : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
 {
-    private readonly Stopwatch _timer;
-    private readonly ILogger<TRequest> _logger;
-    private readonly ICurrentUserService _currentUserService;
-
-    public PerformanceBehavior(ILogger<TRequest> logger, ICurrentUserService currentUserService)
-    {
-        _timer = new Stopwatch();
-
-        _logger = logger;
-        _currentUserService = currentUserService;
-    }
+    private readonly Stopwatch _timer = new();
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
@@ -33,8 +25,8 @@ public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
         {
             var name = typeof(TRequest).Name;
 
-            _logger.LogWarning("Northwind Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@Request}", 
-                name, _timer.ElapsedMilliseconds, _currentUserService.GetUserId(), request);
+            logger.LogWarning("Northwind Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@Request}", 
+                name, _timer.ElapsedMilliseconds, currentUserService.GetUserId(), request);
         }
 
         return response;

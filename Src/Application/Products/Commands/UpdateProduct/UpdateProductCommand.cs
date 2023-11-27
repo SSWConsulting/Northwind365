@@ -13,19 +13,12 @@ public record UpdateProductCommand(int ProductId, string ProductName, decimal? U
     int? CategoryId, bool Discontinued) : IRequest;
 
 // ReSharper disable once UnusedType.Global
-public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
+public class UpdateProductCommandHandler(INorthwindDbContext context) : IRequestHandler<UpdateProductCommand>
 {
-    private readonly INorthwindDbContext _context;
-
-    public UpdateProductCommandHandler(INorthwindDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task Handle(UpdateProductCommand request, CancellationToken cancellationToken)
     {
         var productId = new ProductId(request.ProductId);
-        var entity = await _context.Products
+        var entity = await context.Products
             .WithSpecification(new ProductByIdSpec(productId))
             .FirstOrDefaultAsync(cancellationToken);
 
@@ -35,6 +28,6 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
         entity.UpdateProduct(request.ProductName, request.CategoryId.ToCategoryId(), request.SupplierId.ToSupplierId(),
             request.Discontinued);
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 }

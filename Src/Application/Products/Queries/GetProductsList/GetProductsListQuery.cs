@@ -12,21 +12,12 @@ namespace Northwind.Application.Products.Queries.GetProductsList;
 public record GetProductsListQuery : IRequest<ProductsListVm>;
 
 // ReSharper disable once UnusedType.Global
-public class GetProductsListQueryHandler : IRequestHandler<GetProductsListQuery, ProductsListVm>
+public class GetProductsListQueryHandler(INorthwindDbContext context, IMapper mapper) : IRequestHandler<GetProductsListQuery, ProductsListVm>
 {
-    private readonly INorthwindDbContext _context;
-    private readonly IMapper _mapper;
-
-    public GetProductsListQueryHandler(INorthwindDbContext context, IMapper mapper)
-    {
-        _context = context;
-        _mapper = mapper;
-    }
-
     public async Task<ProductsListVm> Handle(GetProductsListQuery request, CancellationToken cancellationToken)
     {
-        var products = await _context.Products
-            .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
+        var products = await context.Products
+            .ProjectTo<ProductDto>(mapper.ConfigurationProvider)
             .OrderBy(p => p.ProductName)
             .ToListAsync(cancellationToken);
 

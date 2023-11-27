@@ -1,31 +1,28 @@
 ﻿using Common.Fixtures;
 using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Northwind.Application.Products.Commands.CreateProduct;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace Northwind.WebUI.IntegrationTests.Controllers.Products;
+namespace Northwind.WebUI.IntegrationTests.Endpoints.Products;
 
-public class Create : IntegrationTestBase
+public class Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : IntegrationTestBase(fixture, output)
 {
-    public Create(TestingDatabaseFixture fixture, ITestOutputHelper output) : base(fixture, output)
-    {
-    }
-
     [Fact]
     public async Task GivenCreateProductCommand_ReturnsNewProductId()
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var supplier = Context.Suppliers.First().Id.Value;
-        var category = Context.Categories.First().Id.Value;
+        var supplier = await Context.Suppliers.FirstAsync();
+        var category = await Context.Categories.FirstAsync();
 
         var command = new CreateProductCommand
         (
             "Coffee",
             19.00m,
-            supplier,
-            category,
+            supplier.Id.Value,
+            category.Id.Value,
             false
         );
 
@@ -34,7 +31,7 @@ public class Create : IntegrationTestBase
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var productId = response.Content.ReadFromJsonAsync<int>();
+        var productId = await response.Content.ReadFromJsonAsync<int>();
         productId.Should().NotBe(0);
     }
 
@@ -44,14 +41,14 @@ public class Create : IntegrationTestBase
         // Arrange
         var client = await GetAuthenticatedClientAsync();
         int? supplier = null;
-        var category = Context.Categories.First().Id.Value;
+        var category = await Context.Categories.FirstAsync();
 
         var command = new CreateProductCommand
         (
             "Coffee",
             19.00m,
             supplier,
-            category,
+            category.Id.Value,
             false
         );
 
@@ -60,7 +57,7 @@ public class Create : IntegrationTestBase
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var productId = response.Content.ReadFromJsonAsync<int>();
+        var productId = await response.Content.ReadFromJsonAsync<int>();
         productId.Should().NotBe(0);
     }
 
@@ -69,14 +66,14 @@ public class Create : IntegrationTestBase
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var supplier = Context.Suppliers.First().Id.Value;
+        var supplier = await Context.Suppliers.FirstAsync();
         int? category = null;
 
         var command = new CreateProductCommand
         (
             "Coffee",
             19.00m,
-            supplier,
+            supplier.Id.Value,
             category,
             false
         );
@@ -86,7 +83,7 @@ public class Create : IntegrationTestBase
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var productId = response.Content.ReadFromJsonAsync<int>();
+        var productId = await response.Content.ReadFromJsonAsync<int>();
         productId.Should().NotBe(0);
     }
 
@@ -95,16 +92,16 @@ public class Create : IntegrationTestBase
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var supplier = Context.Suppliers.First().Id.Value;
-        var category = Context.Categories.First().Id.Value;
+        var supplier = await Context.Suppliers.FirstAsync();
+        var category = await Context.Categories.FirstAsync();
         decimal? unitPrice = null;
 
         var command = new CreateProductCommand
         (
             "Coffee",
             unitPrice,
-            supplier,
-            category,
+            supplier.Id.Value,
+            category.Id.Value,
             false
         );
 
@@ -113,7 +110,7 @@ public class Create : IntegrationTestBase
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var productId = response.Content.ReadFromJsonAsync<int>();
+        var productId = await response.Content.ReadFromJsonAsync<int>();
         productId.Should().NotBe(0);
     }
 }

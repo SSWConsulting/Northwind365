@@ -10,21 +10,13 @@ namespace Northwind.Application.Categories.Queries.GetCategoriesList;
 
 public record GetCategoriesListQuery : IRequest<CategoriesListVm>;
 
-public class GetCategoriesListQueryHandler : IRequestHandler<GetCategoriesListQuery, CategoriesListVm>
+// ReSharper disable once UnusedType.Global
+public class GetCategoriesListQueryHandler(INorthwindDbContext context, IMapper mapper) : IRequestHandler<GetCategoriesListQuery, CategoriesListVm>
 {
-    private readonly INorthwindDbContext _context;
-    private readonly IMapper _mapper;
-
-    public GetCategoriesListQueryHandler(INorthwindDbContext context, IMapper mapper)
-    {
-        _context = context;
-        _mapper = mapper;
-    }
-
     public async Task<CategoriesListVm> Handle(GetCategoriesListQuery request, CancellationToken cancellationToken)
     {
-        var categories = await _context.Categories
-            .ProjectTo<CategoryLookupDto>(_mapper.ConfigurationProvider)
+        var categories = await context.Categories
+            .ProjectTo<CategoryLookupDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
         var vm = new CategoriesListVm
