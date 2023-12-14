@@ -1,5 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import { BehaviorSubject, catchError, map, Observable, of } from "rxjs";
+import { AsyncSubject, BehaviorSubject, catchError, map, Observable, of } from "rxjs";
 import { UserService } from "./user.service";
 import { Client, LoginRequest, RegisterRequest } from 'src/app/northwind-traders-api';
 
@@ -103,6 +103,7 @@ export class AuthorizeService {
   }
 
   refreshLogin(): Observable<AuthenticationResult> {
+    const authenticationResult$ = new AsyncSubject<AuthenticationResult>();
     this.getRefreshToken();
 
     if (!this.refreshToken) {
@@ -110,7 +111,7 @@ export class AuthorizeService {
       return of(AuthenticationResult.Failure);
     }
 
-    return this.authClient.postApiAuthRefresh({
+    this.authClient.postApiAuthRefresh({
       refreshToken: this.refreshToken
     }).pipe(
       map(response => {
@@ -124,7 +125,13 @@ export class AuthorizeService {
         else {
           return AuthenticationResult.Failure;
         }
-      }));
+      })
+    ).subscribe(result => {
+      authenticationResult$.next(result);
+      authenticationResult$.complete();
+    });
+
+    return authenticationResult$.asObservable();
   }
 
   setUserName() {
