@@ -73,7 +73,7 @@ public class WebUiTestFactory : WebApplicationFactory<IWebUiMarker>
 
     private static async Task<LoginResponse?> Login(string userName, string password, HttpClient client)
     {
-        var loginResponse = await client.PostAsJsonAsync("/login", new { Email = userName, Password = password });
+        var loginResponse = await client.PostAsJsonAsync("/api/auth/login", new { Email = userName, Password = password });
         loginResponse.EnsureSuccessStatusCode();
 
         var loginResponseContent = await loginResponse.Content.ReadFromJsonAsync<LoginResponse>();
@@ -85,7 +85,7 @@ public class WebUiTestFactory : WebApplicationFactory<IWebUiMarker>
 
     private static async Task Register(string userName, string password, HttpClient client)
     {
-        var registerResponse = await client.PostAsJsonAsync("/register", new { Email = userName, Password = password });
+        var registerResponse = await client.PostAsJsonAsync("/api/auth/register", new { Email = userName, Password = password });
         registerResponse.EnsureSuccessStatusCode();
     }
 }
