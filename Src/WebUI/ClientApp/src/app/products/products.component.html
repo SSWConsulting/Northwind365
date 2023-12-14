@@ -18,7 +18,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let product of productsListVm.products">
+      <tr *ngFor="let product of productsListVm?.products">
         <td>{{ product.productId }}</td>
         <td>{{ product.productName }}</td>
       </tr>

@@ -36,8 +36,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0"/>
-    <PackageReference Include="NSwag.AspNetCore" Version="14.0.0-preview010" />
-    <PackageReference Include="NSwag.MSBuild" Version="14.0.0-preview010">
+    <PackageReference Include="NSwag.AspNetCore" Version="14.0.0-preview012" />
+    <PackageReference Include="NSwag.MSBuild" Version="14.0.0-preview012">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>

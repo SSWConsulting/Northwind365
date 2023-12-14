@@ -5,8 +5,7 @@ import { Client, ProductsListVm } from '../northwind-traders-api';
   templateUrl: './products.component.html'
 })
 export class ProductsComponent {
-
-  productsListVm: ProductsListVm = new ProductsListVm();
+  protected productsListVm: ProductsListVm;
 
   constructor(client: Client) {
     client.getProductsList().subscribe(result => {

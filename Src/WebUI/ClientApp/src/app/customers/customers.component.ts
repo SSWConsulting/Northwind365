@@ -8,8 +8,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
   templateUrl: './customers.component.html'
 })
 export class CustomersComponent {
-
-  public vm: CustomersListVm = new CustomersListVm();
+  protected vm: CustomersListVm;
   private bsModalRef: BsModalRef;
 
   constructor(private client: Client, private modalService: BsModalService) {
