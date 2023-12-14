@@ -4,6 +4,7 @@ using Northwind.Application.Customers.Commands.CreateCustomer;
 using Northwind.Application.Customers.Commands.DeleteCustomer;
 using Northwind.Application.Customers.Commands.UpdateCustomer;
 using Northwind.Application.Customers.Queries.GetCustomerDetail;
+using Northwind.Application.Customers.Queries.GetCustomersCsv;
 using Northwind.Application.Customers.Queries.GetCustomersList;
 using SSW.CleanArchitecture.WebApi.Extensions;
 
@@ -21,6 +22,15 @@ public static class CustomerEndpoints
             .MapGet("/", (ISender sender, CancellationToken ct) => sender.Send(new GetCustomersListQuery(), ct))
             .WithName("GetCustomersList")
             .ProducesGet<CustomersListVm>();
+
+        group
+            .MapGet("/download", async (ISender sender, CancellationToken ct) =>
+            {
+                CustomersCsvVm result = await sender.Send(new GetCustomersCsvQuery(), ct);
+                return TypedResults.File(result.Data, result.ContentType, result.FileName);
+            })
+            .WithName("GetCustomersCsv")
+            .ProducesGet<FileStreamResult>();
 
         group
             .MapGet("/{id}",

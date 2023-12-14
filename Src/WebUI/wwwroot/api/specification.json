@@ -501,6 +501,40 @@
         }
       }
     },
+    "/api/customers/download": {
+      "get": {
+        "tags": [
+          "customers"
+        ],
+        "operationId": "GetCustomersCsv",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": ""
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/customers/{id}": {
       "get": {
         "tags": [
@@ -797,14 +831,15 @@
         "tags": [
           "products"
         ],
-        "operationId": "download",
+        "operationId": "GetProductsCsv",
         "responses": {
           "200": {
             "description": "",
             "content": {
-              "application/json": {
+              "application/octet-stream": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProductsListVm"
+                  "type": "string",
+                  "format": "binary"
                 }
               }
             }

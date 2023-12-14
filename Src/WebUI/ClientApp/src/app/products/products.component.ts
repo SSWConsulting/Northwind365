@@ -1,15 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Client, ProductsListVm } from '../northwind-traders-api';
+import { saveAs } from 'file-saver';
 
 @Component({
   templateUrl: './products.component.html'
 })
-export class ProductsComponent {
+export class ProductsComponent implements OnInit {
+  private client = inject(Client);
+
   protected productsListVm: ProductsListVm;
 
-  constructor(client: Client) {
-    client.getProductsList().subscribe(result => {
+  ngOnInit(): void {
+    this.client.getProductsList().subscribe(result => {
       this.productsListVm = result;
-    }, error => console.error(error));
+    });
+  }
+
+  protected exportAsCsv() {
+    this.client.getProductsCsv().subscribe(result => {
+      const blob = new Blob([result.data], { type: result.headers.contentType });
+      saveAs(blob, result.fileName);
+    });
   }
 }
