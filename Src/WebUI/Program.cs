@@ -5,6 +5,7 @@ using Northwind.Infrastructure.Persistence;
 using Northwind.WebUI;
 using Northwind.WebUI.Features;
 using Northwind.WebUI.Filters;
+using SSW.CleanArchitecture.WebApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,9 @@ builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-app.MapIdentityApi<ApplicationUser>();
+app
+    .MapApiGroup("auth")
+    .MapIdentityApi<ApplicationUser>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

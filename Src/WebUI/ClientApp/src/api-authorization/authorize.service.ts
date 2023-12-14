@@ -25,7 +25,7 @@ export class AuthorizeService {
           email: loginModel.email,
           password: loginModel.password
         };
-        
+
         return this.httpClient.post<NetCore8LoginResponse>(`${this.baseUrl}/login`, data).pipe(
           tap(response => {
             if (!response.accessToken || !response.refreshToken) {
@@ -37,7 +37,7 @@ export class AuthorizeService {
             this.setRefreshToken(response.refreshToken);
             this.setLoggedInState(true);
             this.userService.setUserName(data.email);
-            
+
             return AuthenticationResult.Success;
           }),
           catchError(error => {
@@ -96,12 +96,12 @@ export class AuthorizeService {
     }
 
     registerUser(registerModel: NetCore8RegisterModel): Observable<AuthenticationResult> {
-        
+
         let data = {
             email: registerModel.email,
             password: registerModel.password
         };
-      
+
         return this.httpClient.post(`${this.baseUrl}/register`, data, {observe: 'response'}).pipe(
             map((response) => {
                 if (response.status == 200) {
@@ -149,7 +149,7 @@ export class AuthorizeService {
 
     setUserName() {
 
-        this.authCLient.getManageInfo().subscribe(result => {
+        this.authCLient.getApiAuthManageInfo().subscribe(result => {
             console.log(result);
             this.userService.setUserName(result.email);
         })
