@@ -26,7 +26,7 @@ public static class DependencyInjection
 
     private static void AddFiles(IServiceCollection services)
     {
-        services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
+        services.AddTransient<ICsvBuilder, CsvBuilder>();
     }
 
     private static void AddServices(IServiceCollection services)

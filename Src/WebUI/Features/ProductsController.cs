@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Northwind.Application.Products.Commands.CreateProduct;
 using Northwind.Application.Products.Commands.DeleteProduct;
 using Northwind.Application.Products.Commands.UpdateProduct;
@@ -28,8 +29,8 @@ public static class ProductEndpoints
                 var file = await sender.Send(new GetProductsFileQuery(), ct);
                 return TypedResults.File(file.Content, file.ContentType, file.FileName);
             })
-            .WithName("download")
-            .ProducesGet<ProductsListVm>();
+            .WithName("GetProductsCsv")
+            .ProducesGet<FileStreamResult>();
 
         group
             .MapGet("/{id}",
