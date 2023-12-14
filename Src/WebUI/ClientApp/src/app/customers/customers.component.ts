@@ -1,21 +1,23 @@
-import { Component } from '@angular/core';
-import { Client, CustomerDetailVm, CustomersListVm } from '../northwind-traders-api';
+import { Component, inject, OnInit } from '@angular/core';
+import { Client, CustomersListVm } from '../northwind-traders-api';
 import { CustomerDetailComponent } from '../customer-detail/customer-detail.component';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-customers',
   templateUrl: './customers.component.html'
 })
-export class CustomersComponent {
+export class CustomersComponent implements OnInit {
+  private client = inject(Client);
+  private modalService =inject(BsModalService);
 
   public vm: CustomersListVm = new CustomersListVm();
-  private bsModalRef: BsModalRef;
 
-  constructor(private client: Client, private modalService: BsModalService) {
-    client.getCustomersList().subscribe(result => {
+  ngOnInit(): void {
+    this.client.getCustomersList().subscribe(result => {
       this.vm = result;
-    }, error => console.error(error));
+    });
   }
 
   public customerDetail(id: string) {
@@ -23,7 +25,14 @@ export class CustomersComponent {
       const initialState = {
         customer: result
       };
-      this.bsModalRef = this.modalService.show(CustomerDetailComponent, {initialState});
-    }, error => console.error(error));
+      this.modalService.show(CustomerDetailComponent, {initialState});
+    });
+  }
+
+  protected exportAsCsv() {
+    this.client.getCustomersCsv().subscribe(result => {
+      const blob = new Blob([result.data], { type: result.headers.contentType });
+      saveAs(blob, result.fileName);
+    });
   }
 }
