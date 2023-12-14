@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { AuthenticationResult, AuthorizeService, NetCore8LoginModel } from '../authorize.service';
-import { ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
+import { AuthenticationResult, AuthorizeService } from '../authorize.service';
+import { ReturnUrlType } from '../api-authorization.constants';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RegisterRequest } from '../../app/northwind-traders-api';
 
 declare var bootstrap: any;
 
@@ -15,7 +16,7 @@ export class RegisterComponent {
   constructor(private authService: AuthorizeService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   isBusy: boolean = false;
-  
+
   notificationMessage: string = '';
 
   buttonText: string = 'Register';
@@ -28,7 +29,7 @@ export class RegisterComponent {
     let username = (<HTMLInputElement>document.getElementById("username")).value;
     let password = (<HTMLInputElement>document.getElementById("password")).value;
 
-    let registerModel: NetCore8LoginModel = {
+    const registerModel: RegisterRequest = {
       email: username,
       password: password
     };
@@ -56,7 +57,7 @@ export class RegisterComponent {
             } else {
               // handle failure
               console.log("Login failed")
-              
+
               this.notificationMessage = "⚠️ Could not automatically log you in. Please navigate to the login page.";
               this.showToast();
 
@@ -68,7 +69,7 @@ export class RegisterComponent {
       } else {
         // handle failure
         console.log("Registration failed")
-        
+
         this.notificationMessage = "⚠️ Registration failed. Please try again.";
         this.showToast();
 

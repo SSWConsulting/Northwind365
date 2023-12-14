@@ -1,18 +1,16 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
 import { AuthorizeService } from './authorize.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthorizeInterceptor implements HttpInterceptor {
-
-  constructor(private authorize: AuthorizeService) { }
+  private authorizeService = inject(AuthorizeService);
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    let token = this.authorize.getAccessToken();
+    const token = this.authorizeService.getAccessToken();
     return this.processRequestWithToken(token, req, next);
   }
 
@@ -31,7 +29,7 @@ export class AuthorizeInterceptor implements HttpInterceptor {
     return next.handle(req);
   }
 
-  private isSameOriginUrl(req: any) {
+  private isSameOriginUrl(req: HttpRequest<any>) {
     // It's an absolute url with the same origin.
     if (req.url.startsWith(`${window.location.origin}/`)) {
       return true;
