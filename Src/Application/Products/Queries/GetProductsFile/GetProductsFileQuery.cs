@@ -9,10 +9,9 @@ using Northwind.Application.Common.Interfaces;
 
 namespace Northwind.Application.Products.Queries.GetProductsFile;
 
-public record GetProductsFileQuery : IRequest<ProductsFileVm>;
+public sealed record GetProductsFileQuery : IRequest<ProductsFileVm>;
 
-// ReSharper disable once UnusedType.Global
-public class GetProductsFileQueryHandler(INorthwindDbContext context, ICsvFileBuilder fileBuilder, IMapper mapper,
+public sealed class GetProductsFileQueryHandler(INorthwindDbContext context, ICsvBuilder fileBuilder, IMapper mapper,
         IDateTime dateTime)
     : IRequestHandler<GetProductsFileQuery, ProductsFileVm>
 {
@@ -22,7 +21,7 @@ public class GetProductsFileQueryHandler(INorthwindDbContext context, ICsvFileBu
             .ProjectTo<ProductRecordDto>(mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken);
 
-        var fileContent = fileBuilder.BuildProductsFile(records);
+        var fileContent = await fileBuilder.GetCsvBytes(records);
 
         var vm = new ProductsFileVm
         {
