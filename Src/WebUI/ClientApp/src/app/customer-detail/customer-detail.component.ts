@@ -14,8 +14,7 @@ export class CustomerDetailComponent implements OnInit {
   constructor(private bsModalService: BsModalService, private bsModalRef: BsModalRef) {}
 
   ngOnInit() {
-
-    this.customer = this.bsModalService.config.initialState['customer'];
+    this.customer = this.bsModalService.config.initialState['customer'] as CustomerDetailVm;
 
     this.detailKeys = Object
       .keys(this.customer)
