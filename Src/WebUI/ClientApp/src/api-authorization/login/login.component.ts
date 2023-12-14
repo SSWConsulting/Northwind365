@@ -62,7 +62,6 @@ export class LoginComponent implements OnInit{
       password: password
     }).subscribe((result: AuthenticationResult) => {
       if (result == AuthenticationResult.Success) {
-        console.log("Login successful");
         this.toastrService.success('✅ Login successful! Sending you back where you came from...');
 
         let returnUrl = this.getReturnUrl();

@@ -35,8 +35,6 @@ export class RegisterComponent {
     };
 
     this.authService.registerUser(registerModel).subscribe((result: AuthenticationResult) => {
-      console.log(result);
-
       if (result == AuthenticationResult.Success) {
 
         this.notificationMessage = "✅ Registration successful! Logging you in...";
@@ -44,8 +42,6 @@ export class RegisterComponent {
 
         this.authService.handleLogin(registerModel)
           .subscribe(async (result: AuthenticationResult) => {
-            console.log(result);
-
             if (result == AuthenticationResult.Success) {
               this.notificationMessage = "✅ Login successful! Redirecting...";
               this.showToast();
@@ -56,8 +52,6 @@ export class RegisterComponent {
 
             } else {
               // handle failure
-              console.log("Login failed")
-
               this.notificationMessage = "⚠️ Could not automatically log you in. Please navigate to the login page.";
               this.showToast();
 
@@ -68,8 +62,6 @@ export class RegisterComponent {
 
       } else {
         // handle failure
-        console.log("Registration failed")
-
         this.notificationMessage = "⚠️ Registration failed. Please try again.";
         this.showToast();
 
