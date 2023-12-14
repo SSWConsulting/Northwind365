@@ -11,12 +11,11 @@ import { UserService } from '../user.service';
 })
 export class LoginMenuComponent implements OnInit {
   public isAuthenticated: Observable<boolean>;
-  public userName: Observable<string>;
+  public userName: Observable<string> = this.userService.userName$;
 
   constructor(private authorizeService: AuthorizeService, private userService: UserService) { }
 
   ngOnInit() {
     this.isAuthenticated = this.authorizeService.getLoggedInState();
-    this.userName = this.userService.getUserName();
   }
 }

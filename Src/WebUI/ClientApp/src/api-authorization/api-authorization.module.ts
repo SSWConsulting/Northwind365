@@ -7,6 +7,7 @@ import { ApplicationPaths } from './api-authorization.constants';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { RegisterComponent } from './register/register.component';
         { path: ApplicationPaths.LoggedOut, component: LogoutComponent },
         { path: ApplicationPaths.LogOutCallback, component: LogoutComponent }
       ]
-    )
+    ),
+    ReactiveFormsModule
   ],
   declarations: [LoginMenuComponent, LogoutComponent, LoginComponent, RegisterComponent],
   exports: [LoginMenuComponent, LogoutComponent, LoginComponent]

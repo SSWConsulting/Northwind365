@@ -28,6 +28,7 @@
     "angular-feather": "^6.0.2",
     "bootstrap": "^5.2.3",
     "ngx-bootstrap": "^12.0.0",
+    "ngx-toastr": "^18.0.0",
     "run-script-os": "^1.1.6",
     "rxjs": "~7.8.1",
     "tslib": "^2.5.0",
