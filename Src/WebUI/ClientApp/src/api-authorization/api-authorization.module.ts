@@ -4,14 +4,13 @@ import { LoginMenuComponent } from './login-menu/login-menu.component';
 import { LogoutComponent } from './logout/logout.component';
 import { RouterModule } from '@angular/router';
 import { ApplicationPaths } from './api-authorization.constants';
-import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
-    HttpClientModule,
     RouterModule.forChild(
       [
         { path: ApplicationPaths.Register, component: RegisterComponent },
@@ -23,7 +22,8 @@ import { RegisterComponent } from './register/register.component';
         { path: ApplicationPaths.LoggedOut, component: LogoutComponent },
         { path: ApplicationPaths.LogOutCallback, component: LogoutComponent }
       ]
-    )
+    ),
+    ReactiveFormsModule
   ],
   declarations: [LoginMenuComponent, LogoutComponent, LoginComponent, RegisterComponent],
   exports: [LoginMenuComponent, LogoutComponent, LoginComponent]

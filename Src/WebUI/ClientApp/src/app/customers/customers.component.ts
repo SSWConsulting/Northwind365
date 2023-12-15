@@ -12,7 +12,7 @@ export class CustomersComponent implements OnInit {
   private client = inject(Client);
   private modalService =inject(BsModalService);
 
-  public vm: CustomersListVm = new CustomersListVm();
+  protected vm: CustomersListVm;
 
   ngOnInit(): void {
     this.client.getCustomersList().subscribe(result => {

@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthenticationResult, AuthorizeService, NetCore8LoginModel } from '../authorize.service';
+import { ChangeDetectionStrategy, Component, effect, inject, OnInit, signal } from '@angular/core';
+import { AuthenticationResult, AuthorizeService } from '../authorize.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApplicationPaths, ReturnUrlType } from '../api-authorization.constants';
-import {RegisterComponent} from "../register/register.component";
-
-declare var bootstrap: any;
+import { ReturnUrlType } from '../api-authorization.constants';
+import { filter, switchMap } from 'rxjs';
+import { FormBuilder } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 // The main responsibility of this component is to handle the user's login process.
 // This is the starting point for the login process. Any component that needs to authenticate
@@ -13,65 +13,65 @@ declare var bootstrap: any;
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit{
+  private authService = inject(AuthorizeService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
+  private fb = inject(FormBuilder);
+  private toastrService = inject(ToastrService);
 
-  constructor(private authService: AuthorizeService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  form = this.fb.group({
+    username: this.fb.control(''),
+    password: this.fb.control(''),
+  });
 
-  isBusy: boolean = false;
+  isBusy = signal(false);
   buttonText: string = 'Login';
-  toastMessage: string = '';
+
+  constructor() {
+    effect(() => {
+      if (this.isBusy()) {
+        this.form.disable();
+      } else {
+        this.form.enable();
+      }
+    });
+  }
 
   ngOnInit(): void {
-
-    console.log("Login component initialized. Attempting refresh...");
-
-    this.authService.refreshLogin().subscribe(async (result: AuthenticationResult) => {
-      if (result === AuthenticationResult.Success) {
-        console.log("Login refresh successful on login page");
-
-        let returnUrl = this.getReturnUrl();
-
-        console.log("Redirecting to: " + returnUrl);
-        await this.router.navigate([returnUrl]);
-      } else {
-        console.log("Login refresh failed on login page");
-        console.log(result);
-      }
-    })
+    this.authService.refreshLogin().pipe(
+      filter(result => result === AuthenticationResult.Success),
+      switchMap(() => {
+        const returnUrl = this.getReturnUrl();
+        return this.router.navigate([returnUrl]);
+      })
+    ).subscribe();
   }
 
   loginClicked() {
-
-    this.isBusy = true;
+    this.isBusy.set(true);
     this.buttonText = 'Logging in...';
 
-    let username = (<HTMLInputElement>document.getElementById("username")).value;
-    let password = (<HTMLInputElement>document.getElementById("password")).value;
+    const { username, password } = this.form.value;
 
-    let loginModel: NetCore8LoginModel = {
+    this.authService.handleLogin({
       email: username,
       password: password
-    };
-
-    this.authService.handleLogin(loginModel).subscribe(async (result: AuthenticationResult) => {
-      console.log(result);
-
+    }).subscribe((result: AuthenticationResult) => {
       if (result == AuthenticationResult.Success) {
-        console.log("Login successful");
-        this.toastMessage = '✅ Login successful! Sending you back where you came from...';
-        this.showToast();
+        this.toastrService.success('✅ Login successful! Sending you back where you came from...');
 
         let returnUrl = this.getReturnUrl();
 
-        await this.router.navigate([returnUrl]);
+        this.router.navigate([returnUrl]);
       } else {
         // handle failure
-        this.isBusy = false;
+        this.isBusy.set(false);
         this.buttonText = 'Login';
-        this.toastMessage = '⚠️ Login failed. Please check your credentials and try again.';
-        this.showToast();
+        this.toastrService.error('⚠️ Login failed. Please check your credentials and try again.');
       }
     });
 
@@ -80,11 +80,4 @@ export class LoginComponent implements OnInit{
   getReturnUrl(): string {
     return this.activatedRoute.snapshot.queryParams[ReturnUrlType] || '/';
   }
-
-  showToast() {
-    const toastRef = document.getElementById("loginFailedToast");
-    const toast = bootstrap.Toast.getOrCreateInstance(toastRef);
-    toast.show();
-  }
-
 }

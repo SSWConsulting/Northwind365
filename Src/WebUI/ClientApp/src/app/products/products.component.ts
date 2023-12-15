@@ -8,7 +8,7 @@ import { saveAs } from 'file-saver';
 export class ProductsComponent implements OnInit {
   private client = inject(Client);
 
-  productsListVm: ProductsListVm = new ProductsListVm();
+  protected productsListVm: ProductsListVm;
 
   ngOnInit(): void {
     this.client.getProductsList().subscribe(result => {

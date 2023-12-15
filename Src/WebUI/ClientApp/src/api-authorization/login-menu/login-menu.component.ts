@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
 import { AuthorizeService } from '../authorize.service';
 import { UserService } from '../user.service';
 
@@ -9,14 +8,10 @@ import { UserService } from '../user.service';
   templateUrl: './login-menu.component.html',
   styleUrls: ['./login-menu.component.css']
 })
-export class LoginMenuComponent implements OnInit {
-  public isAuthenticated: Observable<boolean>;
-  public userName: Observable<string>;
+export class LoginMenuComponent {
+  private authorizeService = inject(AuthorizeService);
+  private userService = inject(UserService);
 
-  constructor(private authorizeService: AuthorizeService, private userService: UserService) { }
-
-  ngOnInit() {
-    this.isAuthenticated = this.authorizeService.getLoggedInState();
-    this.userName = this.userService.getUserName();
-  }
+  protected isAuthenticated$: Observable<boolean> = this.authorizeService.getLoggedInState();
+  public userName: Observable<string> = this.userService.userName$;
 }
