@@ -11,6 +11,8 @@
 
 </div>
 
+GitHub PR draft test.
+
 Northwind 365 is a sample application built using .NET 8, ASP.NET Core, and Entity Framework Core.
 
 The initial construction of this project is explained in the following blog posts:
