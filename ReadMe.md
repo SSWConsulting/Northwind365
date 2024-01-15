@@ -1,6 +1,6 @@
 ![SSW Banner](https://raw.githubusercontent.com/SSWConsulting/SSW.Rules.Content/main/_docs/images/ssw-banner.png)
 
-# Northwind 365
+# Northwind 365 a
 
 <div align="center">
 
